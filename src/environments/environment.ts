@@ -4,6 +4,7 @@ export const environment = {
     endpoints: {
       bootcamps: {
         getBootcamps: '/api/Bootcamps/get',
+        getBootcampById: '/api/Bootcamps/'
         // Diğer kullanıcı endpointleri buraya eklenebilir
       },
       posts: {

@@ -1,4 +1,4 @@
-export interface GetBootcampListResponse{
+export interface GetBootcampResponse{
     id: string,
     name: string,
     startDate: string,

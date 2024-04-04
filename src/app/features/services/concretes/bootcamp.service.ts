@@ -5,6 +5,7 @@ import { PageRequest } from "../../../core/models/pagination/page-request";
 import { BootcampListItemDto } from "../../models/responses/bootcamps/bootcamp-list-item-dto";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
+import { GetBootcampResponse } from "../../models/responses/bootcamps/get-bootcamp-response";
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +13,7 @@ import { environment } from "../../../../environments/environment";
 export class BootcampService extends BootcampBaseService {
 
     private readonly apiUrl_Get: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcamps;
+    private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcampById;
 
     constructor(private httpClient: HttpClient) { super(); }
 
@@ -37,6 +39,12 @@ export class BootcampService extends BootcampBaseService {
                 })
 
         )
+    }
+
+    override getById(bootcampId: string): Observable<GetBootcampResponse> {
+        console.log(this.apiUrl_GetById)
+        console.log(this.apiUrl_GetById + bootcampId)
+        return this.httpClient.get<GetBootcampResponse>(this.apiUrl_GetById + bootcampId)
     }
 
 }

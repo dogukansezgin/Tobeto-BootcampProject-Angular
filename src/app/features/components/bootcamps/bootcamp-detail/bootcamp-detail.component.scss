@@ -1,0 +1,67 @@
+/* Genel Stil */
+body {
+    font-family: 'Raleway', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+.header {
+    position: relative;
+    text-align: center;
+}
+.course-image-wrapper {
+    overflow: hidden;
+    height: 650px;
+    position: relative;
+}
+.course-image {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.header-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0); /* Transparan arka plan */
+}
+.header-text {
+    margin-bottom: 10px;
+}
+.course-name {
+    color: white; /* Beyaz renk */
+    margin-bottom: 5px;
+}
+.course-details {
+    color: #FFD700; /* Sarı renk */
+}
+
+/* Main Content */
+.main-content {
+    padding-top: 20px;
+}
+.content-box {
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+}
+.content-box h2 {
+    margin-bottom: 10px;
+}
+.content-box p {
+    font-size: 16px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 50px;
+}

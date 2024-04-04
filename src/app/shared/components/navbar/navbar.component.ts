@@ -9,7 +9,17 @@ import { MenuItem } from 'primeng/api';
 })
 export class NavbarComponent implements OnInit {
   menuItems!: MenuItem[];
-  userLogged: boolean = true;
+  menuItemStyles: MenuItem = {
+      label: "Style",
+      style: { 
+        'font-size': '115%',
+        'margin-left': '40px',
+      }
+    }
+  
+  
+  userLogged: boolean = false;
+  testText: number = 0;
 
   ngOnInit(): void {
     this.getMenuItems();
@@ -21,23 +31,26 @@ export class NavbarComponent implements OnInit {
         {
           label: "Ana Sayfa",
           icon: "pi pi-home",
-          routerLink:'homepage'
+          routerLink:'homepage',
+          style: this.menuItemStyles.style
         },
         {
           label: "Profil",
           icon: "pi pi-user",
-          routerLink:'profile'
+          routerLink:'profile',
+          style: this.menuItemStyles.style
         },
         {
           label: "Kurslarım",
           icon: "pi pi-book",
-          routerLink:'rented-car'
+          routerLink:'my-bootcamps',
+          style: this.menuItemStyles.style
         },
         {
           label: "Çıkış Yap",
-          id: 'asd',
           icon: "pi pi-power-off",
-          routerLink:'sign-out'
+          routerLink:'sign-out',
+          style: this.menuItemStyles.style
         }
       ]
     }
@@ -46,17 +59,20 @@ export class NavbarComponent implements OnInit {
         {
           label: "Ana Sayfa",
           icon: "pi pi-home",
-          routerLink:'homepage'
+          routerLink:'homepage',
+          style: this.menuItemStyles.style
         },
         {
           label: "Giriş Yap",
           icon: "pi pi-sign-in",
-          routerLink:'login'
+          routerLink:'login',
+          style: this.menuItemStyles.style
         },
         {
           label: "Kayıt Ol",
           icon: "pi pi-user-plus",
-          routerLink:'register'
+          routerLink:'register',
+          style: this.menuItemStyles.style
         }
       ]
     }

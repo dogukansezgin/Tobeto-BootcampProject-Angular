@@ -3,9 +3,10 @@ import { BootcampService } from '../../../services/concretes/bootcamp.service';
 import { PageRequest } from '../../../../core/models/pagination/page-request';
 import { BootcampListItemDto } from '../../../models/responses/bootcamps/bootcamp-list-item-dto';
 import { CommonModule } from '@angular/common';
-import { GetBootcampListResponse } from '../../../models/responses/bootcamps/get-bootcamp-list-response';
+import { GetBootcampResponse } from '../../../models/responses/bootcamps/get-bootcamp-response';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bootcamp-list-group',
@@ -29,7 +30,7 @@ export class BootcampListGroupComponent implements OnInit {
   };
   readonly PAGE_SIZE = 6;
 
-  constructor(private bootcampService: BootcampService) {}
+  constructor(private bootcampService: BootcampService, private router: Router) {}
 
   ngOnInit(): void {
     this.getList( { page: 0, pageSize: this.PAGE_SIZE})
@@ -41,7 +42,10 @@ export class BootcampListGroupComponent implements OnInit {
     })
   }
 
-  setCurrentBootcamp(bootcamp: GetBootcampListResponse){
-    console.log("Selected bootcamp : ", bootcamp.id, bootcamp.name)
+  navigateToBootcampDetail(bootcamp: GetBootcampResponse){
+    console.log("Selected bootcamp : ", bootcamp.id, bootcamp.name, bootcamp.instructorUserName)
+    this.router.navigate(['/p', bootcamp.id])
   }
+
+
 }
