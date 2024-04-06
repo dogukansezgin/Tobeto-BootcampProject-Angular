@@ -3,12 +3,13 @@ export const environment = {
   apiUrl: 'http://localhost:5278',
   endpoints: {
     bootcamps: {
-      getBootcamps: '/api/Bootcamps/get',
-      getBootcampById: '/api/Bootcamps/'
-      // Diğer kullanıcı endpointleri buraya eklenebilir
+      getBootcamps: '',
+      getBootcampById: ''
     },
-    posts: {
-      // Post endpointleri buraya eklenebilir
+    auth: {
+      register: {
+        applicant: ''
+      }
     }
     // Diğer endpointler buraya eklenebilir
   }

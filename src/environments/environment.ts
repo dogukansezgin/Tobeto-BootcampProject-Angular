@@ -5,10 +5,14 @@ export const environment = {
       bootcamps: {
         getBootcamps: '/api/Bootcamps/get',
         getBootcampById: '/api/Bootcamps/'
-        // Diğer kullanıcı endpointleri buraya eklenebilir
       },
-      posts: {
-        // Post endpointleri buraya eklenebilir
+      auth: {
+        register: {
+          applicant: '/api/Auth/Register/Applicant'
+        },
+        login: {
+          userLogin: '/api/Auth/Login'
+        }
       }
       // Diğer endpointler buraya eklenebilir
     }

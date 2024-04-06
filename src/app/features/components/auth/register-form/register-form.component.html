@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6" style="border: 2px solid slategray; padding: 65px;">
+        <h2 class="text-center">Kayıt Formu</h2>
+        <form [formGroup]="registerForm">
+           <div class="row">
+             <div class="form-group col-md-6">
+                <label for="firstName">Ad</label>
+                <input formControlName="firstName" type="text" class="form-control" id="firstName" name="firstName" placeholder="Adınızı girin">
+             </div>
+             <div class="form-group col-md-6">
+                <label for="lastName">Soyad</label>
+                <input formControlName="lastName" type="text" class="form-control" id="lastName" name="lastName" placeholder="Soyadınızı girin">
+             </div>
+           </div>
+          <div class="form-group">
+            <label for="email">E-posta Adresi</label>
+            <input formControlName="email" type="email" class="form-control" id="email" name="email" placeholder="E-posta adresinizi girin">
+          </div>
+          <div class="form-group">
+            <label for="password">Şifre</label>
+            <input formControlName="password" type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi girin">
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+                <label for="nationalIdentity">TC Kimlik No</label>
+                <input formControlName="nationalIdentity" type="text" class="form-control" id="nationalIdentity" name="nationalIdentity" placeholder="TC Kimlik numaranızı girin">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="birthDate">Doğum Tarihi</label>
+                <input formControlName="birthDate" type="date" class="form-control" id="birthDate" name="birthDate">
+            </div>
+           </div>
+           <div class="form-group">
+              <label for="about">Hakkında</label>
+              <textarea formControlName="about" class="form-control" id="about" name="about" rows="5" placeholder="Kendiniz hakkında kısa bir açıklama yapın"></textarea>
+           </div>
+           <div class="text-center">
+              <button (click)="registerApplicant()" class="btn btn-primary btn-lg btn-block">Kayıt Ol</button>
+           </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

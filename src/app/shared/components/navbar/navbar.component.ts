@@ -1,6 +1,8 @@
 
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { AuthService } from '../../../features/services/concretes/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -17,15 +19,28 @@ export class NavbarComponent implements OnInit {
       }
     }
   
-  
   userLogged: boolean = false;
-  testText: number = 0;
+
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
+    this.setUserLoggedIn();
     this.getMenuItems();
   }
 
+
+  setUserLoggedIn(): boolean{
+    return this.userLogged = this.authService.loggedIn()
+  }
+
+  logOut(){
+    this.authService.logOut();
+    this.router.navigate(['homepage'])
+  }
+
   async getMenuItems(){
+    console.log(this.userLogged)
     if(this.userLogged){
       this.menuItems = [
         {
@@ -49,8 +64,10 @@ export class NavbarComponent implements OnInit {
         {
           label: "Çıkış Yap",
           icon: "pi pi-power-off",
-          routerLink:'sign-out',
-          style: this.menuItemStyles.style
+          style: this.menuItemStyles.style,
+          command:() =>{
+            this.logOut()
+          }
         }
       ]
     }
