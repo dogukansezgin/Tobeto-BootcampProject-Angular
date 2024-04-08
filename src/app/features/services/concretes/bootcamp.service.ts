@@ -42,8 +42,6 @@ export class BootcampService extends BootcampBaseService {
     }
 
     override getById(bootcampId: string): Observable<GetBootcampResponse> {
-        console.log(this.apiUrl_GetById)
-        console.log(this.apiUrl_GetById + bootcampId)
         return this.httpClient.get<GetBootcampResponse>(this.apiUrl_GetById + bootcampId)
     }
 

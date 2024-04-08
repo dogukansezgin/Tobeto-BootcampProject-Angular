@@ -9,6 +9,9 @@ export const environment = {
     auth: {
       register: {
         applicant: ''
+      },
+      login: {
+        userLogin: ''
       }
     }
     // Diğer endpointler buraya eklenebilir

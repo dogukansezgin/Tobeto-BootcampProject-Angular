@@ -29,12 +29,13 @@ export class RegisterFormComponent implements OnInit {
       password: ["", Validators.required],
       nationalIdentity: ["", Validators.required],
       birthDate: ["", Validators.required],
-      about: ["", Validators.required]
+      about: [""]
     });
   }
 
   registerApplicant(){
-
+alert("tıland")
+alert(this.registerForm.valid)
     if(this.registerForm.valid){
       let registerModel = Object.assign({},this.registerForm.value);
       registerModel.userName = `${registerModel.firstName} ${registerModel.lastName}`

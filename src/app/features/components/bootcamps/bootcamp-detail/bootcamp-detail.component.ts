@@ -46,7 +46,6 @@ export class BootcampDetailComponent implements OnInit {
     this.bootcampService.getById(bootcampId).subscribe(response =>{
       this.bootcamp = response;
       this.bootcampFullName = this.bootcamp.name;
-      console.log(this.bootcampFullName)
       this.divideBootcampName();
    });
   }
