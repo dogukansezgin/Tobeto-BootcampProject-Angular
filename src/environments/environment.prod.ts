@@ -13,6 +13,10 @@ export const environment = {
       login: {
         userLogin: ''
       }
+    },
+    applicants: {
+      getApplicantById: '',
+      updateApplicantInfo: ''
     }
     // Diğer endpointler buraya eklenebilir
   }

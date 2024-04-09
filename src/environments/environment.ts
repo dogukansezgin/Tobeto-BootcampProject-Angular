@@ -13,6 +13,10 @@ export const environment = {
         login: {
           userLogin: '/api/Auth/Login'
         }
+      },
+      applicants: {
+        getApplicantById: '/api/Applicants/',
+        updateApplicantInfo: '/api/Applicants/UpdateFromAuth'
       }
       // Diğer endpointler buraya eklenebilir
     }
