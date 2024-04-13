@@ -3,16 +3,19 @@ import { NavbarComponent } from "./components/navbar/navbar.component";
 import { CommonModule } from "@angular/common";
 import { MenubarModule } from "primeng/menubar";
 import { FilterBootcampPipe } from "./pipes/filter-bootcamp.pipe";
+import { FilterAppliedBootcampPipe } from "./pipes/filter-applied-bootcamp.pipe";
 
 
 @NgModule({
     declarations:[
         NavbarComponent,
-        FilterBootcampPipe
+        FilterBootcampPipe,
+        FilterAppliedBootcampPipe
     ],
     exports:[
         NavbarComponent,
-        FilterBootcampPipe
+        FilterBootcampPipe,
+        FilterAppliedBootcampPipe
     ],
     imports:[
         CommonModule,

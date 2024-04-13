@@ -1,0 +1,10 @@
+.card-click-zone {
+    transition: opacity 0.6s;
+  }
+  
+  .card-click-zone:hover {
+    opacity: 0.87;
+    transition: opacity 0.15s;
+    cursor: pointer;
+  }
+  

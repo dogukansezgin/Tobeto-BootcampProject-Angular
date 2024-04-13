@@ -1,11 +1,11 @@
-/* Genel Stil */
+
 body {
     font-family: 'Raleway', sans-serif;
     margin: 0;
     padding: 0;
 }
 
-/* Header */
+
 .header {
     position: relative;
     text-align: center;
@@ -31,20 +31,20 @@ body {
     z-index: 1;
     padding: 20px;
     border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0); /* Transparan arka plan */
+    background-color: rgba(255, 255, 255, 0); 
 }
 .header-text {
     margin-bottom: 10px;
 }
 .course-name {
-    color: white; /* Beyaz renk */
+    color: white;
     margin-bottom: 5px;
 }
 .course-details {
-    color: #FFD700; /* Sarı renk */
+    color: #FFD700; 
 }
 
-/* Main Content */
+
 .main-content {
     padding-top: 20px;
 }
@@ -60,7 +60,15 @@ body {
     font-size: 16px;
 }
 
-/* Footer */
+.application-state {
+    color: rgb(0, 200, 255);
+    font-weight: bold;
+    position: absolute;
+    right: 50%;
+    transform: translateX(50%);
+}
+
+
 .footer {
     text-align: center;
     margin-top: 50px;

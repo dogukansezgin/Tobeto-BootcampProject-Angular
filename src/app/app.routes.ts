@@ -4,6 +4,7 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { BootcampDetailPageComponent } from './pages/bootcamp-detail-page/bootcamp-detail-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { AppliedBootcampsPageComponent } from './pages/applied-bootcamps-page/applied-bootcamps-page.component';
 
 export const routes: Routes = 
 [
@@ -12,5 +13,6 @@ export const routes: Routes =
     {path:'register', component: RegisterPageComponent},
     {path:'login', component: LoginPageComponent},
     {path:'profile', component: ProfilePageComponent},
-    {path: 'p/:bootcampId', component: BootcampDetailPageComponent}
+    {path: 'p/:bootcampId', component: BootcampDetailPageComponent},
+    {path: 'applied-bootcamps', component: AppliedBootcampsPageComponent}
 ];

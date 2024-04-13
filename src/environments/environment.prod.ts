@@ -17,7 +17,13 @@ export const environment = {
     applicants: {
       getApplicantById: '',
       updateApplicantInfo: ''
+    },
+    applications: {
+      post: '',
+      checkApplication: '',
+      appliedBootcamps: ''
     }
+
     // Diğer endpointler buraya eklenebilir
   }
 };

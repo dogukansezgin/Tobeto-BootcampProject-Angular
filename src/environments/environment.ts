@@ -17,7 +17,13 @@ export const environment = {
       applicants: {
         getApplicantById: '/api/Applicants/',
         updateApplicantInfo: '/api/Applicants/UpdateFromAuth'
+      },
+      applications: {
+        post: '/api/Applications/post',
+        checkApplication: '/api/Applications/checkApplication',
+        appliedBootcamps: '/api/Applications/appliedBootcamps'
       }
+
       // Diğer endpointler buraya eklenebilir
     }
   };

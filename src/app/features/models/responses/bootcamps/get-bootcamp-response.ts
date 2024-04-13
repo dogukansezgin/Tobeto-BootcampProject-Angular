@@ -8,7 +8,7 @@ export interface GetBootcampResponse{
     instructorUserName: string,
     instructorFirstName: string,
     instructorLastName: string,
-    InstructorCompanyName: string,
+    instructorCompanyName: string,
 
     bootcampStateId: string,
     bootcampStateName: string

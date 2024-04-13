@@ -11,7 +11,9 @@
             <h1 class="course-name">{{ this.bootcampName }}</h1>
             <p class="course-details">{{ this.bootcampAfterBracket }}</p>
         </div>
-        <button class="btn btn-primary apply-button">Programa Dahil Ol</button>
+        <button (click)="applyToBootcamp()" class="btn btn-primary apply-button" [disabled]="isApplied">Programa Dahil Ol</button>
+        
+        <p *ngIf="isApplied" class="application-state">{{applicationInfo.applicationStateName}}</p>
     </div>
 </header>
 
@@ -55,6 +57,6 @@
 <footer class="footer">
     <!-- Başvuru Yap Butonu -->
     <div class="text-center">
-        <button class="btn btn-primary apply-button">Programa Dahil Ol</button>
+        <button (click)="applyToBootcamp()" class="btn btn-primary apply-button" [disabled]="isApplied">Programa Dahil Ol</button>
     </div>
 </footer>

@@ -47,6 +47,11 @@ export class AuthService extends AuthBaseService {
 
         this.token = this.localStorageService.getToken();
         let isExpired = this.jwtHelper.isTokenExpired(this.token);
+        if(isExpired){
+            console.log(isExpired, "Token süresi doldu mu ?")
+            this.localStorageService.removeToken();
+        }
+
         return !isExpired;
     }
 

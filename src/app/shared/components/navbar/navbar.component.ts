@@ -58,7 +58,7 @@ export class NavbarComponent implements OnInit {
         {
           label: "Kurslarım",
           icon: "pi pi-book",
-          routerLink:'my-bootcamps',
+          routerLink:'applied-bootcamps',
           style: this.menuItemStyles.style
         },
         {

@@ -38,7 +38,7 @@ export class BootcampService extends BootcampBaseService {
                     return newResponse;
                 })
 
-        )
+            )
     }
 
     override getById(bootcampId: string): Observable<GetBootcampResponse> {
