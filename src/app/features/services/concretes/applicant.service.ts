@@ -16,7 +16,7 @@ export class ApplicantService extends ApplicantBaseService {
     private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.applicants.getApplicantById;
     private readonly apiUrl_UpdateInfo: string = environment.apiUrl + environment.endpoints.applicants.updateApplicantInfo;
     
-    constructor(private httpClient: HttpClient, private localStorage: LocalStorageService) { super(); }
+    constructor(private httpClient: HttpClient, private localStorageService: LocalStorageService) { super(); }
     
     override getApplicantInfo(applicantId: string): Observable<GetApplicantInfoResponse> {
         return this.httpClient.get<GetApplicantInfoResponse>(this.apiUrl_GetById + applicantId)
@@ -25,14 +25,16 @@ export class ApplicantService extends ApplicantBaseService {
     override updateApplicant(request: ApplicantInfoUpdateRequest): Observable<GetApplicantInfoResponse> {
         return this.httpClient.put<GetApplicantInfoResponse>(this.apiUrl_UpdateInfo, request)
             .pipe(map(response =>{
-                this.localStorage.removeToken();
-                this.localStorage.setToken(response.accessToken.token);
+                this.localStorageService.removeToken();
+                this.localStorageService.setToken(response.accessToken.token);
 
                 alert("Güncelleme başarılı.");
                 return response;
+
             }, catchError(responseError =>{
                 alert(responseError.error)
                 throw responseError;
+                
             })
         ));
     }

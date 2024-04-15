@@ -43,16 +43,18 @@ export class AuthService extends AuthBaseService {
     }
     
 
-    loggedIn(): boolean{
-
+    isAuthenticated(): boolean{
         this.token = this.localStorageService.getToken();
-        let isExpired = this.jwtHelper.isTokenExpired(this.token);
-        if(isExpired){
-            console.log(isExpired, "Token süresi doldu mu ?")
-            this.localStorageService.removeToken();
-        }
-
+        if(this.token){
+            let isExpired = this.jwtHelper.isTokenExpired(this.token);
+            if(isExpired){
+                console.log(isExpired, "Token süresi doldu mu ?")
+                this.localStorageService.removeToken();
+            }
         return !isExpired;
+        } else {
+            return false;
+        }
     }
 
     logOut(){

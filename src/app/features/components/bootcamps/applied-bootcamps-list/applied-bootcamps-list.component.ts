@@ -2,13 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ApplicationService } from '../../../services/concretes/application.service';
 import { Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { LocalStorageService } from '../../../services/concretes/local-storage.service';
 import { PageRequest } from '../../../../core/models/pagination/page-request';
 import { ApplicationListItemDto } from '../../../models/responses/applications/application-list-item-dto';
 import { AppliedBootcampResponse } from '../../../models/responses/applications/applied-bootcamp-response';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared.module';
+import { TokenService } from '../../../services/concretes/token.service';
 
 @Component({
   selector: 'app-applied-bootcamps-list',
@@ -19,8 +18,6 @@ import { SharedModule } from '../../../../shared/shared.module';
 })
 export class AppliedBootcampsListComponent implements OnInit {
 
-  jwtHelper:JwtHelperService = new JwtHelperService;
-  token: any;
   userId!: string;
 
   filterText!: string;
@@ -39,37 +36,13 @@ export class AppliedBootcampsListComponent implements OnInit {
   constructor(
     private applicationService: ApplicationService, 
     private router: Router,
-    private localStorage: LocalStorageService
+    private tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
-    this.userId = this.getCurrentUserId();
+    this.userId = this.tokenService.getCurrentUserId();
 
     this.getAppliedBootcampsList(this.userId, {page: 0, pageSize: this.PAGE_SIZE})
-  }
-
-  // decode token
-  getDecodedToken(){
-    try{
-      this.token = this.localStorage.getToken();
-      return this.jwtHelper.decodeToken(this.token)
-    }
-    catch(error){
-      return error;
-    }
-  }
-  // set userId from decoded token
-  getCurrentUserId(): string{
-    try{
-      var decoded = this.getDecodedToken();
-      var propUserId = Object.keys(decoded).filter(x=>x.endsWith("/nameidentifier"))[0]
-      return this.userId = decoded[propUserId]
-
-    }
-    catch(error){
-      console.log(error);
-      return "null"
-    }
   }
 
   getAppliedBootcampsList(applicantId: string, pageRequest: PageRequest){

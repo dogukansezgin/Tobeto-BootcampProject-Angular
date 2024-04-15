@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicantInfoUpdateRequest } from '../../../models/requests/users/applicants/applicant-info-update-request';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApplicantService } from '../../../services/concretes/applicant.service';
-import { LocalStorageService } from '../../../services/concretes/local-storage.service';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { GetApplicantInfoResponse } from '../../../models/responses/users/applicant/get-applicant-info-response';
+import { TokenService } from '../../../services/concretes/token.service';
 
 @Component({
   selector: 'app-applicant-update-form',
@@ -15,8 +14,6 @@ import { GetApplicantInfoResponse } from '../../../models/responses/users/applic
 })
 export class ApplicantUpdateFormComponent implements OnInit {
 
-  jwtHelper:JwtHelperService = new JwtHelperService;
-  token: any;
   userId!: string;
 
   formSubmitted: boolean = false;
@@ -24,11 +21,11 @@ export class ApplicantUpdateFormComponent implements OnInit {
   applicantData!: GetApplicantInfoResponse;
   updatedData!: ApplicantInfoUpdateRequest;
 
-  constructor(private applicantService: ApplicantService, private formBuilder: FormBuilder, private localStorage: LocalStorageService) {}
+  constructor(private applicantService: ApplicantService, private formBuilder: FormBuilder, private tokenService: TokenService) {}
 
   ngOnInit(): void {
     this.createRegisterForm();
-    this.getApplicantData(this.getCurrentUserId());
+    this.getApplicantData(this.tokenService.getCurrentUserId());
 
   }
 
@@ -44,24 +41,6 @@ export class ApplicantUpdateFormComponent implements OnInit {
     });
 
   }
-  
-  // decode token
-  getDecodedToken(){
-    try{
-      this.token = this.localStorage.getToken();
-      return this.jwtHelper.decodeToken(this.token)
-    }
-    catch(error){
-      return error;
-    }
-  }
-  // set userId from decoded token
-  getCurrentUserId(): string{
-    var decoded = this.getDecodedToken();
-    var propUserId = Object.keys(decoded).filter(x=>x.endsWith("/nameidentifier"))[0]
-    return this.userId = decoded[propUserId]
-  }
-
 
   getApplicantData(applicantId: string) {
     this.applicantService.getApplicantInfo(applicantId).subscribe(response =>{
@@ -104,8 +83,8 @@ export class ApplicantUpdateFormComponent implements OnInit {
     }else{
       this.formSubmitted = false;
       alert("Hatalı alanlar.")
-    }
 
+    }
   }
 
 

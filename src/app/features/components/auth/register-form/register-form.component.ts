@@ -34,8 +34,6 @@ export class RegisterFormComponent implements OnInit {
   }
 
   registerApplicant(){
-alert("tıklandı")
-alert(this.registerForm.valid)
     if(this.registerForm.valid){
       let registerModel = Object.assign({},this.registerForm.value);
       registerModel.userName = `${registerModel.firstName} ${registerModel.lastName}`

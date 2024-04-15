@@ -31,7 +31,7 @@ export class NavbarComponent implements OnInit {
 
 
   setUserLoggedIn(): boolean{
-    return this.userLogged = this.authService.loggedIn()
+    return this.userLogged = this.authService.isAuthenticated()
   }
 
   logOut(){

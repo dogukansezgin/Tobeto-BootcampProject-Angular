@@ -3,11 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { BootcampService } from '../../../services/concretes/bootcamp.service';
 import { GetBootcampResponse } from '../../../models/responses/bootcamps/get-bootcamp-response';
 import { ApplicationService } from '../../../services/concretes/application.service';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { LocalStorageService } from '../../../services/concretes/local-storage.service';
 import { ApplicationPostRequest } from '../../../models/requests/applications/application-post-request';
 import { CommonModule } from '@angular/common';
 import { CheckApplicationResponse } from '../../../models/responses/applications/check-application-response';
+import { TokenService } from '../../../services/concretes/token.service';
 
 @Component({
   selector: 'app-bootcamp-detail',
@@ -38,21 +37,21 @@ export class BootcampDetailComponent implements OnInit {
   bootcampName!: string;
   bootcampAfterBracket!: string;
 
-  jwtHelper:JwtHelperService = new JwtHelperService;
-  token: any;
   userId!: string;
   
   initialApplicationState: any = "fc031faa-a232-48cf-616b-08dc5a3ae9dc"; // "Pending"
   applicationRequest!: ApplicationPostRequest;
   
-  isApplied: boolean = false;
   applicationInfo!: CheckApplicationResponse;
+  isApplied: boolean = false;
+
+  isApplicationButtonActive: boolean = true;
 
   constructor(
     private bootcampService: BootcampService,
     private activatedRoute: ActivatedRoute,
-    private localStorage: LocalStorageService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
+    private tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
@@ -61,8 +60,7 @@ export class BootcampDetailComponent implements OnInit {
       this.getBootcampById(this.bootcampId);
     })
 
-    this.userId = this.getCurrentUserId();
-    console.log(this.userId)
+    this.userId = this.tokenService.getCurrentUserId();
 
     this.checkApplication(this.userId, this.bootcampId);
 
@@ -74,11 +72,10 @@ export class BootcampDetailComponent implements OnInit {
       };
       
     } else {
+
       throw new Error('applicantId and bootcampId cannot be null or undefined.');
     }
-    console.log(this.applicationRequest)
-  
-    console.log(this.userId)
+
   }
   
   getBootcampById(bootcampId: string){
@@ -100,34 +97,11 @@ export class BootcampDetailComponent implements OnInit {
     }
   }
 
-  // decode token
-  getDecodedToken(){
-    try{
-      this.token = this.localStorage.getToken();
-      return this.jwtHelper.decodeToken(this.token)
-    }
-    catch(error){
-      return error;
-    }
-  }
-  // set userId from decoded token
-  getCurrentUserId(): string{
-    try{
-      var decoded = this.getDecodedToken();
-      var propUserId = Object.keys(decoded).filter(x=>x.endsWith("/nameidentifier"))[0]
-      return this.userId = decoded[propUserId]
-
-    }
-    catch(error){
-      console.log(error);
-      return "null"
-    }
-  }
-
   checkApplication(applicantId: string, bootcampId: string): void{
     this.applicationService.checkApplication(applicantId, bootcampId).subscribe(response =>{
       this.applicationInfo = response;
       this.isApplied = true;
+      this.isApplicationButtonActive = false;
 
     }, error =>{
       this.isApplied = false;
@@ -136,26 +110,38 @@ export class BootcampDetailComponent implements OnInit {
     });
   }
 
+  hasPermission(): boolean{
+    const userRoles = this.tokenService.getUserRoles();
+    return userRoles.includes("Applicants.User");
+  }
+
   applyToBootcamp() {
-    if(this.userId == "null"){
+    if (this.userId == "null") {
       alert("Başvuru yapmak için giriş yapmalısın.")
       return;
     }
-    else{
+    else {
       this.isApplied = true;
-  
+      this.isApplicationButtonActive = false;
+
       console.log(this.applicationRequest)
   
       this.applicationService.postApplication(this.applicationRequest).subscribe(response =>{
         alert("Başvuru başarıyla yapıldı.");
         console.log(response);
-      }, error => {
-        alert("Bir hata oluştu.");
-        this.isApplied = false;
-        console.log(error);
-      });
-    }
 
+      }, error => {
+        this.isApplied = false;
+        this.isApplicationButtonActive = true;
+        alert("Bir hata oluştu.");
+        console.log(error);
+
+      });
+
+    }
   }
 
+
+
+  
 }
