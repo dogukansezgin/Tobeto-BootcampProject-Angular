@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { ApplicantUpdateFormComponent } from '../../features/components/users/applicant-update-form/applicant-update-form.component';
+import { ApplicantInfoUpdateFormComponent } from '../../features/components/users/applicants/applicant-info-update-form/applicant-info-update-form.component';
 
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [ApplicantUpdateFormComponent],
+  imports: [ApplicantInfoUpdateFormComponent],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss'
 })

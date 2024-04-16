@@ -7,6 +7,7 @@ import { ApplicationPostRequest } from '../../../models/requests/applications/ap
 import { CommonModule } from '@angular/common';
 import { CheckApplicationResponse } from '../../../models/responses/applications/check-application-response';
 import { TokenService } from '../../../services/concretes/token.service';
+import { AuthService } from '../../../services/concretes/auth.service';
 
 @Component({
   selector: 'app-bootcamp-detail',
@@ -46,12 +47,14 @@ export class BootcampDetailComponent implements OnInit {
   isApplied: boolean = false;
 
   isApplicationButtonActive: boolean = true;
+  isApplyPermissionGranted: boolean = false;
 
   constructor(
     private bootcampService: BootcampService,
     private activatedRoute: ActivatedRoute,
     private applicationService: ApplicationService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +64,7 @@ export class BootcampDetailComponent implements OnInit {
     })
 
     this.userId = this.tokenService.getCurrentUserId();
+    this.isApplyPermissionGranted = this.authService.hasRole(["Applicants.User"])
 
     this.checkApplication(this.userId, this.bootcampId);
 
@@ -108,11 +112,6 @@ export class BootcampDetailComponent implements OnInit {
       console.log(error)
 
     });
-  }
-
-  hasPermission(): boolean{
-    const userRoles = this.tokenService.getUserRoles();
-    return userRoles.includes("Applicants.User");
   }
 
   applyToBootcamp() {

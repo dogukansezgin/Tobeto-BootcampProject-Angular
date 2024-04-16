@@ -1,22 +1,23 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ApplicationService } from '../../../services/concretes/application.service';
-import { Router } from '@angular/router';
-import { PageRequest } from '../../../../core/models/pagination/page-request';
-import { ApplicationListItemDto } from '../../../models/responses/applications/application-list-item-dto';
-import { AppliedBootcampResponse } from '../../../models/responses/applications/applied-bootcamp-response';
-import { FormsModule } from '@angular/forms';
-import { SharedModule } from '../../../../shared/shared.module';
-import { TokenService } from '../../../services/concretes/token.service';
+import { CommonModule } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
+import { SharedModule } from "../../../../../shared/shared.module";
+import { FormsModule } from "@angular/forms";
+import { ApplicationListItemDto } from "../../../../models/responses/applications/application-list-item-dto";
+import { ApplicationService } from "../../../../services/concretes/application.service";
+import { TokenService } from "../../../../services/concretes/token.service";
+import { Router } from "@angular/router";
+import { PageRequest } from "../../../../../core/models/pagination/page-request";
+import { AppliedBootcampResponse } from "../../../../models/responses/applications/applied-bootcamp-response";
+
 
 @Component({
-  selector: 'app-applied-bootcamps-list',
+  selector: 'app-applicant-applied-bootcamp-list-group',
   standalone: true,
   imports: [CommonModule, FormsModule, SharedModule],
-  templateUrl: './applied-bootcamps-list.component.html',
-  styleUrl: './applied-bootcamps-list.component.scss'
+  templateUrl: './applicant-applied-bootcamp-list-group.component.html',
+  styleUrl: './applicant-applied-bootcamp-list-group.component.scss'
 })
-export class AppliedBootcampsListComponent implements OnInit {
+export class ApplicantAppliedBootcampListGroupComponent implements OnInit {
 
   userId!: string;
 

@@ -4,9 +4,9 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { BootcampDetailPageComponent } from './pages/bootcamp-detail-page/bootcamp-detail-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
-import { AppliedBootcampsPageComponent } from './pages/applied-bootcamps-page/applied-bootcamps-page.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { PreventLoginAccessGuard } from './core/guards/prevent-login-access.guard';
+import { ApplicantAppliedBootcampsPageComponent } from './pages/applicant-applied-bootcamps-page/applicant-applied-bootcamps-page.component';
 
 export const routes: Routes = 
 [
@@ -16,5 +16,5 @@ export const routes: Routes =
     {path:'login', component: LoginPageComponent, canActivate: [PreventLoginAccessGuard]},
     {path:'profile', component: ProfilePageComponent, canActivate: [AuthGuard]},
     {path: 'p/:bootcampId', component: BootcampDetailPageComponent},
-    {path: 'applied-bootcamps', component: AppliedBootcampsPageComponent, canActivate: [AuthGuard]}
+    {path: 'applied-bootcamps', component: ApplicantAppliedBootcampsPageComponent, canActivate: [AuthGuard]}
 ];

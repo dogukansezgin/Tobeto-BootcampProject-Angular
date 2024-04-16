@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ApplicantInfoUpdateRequest } from '../../../models/requests/users/applicants/applicant-info-update-request';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ApplicantService } from '../../../services/concretes/applicant.service';
-import { GetApplicantInfoResponse } from '../../../models/responses/users/applicant/get-applicant-info-response';
-import { TokenService } from '../../../services/concretes/token.service';
+import { GetApplicantInfoResponse } from '../../../../models/responses/users/applicant/get-applicant-info-response';
+import { ApplicantInfoUpdateRequest } from '../../../../models/requests/users/applicants/applicant-info-update-request';
+import { ApplicantService } from '../../../../services/concretes/applicant.service';
+import { TokenService } from '../../../../services/concretes/token.service';
+
 
 @Component({
-  selector: 'app-applicant-update-form',
+  selector: 'app-applicant-info-update-form',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './applicant-update-form.component.html',
-  styleUrl: './applicant-update-form.component.scss'
+  templateUrl: './applicant-info-update-form.component.html',
+  styleUrl: './applicant-info-update-form.component.scss'
 })
-export class ApplicantUpdateFormComponent implements OnInit {
+export class ApplicantInfoUpdateFormComponent implements OnInit {
 
   userId!: string;
 
