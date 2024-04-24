@@ -9,6 +9,7 @@ import { LocalStorageService } from "./local-storage.service";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { UserForLoginRequest } from "../../models/requests/users/user-for-login-request";
 import { AccessTokenDto } from "../../models/responses/users/access-token-dto";
+import { TokenService } from "./token.service";
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +22,11 @@ export class AuthService extends AuthBaseService {
     private readonly apiUrl_RegisterApplicant: string = environment.apiUrl + environment.endpoints.auth.register.applicant;
     private readonly apiUrl_Login: string = environment.apiUrl + environment.endpoints.auth.login.userLogin;
     
-    constructor(private httpClient: HttpClient, private localStorageService: LocalStorageService) { super(); }
+    constructor(
+        private httpClient: HttpClient, 
+        private localStorageService: LocalStorageService,
+        private tokenService: TokenService
+    ) { super(); }
     
     override registerApplicant(applicantRegisterRequest: ApplicantForRegisterRequest): Observable<AccessTokenModel> {
 
@@ -65,5 +70,22 @@ export class AuthService extends AuthBaseService {
             window.location.reload();
         }, 500);
     }
+    
+    hasRole(roles: string[]): boolean {
+        const userRoles = this.tokenService.getUserRoles();
+        if (!roles || !userRoles) {
+            return false;
+        }
+    
+        for (const role of roles) {
+            if (userRoles.includes(role)) {
+                return true;
+            }
+        }
+    
+        return false;
+    }
+
+
     
 }

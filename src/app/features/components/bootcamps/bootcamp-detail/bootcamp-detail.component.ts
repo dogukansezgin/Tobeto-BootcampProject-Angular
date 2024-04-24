@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BootcampService } from '../../../services/concretes/bootcamp.service';
 import { GetBootcampResponse } from '../../../models/responses/bootcamps/get-bootcamp-response';
 import { ApplicationService } from '../../../services/concretes/application.service';
@@ -22,8 +22,8 @@ export class BootcampDetailComponent implements OnInit {
   bootcamp: GetBootcampResponse = {
     id: '',
     name: '',
-    startDate: '',
-    endDate: '',
+    startDate: new Date("0001-01-01T01:00:00"),
+    endDate: new Date("0001-01-01T01:00:00"),
 
     instructorId: '',
     instructorUserName: '',
@@ -40,18 +40,20 @@ export class BootcampDetailComponent implements OnInit {
 
   userId!: string;
   
-  initialApplicationState: any = "fc031faa-a232-48cf-616b-08dc5a3ae9dc"; // "Pending"
+  initialApplicationState: any = "fc031faa-a232-48cf-616b-08dc5a3ae9dc"; // "Beklemede"
   applicationRequest!: ApplicationPostRequest;
   
   applicationInfo!: CheckApplicationResponse;
-  isApplied: boolean = false;
+  isApplicationAlreadyExist: boolean = false;
 
-  isApplicationButtonActive: boolean = true;
-  isApplyPermissionGranted: boolean = false;
+  isBootcampActive: boolean = true;
+  bootcampActiveText: string = "Aktif";
+  bootcampInactiveText: string = "Sonlandı";
 
   constructor(
     private bootcampService: BootcampService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private applicationService: ApplicationService,
     private tokenService: TokenService,
     private authService: AuthService
@@ -64,20 +66,21 @@ export class BootcampDetailComponent implements OnInit {
     })
 
     this.userId = this.tokenService.getCurrentUserId();
-    this.isApplyPermissionGranted = this.authService.hasRole(["Applicants.User"])
 
-    this.checkApplication(this.userId, this.bootcampId);
-
-    if (this.userId != "null" && this.bootcampId) {
-      this.applicationRequest = {
-          applicantId: this.userId,
-          bootcampId: this.bootcampId,
-          applicationStateId: this.initialApplicationState
-      };
-      
-    } else {
-
-      throw new Error('applicantId and bootcampId cannot be null or undefined.');
+    if (this.authService.isAuthenticated()) {
+      this.checkApplication(this.userId, this.bootcampId);
+  
+      if (this.userId != "null" && this.bootcampId) {
+        this.applicationRequest = {
+            applicantId: this.userId,
+            bootcampId: this.bootcampId,
+            applicationStateId: this.initialApplicationState
+        };
+        
+      } else {
+  
+        throw new Error('applicantId and bootcampId cannot be null or undefined.');
+      }
     }
 
   }
@@ -85,9 +88,22 @@ export class BootcampDetailComponent implements OnInit {
   getBootcampById(bootcampId: string){
     this.bootcampService.getById(bootcampId).subscribe(response =>{
       this.bootcamp = response;
+
+      this.isBootcampActive = this.checkBootcampActive();
       this.bootcampFullName = this.bootcamp.name;
       this.divideBootcampName();
    });
+  }
+
+  checkBootcampActive(): boolean {
+    const endDate = new Date(this.bootcamp.endDate);
+    const todayDate = new Date();
+
+    if (endDate >= todayDate){
+      return true;
+    } else {
+      return false;
+    }
   }
 
   divideBootcampName(){
@@ -104,37 +120,47 @@ export class BootcampDetailComponent implements OnInit {
   checkApplication(applicantId: string, bootcampId: string): void{
     this.applicationService.checkApplication(applicantId, bootcampId).subscribe(response =>{
       this.applicationInfo = response;
-      this.isApplied = true;
-      this.isApplicationButtonActive = false;
+      this.isApplicationAlreadyExist = true;
 
     }, error =>{
-      this.isApplied = false;
+      this.isApplicationAlreadyExist = false;
       console.log(error)
 
     });
   }
 
+  isApplicationButtonDisabled(): boolean {
+    if(this.isApplicationAlreadyExist || !this.isBootcampActive){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   applyToBootcamp() {
-    if (this.userId == "null") {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['login']);
       alert("Başvuru yapmak için giriş yapmalısın.")
       return;
-    }
-    else {
-      this.isApplied = true;
-      this.isApplicationButtonActive = false;
 
+    } else if (!this.authService.hasRole(["Applicants.User"])) {
+      alert("Başvuru yapmak için gerekli izne sahip değilsin.")
+      return;
+
+    } else {
+      this.isApplicationAlreadyExist = true;
+  
       console.log(this.applicationRequest)
   
       this.applicationService.postApplication(this.applicationRequest).subscribe(response =>{
         alert("Başvuru başarıyla yapıldı.");
         console.log(response);
-
+  
       }, error => {
-        this.isApplied = false;
-        this.isApplicationButtonActive = true;
+        this.isApplicationAlreadyExist = false;
         alert("Bir hata oluştu.");
         console.log(error);
-
+  
       });
 
     }

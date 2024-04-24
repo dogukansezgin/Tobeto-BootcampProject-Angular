@@ -11,88 +11,95 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   menuItems!: MenuItem[];
-  menuItemStyles: MenuItem = {
-      label: "Style",
-      style: { 
-        'font-size': '115%',
-        'margin-left': '40px',
-      }
-    }
-  
+
   userLogged: boolean = false;
 
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.setUserLoggedIn();
     this.getMenuItems();
+    this.setRoleItems();
   }
 
 
-  setUserLoggedIn(): boolean{
+  setUserLoggedIn(): boolean {
     return this.userLogged = this.authService.isAuthenticated()
   }
 
-  logOut(){
+  logOut() {
     this.authService.logOut();
     this.router.navigate(['homepage'])
   }
 
-  async getMenuItems(){
+  async getMenuItems() {
     console.log(this.userLogged)
-    if(this.userLogged){
+    if (this.userLogged) {
       this.menuItems = [
         {
           label: "Ana Sayfa",
           icon: "pi pi-home",
-          routerLink:'homepage',
-          style: this.menuItemStyles.style
+          routerLink: 'homepage',
         },
         {
           label: "Profil",
           icon: "pi pi-user",
-          routerLink:'profile',
-          style: this.menuItemStyles.style
+          routerLink: 'profile',
         },
         {
           label: "Kurslarım",
           icon: "pi pi-book",
-          routerLink:'applied-bootcamps',
-          style: this.menuItemStyles.style
+          routerLink: 'applied-bootcamps',
         },
         {
           label: "Çıkış Yap",
           icon: "pi pi-power-off",
-          style: this.menuItemStyles.style,
-          command:() =>{
+          command: () => {
             this.logOut()
           }
         }
       ]
     }
-    else{
+    else {
       this.menuItems = [
         {
           label: "Ana Sayfa",
           icon: "pi pi-home",
-          routerLink:'homepage',
-          style: this.menuItemStyles.style
+          routerLink: 'homepage',
         },
         {
           label: "Giriş Yap",
           icon: "pi pi-sign-in",
-          routerLink:'login',
-          style: this.menuItemStyles.style
+          routerLink: 'login',
         },
         {
           label: "Kayıt Ol",
           icon: "pi pi-user-plus",
-          routerLink:'register',
-          style: this.menuItemStyles.style
+          routerLink: 'register',
         }
       ]
     }
   }
 
+  setRoleItems() {
+    if (this.authService.hasRole(['Admin'])) {
+      this.menuItems.push(
+        {
+          label: "Yönetim Paneli",
+          icon: "pi pi-wrench",
+          routerLink: 'dashboard/admin',
+        })
+    }
+    else if (this.authService.hasRole(['Applicants.User'])) {
+      this.menuItems.splice(2, 0,
+        {
+          label: "Ayarlar",
+          icon: "pi pi-cog",
+          routerLink: 'dashboard/user',
+        })
+    }
+  }
+
+  
 }

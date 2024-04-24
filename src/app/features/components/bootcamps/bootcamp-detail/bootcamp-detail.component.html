@@ -8,15 +8,20 @@
     <!-- Kurs Adı ve Başvuru Yap Butonu -->
     <div class="header-content text-center">
         <div class="header-text">
+            <p class="bootcamp-state" [ngClass]="isBootcampActive ? 'active' : 'inactive'">
+                {{ isBootcampActive ? bootcampActiveText : bootcampInactiveText }}
+            </p>
+
             <h1 class="course-name">{{ this.bootcampName }}</h1>
             <p class="course-details">{{ this.bootcampAfterBracket }}</p>
+
         </div>
         
-        <button (click)="applyToBootcamp()" class="btn btn-primary apply-button" [disabled]="!isApplyPermissionGranted || !isApplicationButtonActive">
+        <button (click)="applyToBootcamp()" class="btn btn-primary apply-button" [disabled]="isApplicationButtonDisabled()">
             Programa Dahil Ol
         </button>
 
-        <p *ngIf="isApplied" class="application-state">
+        <p *ngIf="isApplicationAlreadyExist" class="application-state">
             {{applicationInfo.applicationStateName}}
         </p>
     </div>
@@ -62,7 +67,7 @@
 <footer class="footer">
     <!-- Başvuru Yap Butonu -->
     <div class="text-center">
-        <button (click)="applyToBootcamp()" class="btn btn-primary apply-button" [disabled]="!isApplyPermissionGranted || !isApplicationButtonActive">
+        <button (click)="applyToBootcamp()" class="btn btn-primary apply-button" [disabled]="isApplicationButtonDisabled()">
             Programa Dahil Ol
         </button>
     </div>
