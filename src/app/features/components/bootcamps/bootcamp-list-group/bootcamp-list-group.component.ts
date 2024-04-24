@@ -7,11 +7,12 @@ import { GetBootcampResponse } from '../../../models/responses/bootcamps/get-boo
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared.module';
 import { Router } from '@angular/router';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-bootcamp-list-group',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedModule],
+  imports: [CommonModule, FormsModule, SharedModule, PaginatorModule],
   templateUrl: './bootcamp-list-group.component.html',
   styleUrl: './bootcamp-list-group.component.scss'
 })
@@ -28,12 +29,12 @@ export class BootcampListGroupComponent implements OnInit {
     pages: 0,
     items: []
   };
-  readonly PAGE_SIZE = 6;
+  readonly PAGE_SIZE = 3;
 
   constructor(private bootcampService: BootcampService, private router: Router) {}
 
   ngOnInit(): void {
-    this.getList( { page: 0, pageSize: this.PAGE_SIZE})
+    this.getList( { pageIndex: 0, pageSize: this.PAGE_SIZE})
   }
 
   getList(pageRequest: PageRequest){
@@ -47,5 +48,12 @@ export class BootcampListGroupComponent implements OnInit {
     this.router.navigate(['/p', bootcamp.id])
   }
 
+  onPageChange(event: any) {
+    const pageRequest: PageRequest = {
+      pageIndex: event.page,
+      pageSize: this.PAGE_SIZE
+    };
+    this.getList(pageRequest);
+  }
 
 }

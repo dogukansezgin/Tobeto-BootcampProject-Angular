@@ -8,12 +8,13 @@ import { TokenService } from "../../../../services/concretes/token.service";
 import { Router } from "@angular/router";
 import { PageRequest } from "../../../../../core/models/pagination/page-request";
 import { AppliedBootcampResponse } from "../../../../models/responses/applications/applied-bootcamp-response";
+import { PaginatorModule } from "primeng/paginator";
 
 
 @Component({
   selector: 'app-applicant-applied-bootcamp-list-group',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedModule],
+  imports: [CommonModule, FormsModule, SharedModule, PaginatorModule],
   templateUrl: './applicant-applied-bootcamp-list-group.component.html',
   styleUrl: './applicant-applied-bootcamp-list-group.component.scss'
 })
@@ -43,7 +44,7 @@ export class ApplicantAppliedBootcampListGroupComponent implements OnInit {
   ngOnInit(): void {
     this.userId = this.tokenService.getCurrentUserId();
 
-    this.getAppliedBootcampsList(this.userId, {page: 0, pageSize: this.PAGE_SIZE})
+    this.getAppliedBootcampsList(this.userId, {pageIndex: 0, pageSize: this.PAGE_SIZE})
   }
 
   getAppliedBootcampsList(applicantId: string, pageRequest: PageRequest){
@@ -55,6 +56,14 @@ export class ApplicantAppliedBootcampListGroupComponent implements OnInit {
   navigateToBootcampDetail(appliedBootcamp: AppliedBootcampResponse){
     console.log("Selected bootcamp : ", appliedBootcamp.bootcampId, appliedBootcamp.bootcampName, appliedBootcamp.bootcampInstructorUserName)
     this.router.navigate(['/p', appliedBootcamp.bootcampId])
+  }
+
+  onPageChange(event: any) {
+    const pageRequest: PageRequest = {
+      pageIndex: event.page,
+      pageSize: this.PAGE_SIZE
+    };
+    this.getAppliedBootcampsList(this.userId, pageRequest);
   }
 
 }

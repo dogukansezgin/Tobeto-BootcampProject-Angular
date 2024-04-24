@@ -22,15 +22,12 @@
             <img src="https://t3.ftcdn.net/jpg/05/14/18/46/360_F_514184651_W5rVCabKKRH6H3mVb62jYWfuXio8c8si.jpg" alt="Instructor Photo" class="rounded-circle" style="width: 30px; height: 30px;">
             <span>{{ appliedBootcamp.bootcampInstructorUserName }}</span>
           </div>
-          <div>
-           <span class="badge badge-primary">Fiyat</span>
-          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-  
-  
+<p-paginator [rows]="PAGE_SIZE" [totalRecords]="appliedBootcampsList.count" (onPageChange)="onPageChange($event)"></p-paginator>
+
   

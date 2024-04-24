@@ -31,7 +31,7 @@ export class ApplicationService extends ApplicationBaseService {
 
     override appliedBootcamps(applicantIdRequest: string, pageRequest: PageRequest): Observable<ApplicationListItemDto> {
         const newRequest: {[key: string]: string | number} = {
-            page: pageRequest.page,
+            page: pageRequest.pageIndex,
             pageSize: pageRequest.pageSize,
             applicantId: applicantIdRequest
         }
