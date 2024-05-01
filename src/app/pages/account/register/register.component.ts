@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ButtonModule],
+  imports: [],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })

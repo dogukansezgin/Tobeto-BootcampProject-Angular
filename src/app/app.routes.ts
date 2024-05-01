@@ -12,11 +12,11 @@ import { RoleGuard } from './core/guards/role.guard';
 import { AdminDashboardPageComponent } from './pages/dashboards/admin-dashboard-page/admin-dashboard-page.component';
 import { ApplicantDashboardPageComponent } from './pages/dashboards/applicant-dashboard-page/applicant-dashboard-page.component';
 import { LoginComponent } from './pages/account/login/login.component';
+import { RegisterComponent } from './pages/account/register/register.component';
 
 export const routes: Routes =
     [
-        { path: '', redirectTo: 'homepage', pathMatch: 'full' },
-        { path: 'homepage', component: HomePageComponent },
+        { path: '', pathMatch: 'full', component: HomePageComponent },
         { path: 'register', component: RegisterPageComponent, canActivate: [PreventLoginAccessGuard] },
         { path: 'login', component: LoginPageComponent, canActivate: [PreventLoginAccessGuard] },
         { path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard] },
@@ -43,5 +43,6 @@ export const routes: Routes =
             ]
         },
         { path: "Account/Login", component: LoginComponent },
-        { path: '**', redirectTo: 'homepage' }
+        { path: "Account/Register", component: RegisterComponent },
+        { path: '**', redirectTo: '' }
     ];
