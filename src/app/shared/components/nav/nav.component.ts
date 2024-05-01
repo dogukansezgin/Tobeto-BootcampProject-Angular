@@ -1,15 +1,17 @@
-
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../features/services/concretes/auth.service';
 import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { MenubarModule } from 'primeng/menubar';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss',
+  selector: 'app-nav',
+  standalone: true,
+  imports: [MenubarModule],
+  templateUrl: './nav.component.html',
+  styleUrl: './nav.component.scss'
 })
-export class NavbarComponent implements OnInit {
+export class NavComponent implements OnInit {
   menuItems!: MenuItem[];
 
   userLogged: boolean = false;
@@ -22,7 +24,6 @@ export class NavbarComponent implements OnInit {
     this.getMenuItems();
     this.setRoleItems();
   }
-
 
   setUserLoggedIn(): boolean {
     return this.userLogged = this.authService.isAuthenticated()
@@ -71,7 +72,7 @@ export class NavbarComponent implements OnInit {
         {
           label: "Giriş Yap",
           icon: "pi pi-sign-in",
-          routerLink: 'login',
+          routerLink: 'Account/Login',
         },
         {
           label: "Kayıt Ol",
@@ -81,7 +82,6 @@ export class NavbarComponent implements OnInit {
       ]
     }
   }
-
   setRoleItems() {
     if (this.authService.hasRole(['Admin'])) {
       this.menuItems.push(
@@ -100,6 +100,4 @@ export class NavbarComponent implements OnInit {
         })
     }
   }
-
-  
 }

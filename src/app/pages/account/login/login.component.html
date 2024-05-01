@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-md-5">
+        <img src="../../../../assets/images/feature.jpg" style="width: 450px;">
+    </div>
+    <div class="col-md-7">
+        <span class="p-float-label">
+            <h4>CodeCamp'a Kayıt Ol</h4>
+        </span>
+        <span class="p-float-label">
+            <input pInputText id="input" [(ngModel)]="email" />
+            <label for="email">E-mail</label>
+        </span>
+        <span class="p-float-label">
+            <input pInputText id="input" [(ngModel)]="password" />
+            <label for="password">Şifre</label>
+        </span>
+
+        <span class="p-float-label">
+            <p-button label="Submit"></p-button><br>
+        </span>
+        <p-checkbox name="groupname" value="val1" label="Hizmet sözleşmesini onaylıyorum."
+            [(ngModel)]="selectedValues"></p-checkbox>
+        <p-checkbox name="groupname" value="val2"
+            label="Verilerimin Aydınlatma Metni kapsamında belirtilen şekilde işlenmesine ve yurtdışında tutulmasına onay veriyorum."
+            [(ngModel)]="selectedValues"></p-checkbox>
+
+    </div>
+</div>
