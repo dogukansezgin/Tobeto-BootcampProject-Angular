@@ -17,4 +17,5 @@ export interface AppliedBootcampResponse {
     bootcampBootcampStateId: string,
     bootcampBootcampStateName: string
 
+    createdDate: string,
 }

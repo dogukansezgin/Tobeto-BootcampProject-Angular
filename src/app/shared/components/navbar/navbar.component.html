@@ -1,5 +1,46 @@
-<p-menubar [model]="menuItems">
+<p-menubar [model]="menuItems" *ngIf="isNotOnAccountPages()">
+
     <ng-template pTemplate="start">
         <img src="https://primefaces.org/cdn/primeng/images/primeng.svg" height="40" class="mr-2" />
     </ng-template>
+
+    <ng-template pTemplate="item" let-item>
+        <a pRipple class="p-ripple p-element p-menuitem-link" [routerLink]="item.routerLink">
+            <span class="p-menuitem-icon" [ngClass]="item.icon"></span>
+            <span class="p-menuitem-text">{{item.label}}</span>
+        </a>
+    </ng-template>
+
+    <ng-template pTemplate="end">
+        <div class="p-element">
+            <ul class="p-menubar-root-list">
+                <ng-container *ngIf="userLogged; else loginButtons">
+                    <ng-container *ngFor="let item of authItems">
+                        <li class="p-element p-menuitem">
+                            <div class="p-menuitem-content">
+                                <a pRipple class="p-ripple p-element p-menuitem-link" (click)="menuItemClicked(item)"
+                                    [routerLink]="item.routerLink">
+                                    <span class="p-menuitem-icon" [ngClass]="item.icon"></span>
+                                    <span class="p-menuitem-text">{{item.label}}</span>
+                                </a>
+                            </div>
+                        </li>
+                    </ng-container>
+                </ng-container>
+                <ng-template #loginButtons>
+                    <ng-container *ngFor="let item of unAuthItems">
+                        <li class="p-element p-menuitem">
+                            <div class="p-menuitem-content">
+                                <a pRipple class="p-ripple p-element p-menuitem-link" [routerLink]="item.routerLink">
+                                    <span class="p-menuitem-icon" [ngClass]="item.icon"></span>
+                                    <span class="p-menuitem-text">{{item.label}}</span>
+                                </a>
+                            </div>
+                        </li>
+                    </ng-container>
+                </ng-template>
+            </ul>
+        </div>
+    </ng-template>
+
 </p-menubar>

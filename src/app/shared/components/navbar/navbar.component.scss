@@ -1,46 +1,53 @@
 :host {
     ::ng-deep {
-        .p-menubar { 
-            background-color: rgb(19, 67, 97); 
+        .p-menubar {
+            background-color: rgb(19, 67, 97);
             border: 0px;
             border-radius: 0px;
-        } 
-        
-        p-menubarsub > ul {
+            color: rgb(235, 235, 235);
+
+            display: grid;
+            grid-template-columns: 60px 9fr auto;
+        }
+
+        ul {
             margin: 0px;
         }
 
         .p-menuitem {
-            margin: 8px; 
+            margin: 8px;
         }
-        
-        .p-ripple { 
+
+        .p-ripple {
             text-decoration: none;
         }
-        
+
+        .p-menubar .p-menubar-root-list {
+            outline: none;
+        }
+
         .p-menuitem-icon {
-            opacity: 0.6;
             color: rgb(235, 235, 235);
         }
 
-        .p-menuitem-text { 
+        .p-menuitem-text {
             color: rgb(235, 235, 235);
         }
-        
-        .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-content { 
+
+        .p-menubar .p-menubar-root-list>.p-menuitem>.p-menuitem-content {
             border-radius: 0;
             background-color: rgb(19, 67, 97);
         }
-        
-        .p-menubar .p-menubar-root-list > .p-menuitem:not(.p-highlight):not(.p-disabled) > .p-menuitem-content:hover { 
+
+        .p-menubar .p-menubar-root-list>.p-menuitem:not(.p-highlight):not(.p-disabled)>.p-menuitem-content:hover {
             background-color: rgb(15, 52, 76);
 
             .p-menuitem-icon {
                 opacity: 1;
                 color: rgb(235, 235, 235);
             }
-    
-            .p-menuitem-text { 
+
+            .p-menuitem-text {
                 color: rgb(235, 235, 235);
             }
         }
@@ -51,6 +58,6 @@
                 color: rgb(235, 235, 235);
             }
         }
-        
-    } 
-} 
+
+    }
+}

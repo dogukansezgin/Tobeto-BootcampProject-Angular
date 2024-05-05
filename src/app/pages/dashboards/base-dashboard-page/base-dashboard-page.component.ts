@@ -28,6 +28,9 @@ export class BaseDashboardPageComponent implements OnInit {
     } else if (this.authService.hasRole(['Applicants.User'])) {
       this.router.navigate(['dashboard/user']);
 
+    } else {
+      this.router.navigate(['unauthorized']);
+
     }
   }
 

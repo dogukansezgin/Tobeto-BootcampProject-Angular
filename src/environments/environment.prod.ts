@@ -14,6 +14,9 @@ export const environment = {
         userLogin: ''
       }
     },
+    users: {
+      getUserById: ''
+    },
     applicants: {
       getApplicantById: '',
       updateApplicantInfo: ''

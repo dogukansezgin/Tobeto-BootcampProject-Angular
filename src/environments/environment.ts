@@ -14,6 +14,9 @@ export const environment = {
           userLogin: '/api/Auth/Login'
         }
       },
+      users: {
+        getUserById: '/api/Users/'
+      },
       applicants: {
         getApplicantById: '/api/Applicants/',
         updateApplicantInfo: '/api/Applicants/UpdateFromAuth'
