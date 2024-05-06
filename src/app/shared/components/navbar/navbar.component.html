@@ -1,40 +1,49 @@
+<p-menubar [model]="menuItems" *ngIf="isNotOnAccountPages()">
+    <ng-template pTemplate="start">
+        <div class="navbar-start">
+            <a pRipple class="p-ripple p-element p-menuitem-link navbar-logo" routerLink="">
+                <span class="logo1">Code</span>
+                <span class="logo2">Camp</span>
+            </a>
+            <input type="text" [(ngModel)]="searchText" class="search-input form-control" id="searchText" placeholder="Bootcamp Ara">
+            <div *ngIf="searchText" class="search-result">
+                '{{searchText}}' ile ilgili sonuçlar. 
+            </div>
+        </div>
+    </ng-template>
 
-        <p-menubar [model]="menuItems">
-            <ng-template pTemplate="start">
-                <a>
-                    <label class="logo1">Code</label>
-                    <label class="logo2">Camp</label>
-                </a>
-            </ng-template>
+    <ng-template pTemplate="item" let-item>
+        <a pRipple class="p-ripple p-element p-menuitem-link" [routerLink]="item.routerLink">
+            <span class="p-menuitem-icon" [ngClass]="item.icon"></span>
+            <span class="p-menuitem-text">{{item.label}}</span>
+        </a>
+    </ng-template>
 
-            <ng-template pTemplate="item" let-item>
-                <a pRipple class="p-ripple p-element p-menuitem-link" [routerLink]="item.routerLink">
-                    <span class="p-menuitem-icon" [ngClass]="item.icon"></span>
-                    <span class="p-menuitem-text">{{item.label}}</span>
-                </a>
-            </ng-template>
-
-            <ng-template pTemplate="end">
-                <div class="p-element">
-                    <ul class="p-menubar-root-list">
-                        <ng-container *ngIf="userLogged; else loginButtons">
-                            <li class="p-element p-menuitem">
-                                <div class="p-menuitem-content">
-                                    <a pRipple class="p-ripple p-element p-menuitem-link">
-                                        <span class="p-menuitem-icon"></span>
-                                        <span class="p-menuitem-text">Çıkış</span>
-                                    </a>
-                                </div>
-                            </li>
-                        </ng-container>
-                        <ng-template #loginButtons>
-                                <li class="p-element p-menuitem">
-                                    <div class="p-menuitem-content">
-                                        <p-button label="Giriş/Kayıt" routerLink="Account/Login"></p-button>
-                                    </div>
-                                </li>
-                        </ng-template>
-                    </ul>
-                </div>
-            </ng-template>
-        </p-menubar>
+    <ng-template pTemplate="end">
+        <ng-container *ngIf="userLogged; else loginButtons">
+            <div id="navbar-dropdown">
+                <p-menubar [model]="authItems" [autoDisplay]="false">
+                    <ng-template pTemplate="item" let-item>
+                        <a pRipple class="p-ripple p-element p-menuitem-link" (click)="menuItemClicked(item)">
+                            <i class="p-menuitem-icon" [ngClass]="item.icon"></i>
+                            <span class="p-menuitem-text">
+                                {{ item.label }}
+                            </span>
+                        </a>
+                    </ng-template>
+                </p-menubar>
+            </div>
+        </ng-container>
+        <ng-template #loginButtons>
+            <div class="p-element">
+                <ul class="p-menubar-root-list">
+                    <li pTooltip class="p-element p-menuitem">
+                        <div class="p-menuitem-content">
+                            <p-button label="Giriş/Kayıt" routerLink="Account/Login"></p-button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </ng-template>
+    </ng-template>
+</p-menubar>

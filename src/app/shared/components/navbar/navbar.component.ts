@@ -14,7 +14,9 @@ import { GetUserInfoResponse } from '../../../features/models/responses/users/us
 })
 export class NavbarComponent implements OnInit {
   menuItems!: MenuItem[];
-  filterText = "";
+  authItems!: MenuItem[];
+
+  searchText = "";
 
   userLogged: boolean = false;
   applicantData!: GetUserInfoResponse;
@@ -35,7 +37,7 @@ export class NavbarComponent implements OnInit {
 
   isNotOnAccountPages(): boolean {
     const url: string = this.router.url;
-    if (url.includes('Account')) {
+    if (url.includes('Login') || url.includes('Register')) {
       return false;
     } else {
       return true;
@@ -77,7 +79,40 @@ export class NavbarComponent implements OnInit {
           routerLink: '../../bootcamps',
         },
         {
-          label:"Şirketler"
+          label: "Şirketler"
+        }
+      ]
+
+      this.authItems = [
+        {
+          label: 'Hesabım',
+          icon: 'pi pi-user',
+          items: [
+            {
+              label: 'Merhaba',
+            },
+            {
+              separator: true
+            },
+            {
+              label: 'Dashboard',
+            },
+            {
+              label: 'Profilim',
+            }, 
+            {
+              label: 'Başvurularım',
+            },
+            {
+              label: 'Ayarlar',
+            },
+            {
+              separator: true
+            },
+            {
+              label: 'Çıkış Yap',
+            },
+          ]
         }
       ]
 
@@ -90,7 +125,7 @@ export class NavbarComponent implements OnInit {
           routerLink: '../../bootcamps',
         },
         {
-          label:"Şirketler"
+          label: "Şirketler"
         }
       ]
 
