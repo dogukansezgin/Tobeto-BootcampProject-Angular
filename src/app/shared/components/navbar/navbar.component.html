@@ -1,22 +1,40 @@
-<div class="row">
-    <div class="col-md6">
+
         <p-menubar [model]="menuItems">
             <ng-template pTemplate="start">
                 <a>
                     <label class="logo1">Code</label>
                     <label class="logo2">Camp</label>
                 </a>
-
             </ng-template>
+
+            <ng-template pTemplate="item" let-item>
+                <a pRipple class="p-ripple p-element p-menuitem-link" [routerLink]="item.routerLink">
+                    <span class="p-menuitem-icon" [ngClass]="item.icon"></span>
+                    <span class="p-menuitem-text">{{item.label}}</span>
+                </a>
+            </ng-template>
+
             <ng-template pTemplate="end">
-                <!-- <div class="p-component" style="border: 1px solid; margin-right: 450px; width: 250px; height: 35px;">
-                            <div class="row" style="width: 180px;">
-                                <div class="col-md-3">icon</div>
-                                <div class="col-md-9">input</div>
-                            </div>
-                        </div> -->
-                <p-button label="Giriş/Kayıt" routerLink="Account/Login"></p-button>
+                <div class="p-element">
+                    <ul class="p-menubar-root-list">
+                        <ng-container *ngIf="userLogged; else loginButtons">
+                            <li class="p-element p-menuitem">
+                                <div class="p-menuitem-content">
+                                    <a pRipple class="p-ripple p-element p-menuitem-link">
+                                        <span class="p-menuitem-icon"></span>
+                                        <span class="p-menuitem-text">Çıkış</span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ng-container>
+                        <ng-template #loginButtons>
+                                <li class="p-element p-menuitem">
+                                    <div class="p-menuitem-content">
+                                        <p-button label="Giriş/Kayıt" routerLink="Account/Login"></p-button>
+                                    </div>
+                                </li>
+                        </ng-template>
+                    </ul>
+                </div>
             </ng-template>
         </p-menubar>
-    </div>
-</div>

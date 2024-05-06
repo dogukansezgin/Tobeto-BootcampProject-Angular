@@ -73,23 +73,13 @@ export class NavbarComponent implements OnInit {
 
       this.menuItems = [
         {
-          label: "Ana Sayfa",
-          icon: "pi pi-home",
-          routerLink: 'homepage',
+          label: "Etkinlikler",
+          routerLink: '../../bootcamps',
         },
         {
-          label: "Profil",
-          icon: "pi pi-user",
-          routerLink: 'profile',
-        },
-        {
-          label: "Kurslarım",
-          icon: "pi pi-book",
-          routerLink: 'applied-bootcamps',
+          label:"Şirketler"
         }
       ]
-
-
 
     }
     else {
