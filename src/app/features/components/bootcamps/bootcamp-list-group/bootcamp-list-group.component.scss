@@ -74,5 +74,23 @@
       border-color: transparent;
       color: #000000;
     }
+
+    .btn {
+      margin: 26px 20px 10px;
+      background-color: #0ea5e9;
+      font-weight: 400;
+      letter-spacing: 0.025rem;
+      line-height: 1.7rem;
+      border: none;
+      padding: 8px 22px;
+      margin-left: 470px;
+    }
+    .head{
+      margin: 20px 0px 32px;
+      font-size: 1.5625rem;
+      letter-spacing: 0.25px;
+      font-family: Roboto, sans-serif;
+      text-align: center;
+    }
   }
 }

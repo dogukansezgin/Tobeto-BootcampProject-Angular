@@ -1,31 +1,45 @@
-
-<div class="m-3">
+<!-- <div class="m-3">
     <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="Eğitmen Ara">
     <div *ngIf="filterText" class="alert alert-success m-2" style="opacity: 0.8;">
       '{{filterText}}' ile ilgili sonuçlar.
     </div>
-</div>
+</div> -->
 
+<h2 class="head">Başvurunu Bekleyen Etkinlikler</h2>
 
-
-<div class="d-flex flex-wrap" style="width: fit-content; justify-content: center;">
-  <div *ngFor="let bootcamp of bootcampList.items | filterBootcampText: filterText" class="card" style="width: 18.5vw; margin: 12px;">
+<div style="display:ruby; text-align:center; margin-bottom:400px; margin-left: 170px;">
+  <div *ngFor="let bootcamp of bootcampList.items | filterBootcampText: filterText" class="card"
+    style="width: 18.5vw; margin: 12px;">
     <div class="card-click-zone" (click)="navigateToBootcampDetail(bootcamp)">
-      <img src="https://process.fs.teachablecdn.com/ADNupMnWyR7kCWRvm76Laz/resize=width:705/https://www.filepicker.io/api/file/Zk7d1MdoSJ6cEShVbfd0" class="card-img-top" alt="Course Image" style="object-fit: cover; height: 200px;">
+      <img
+        src="https://process.fs.teachablecdn.com/ADNupMnWyR7kCWRvm76Laz/resize=width:705/https://www.filepicker.io/api/file/Zk7d1MdoSJ6cEShVbfd0"
+        class="card-img-top" alt="Course Image" style="object-fit: cover; height: 200px;">
       <div class="card-body">
         <h5 class="card-title" style="width: 100%;">{{ bootcamp.name }}</h5>
         <p class="card-text"> Kurs açıklaması </p>
       </div>
       <div class="card-footer bg-transparent border-top-0">
-        <div class="d-flex justify-content-between align-items-center">
+        <!-- <div class="d-flex justify-content-between align-items-center">
           <div>
             <img src="https://t3.ftcdn.net/jpg/05/14/18/46/360_F_514184651_W5rVCabKKRH6H3mVb62jYWfuXio8c8si.jpg" alt="Instructor Photo" class="rounded-circle" style="width: 30px; height: 30px;">
-            <span>{{ bootcamp.instructorUserName }}</span>
+            <span>{{ bootcamp.instructorFirstName}}</span>
           </div>
+        </div> -->
+        <div class="d-flex justify-content-between align-items-left">
+          <p style="color: rgb(135, 135, 135);
+            margin-right: 10px;
+            font-size: 0.85rem;">Son Başvuru : {{bootcamp.startDate.toString().substring(0,10)|deadLine:15}}</p>
+          <button style="transition-duration: 0.2s;
+            background-color: #0ea5e9;
+            border: 1px solid #0ea5e9;
+            border-radius: 5px;
+            height: 40px;
+            width: 130px; color: #fff;">Başvur</button>
         </div>
       </div>
     </div>
   </div>
 </div>
+<button type="button" class="btn btn-success" (click)="navigateToBootcamps()">Tüm Etkinlikleri Gör</button>
 
 <p-paginator [rows]="PAGE_SIZE" [totalRecords]="bootcampList.count" (onPageChange)="onPageChange($event)"></p-paginator>

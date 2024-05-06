@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   menuItems!: MenuItem[];
+  filterText = "";
 
   userLogged: boolean = false;
 
@@ -64,19 +65,11 @@ export class NavbarComponent implements OnInit {
     else {
       this.menuItems = [
         {
-          label: "Ana Sayfa",
-          icon: "pi pi-home",
-          routerLink: 'homepage',
+          label: "Etkinlikler",
+          routerLink: '../../bootcamps',
         },
         {
-          label: "Giriş Yap",
-          icon: "pi pi-sign-in",
-          routerLink: 'login',
-        },
-        {
-          label: "Kayıt Ol",
-          icon: "pi pi-user-plus",
-          routerLink: 'register',
+          label:"Şirketler"
         }
       ]
     }
@@ -101,5 +94,5 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  
+
 }

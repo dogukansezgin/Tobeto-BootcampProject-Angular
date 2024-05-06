@@ -1,28 +1,31 @@
 <div class="row">
-    <div class="col-md-5">
-        <img src="../../../../assets/images/feature.jpg" style="width: 450px;">
+    <div class="col-md-6">
+        <img src="../../../../assets/images/feature.jpg" style="width: 450px; margin-left: 50px;">
     </div>
-    <div class="col-md-7">
-        <span class="p-float-label">
-            <h4>CodeCamp'a Kayıt Ol</h4>
-        </span>
-        <span class="p-float-label">
-            <input pInputText id="input" [(ngModel)]="email" />
-            <label for="email">E-mail</label>
-        </span>
-        <span class="p-float-label">
-            <input pInputText id="input" [(ngModel)]="password" />
-            <label for="password">Şifre</label>
-        </span>
 
-        <span class="p-float-label">
-            <p-button label="Submit"></p-button><br>
-        </span>
-        <p-checkbox name="groupname" value="val1" label="Hizmet sözleşmesini onaylıyorum."
-            [(ngModel)]="selectedValues"></p-checkbox>
-        <p-checkbox name="groupname" value="val2"
-            label="Verilerimin Aydınlatma Metni kapsamında belirtilen şekilde işlenmesine ve yurtdışında tutulmasına onay veriyorum."
-            [(ngModel)]="selectedValues"></p-checkbox>
-
+    <div class="col-md-6">
+        <form [formGroup]="loginForm">
+            <span class="p-float-label">
+                <h4>CodeCamp'a Giriş Yap</h4>
+            </span>
+            <span class="p-float-label">
+                <input type="email" pInputText formControlName="email" />
+                <label for="email">E-mail</label>
+            </span>
+            <span class="p-float-label">
+                <input type="password" pInputText formControlName="password" />
+                <label for="password">Şifre</label>
+            </span>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox">
+                <label class="form-check-label">Beni hatırla</label>
+            </div>
+            <span class="p-float-label">
+                <p-button (onClick)="login()" label="Giriş Yap" severity="success"></p-button>
+            </span>
+        </form>
+        <div class="have-account">
+            <label >Hesabın yok mu? <a routerLink="../Register">Kayıt Ol</a></label>
+        </div>
     </div>
 </div>

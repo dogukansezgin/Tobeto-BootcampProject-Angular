@@ -8,11 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared.module';
 import { Router } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
+import { DeadLinePipe } from '../../../../shared/pipes/dead-line.pipe';
 
 @Component({
   selector: 'app-bootcamp-list-group',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedModule, PaginatorModule],
+  imports: [CommonModule, FormsModule, SharedModule, PaginatorModule,DeadLinePipe],
   templateUrl: './bootcamp-list-group.component.html',
   styleUrl: './bootcamp-list-group.component.scss'
 })
@@ -54,6 +55,9 @@ export class BootcampListGroupComponent implements OnInit {
       pageSize: this.PAGE_SIZE
     };
     this.getList(pageRequest);
+  }
+  navigateToBootcamps(){
+    this.router.navigate(['/bootcamps']);
   }
 
 }

@@ -9,4 +9,5 @@ export abstract class BootcampBaseService {
 
     abstract getList(pageRequest: PageRequest): Observable<BootcampListItemDto>
     abstract getById(bootcampId: string): Observable<GetBootcampResponse>
+    abstract getAllList():Observable<BootcampListItemDto>
 }

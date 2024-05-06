@@ -1,5 +1,22 @@
-<p-menubar [model]="menuItems">
-    <ng-template pTemplate="start">
-        <img src="https://primefaces.org/cdn/primeng/images/primeng.svg" height="40" class="mr-2" />
-    </ng-template>
-</p-menubar>
+<div class="row">
+    <div class="col-md6">
+        <p-menubar [model]="menuItems">
+            <ng-template pTemplate="start">
+                <a>
+                    <label class="logo1">Code</label>
+                    <label class="logo2">Camp</label>
+                </a>
+
+            </ng-template>
+            <ng-template pTemplate="end">
+                <!-- <div class="p-component" style="border: 1px solid; margin-right: 450px; width: 250px; height: 35px;">
+                            <div class="row" style="width: 180px;">
+                                <div class="col-md-3">icon</div>
+                                <div class="col-md-9">input</div>
+                            </div>
+                        </div> -->
+                <p-button label="Giriş/Kayıt" routerLink="Account/Login"></p-button>
+            </ng-template>
+        </p-menubar>
+    </div>
+</div>

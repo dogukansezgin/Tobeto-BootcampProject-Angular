@@ -48,6 +48,4 @@ export class RegisterFormComponent implements OnInit {
 
     }
   }
-
-
 }

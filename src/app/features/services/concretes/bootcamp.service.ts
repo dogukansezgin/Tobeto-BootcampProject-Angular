@@ -14,19 +14,19 @@ export class BootcampService extends BootcampBaseService {
 
     private readonly apiUrl_Get: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcamps;
     private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcampById;
+    private readonly apiUrl_GetUnfinished=environment.apiUrl+environment.endpoints.bootcamps.getUnfinishedBootcamps;
 
     constructor(private httpClient: HttpClient) { super(); }
 
     override getList(pageRequest: PageRequest): Observable<BootcampListItemDto> {
-        const newRequest: {[key: string]: string | number} = {
+        const newRequest: { [key: string]: string | number } = {
             pageIndex: pageRequest.pageIndex,
             pageSize: pageRequest.pageSize
         }
-
-        return this.httpClient.get<BootcampListItemDto>(this.apiUrl_Get, {params: newRequest} )
+        return this.httpClient.get<BootcampListItemDto>(this.apiUrl_Get, { params: newRequest })
             .pipe(
-                map((response) =>{
-                    const newResponse: BootcampListItemDto ={
+                map((response) => {
+                    const newResponse: BootcampListItemDto = {
                         items: response.items,
                         index: response.index,
                         size: response.size,
@@ -43,6 +43,10 @@ export class BootcampService extends BootcampBaseService {
 
     override getById(bootcampId: string): Observable<GetBootcampResponse> {
         return this.httpClient.get<GetBootcampResponse>(this.apiUrl_GetById + bootcampId)
+    }
+    override getAllList(): Observable<BootcampListItemDto> {
+        let newUrl = this.apiUrl_GetUnfinished;
+        return this.httpClient.get<BootcampListItemDto>(newUrl);
     }
 
 }

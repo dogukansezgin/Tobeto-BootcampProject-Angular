@@ -13,6 +13,7 @@ import { AdminDashboardPageComponent } from './pages/dashboards/admin-dashboard-
 import { ApplicantDashboardPageComponent } from './pages/dashboards/applicant-dashboard-page/applicant-dashboard-page.component';
 import { LoginComponent } from './pages/account/login/login.component';
 import { RegisterComponent } from './pages/account/register/register.component';
+import { BootcampAllPageComponent } from './pages/bootcamp-all-page/bootcamp-all-page.component';
 
 export const routes: Routes =
     [
@@ -44,5 +45,6 @@ export const routes: Routes =
         },
         { path: "Account/Login", component: LoginComponent },
         { path: "Account/Register", component: RegisterComponent },
+        {path:"bootcamps",component:BootcampAllPageComponent},
         { path: '**', redirectTo: '' }
     ];

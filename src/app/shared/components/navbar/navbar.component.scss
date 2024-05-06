@@ -1,47 +1,50 @@
 :host {
     ::ng-deep {
-        .p-menubar { 
-            background-color: rgb(19, 67, 97); 
+        .p-menubar {
+            background-color: #fff;
+            box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
             border: 0px;
             border-radius: 0px;
-        } 
-        
-        p-menubarsub > ul {
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+
+        p-menubarsub>ul {
             margin: 0px;
         }
 
         .p-menuitem {
-            margin: 8px; 
+            margin: 8px;
         }
-        
-        .p-ripple { 
+
+        .p-ripple {
             text-decoration: none;
+            font-weight: 500;
+            letter-spacing: 0.025rem;
         }
-        
+
         .p-menuitem-icon {
             opacity: 0.6;
-            color: rgb(235, 235, 235);
+            color: #1D1D1D;
         }
 
-        .p-menuitem-text { 
-            color: rgb(235, 235, 235);
+        .p-menuitem-text {
+            color: #1D1D1D;
         }
-        
-        .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-content { 
+
+        .p-menubar .p-menubar-root-list>.p-menuitem>.p-menuitem-content {
             border-radius: 0;
-            background-color: rgb(19, 67, 97);
+            background-color: transparent;
         }
-        
-        .p-menubar .p-menubar-root-list > .p-menuitem:not(.p-highlight):not(.p-disabled) > .p-menuitem-content:hover { 
-            background-color: rgb(15, 52, 76);
 
+        .p-menubar .p-menubar-root-list>.p-menuitem:not(.p-highlight):not(.p-disabled)>.p-menuitem-content:hover {
             .p-menuitem-icon {
                 opacity: 1;
-                color: rgb(235, 235, 235);
+                color: rgb(95, 93, 93);
             }
-    
-            .p-menuitem-text { 
-                color: rgb(235, 235, 235);
+
+            .p-menuitem-text {
+                color: rgb(95, 93, 93);
             }
         }
 
@@ -51,6 +54,45 @@
                 color: rgb(235, 235, 235);
             }
         }
+
+        .p-button-label {
+            font-weight: 450;
+            transition-duration: 0.2s;
+        }
+
+        .p-button {
+            transition-duration: 0.2s;
+            background-color: #0ea5e9;
+            border: 1px solid #0ea5e9;
+            border-radius: 5px;
+            height: 40px;
+            width: 130px;
+            margin-left: 300px;
+            
+        }
         
-    } 
-} 
+        .logo1{
+            font-variant: petite-caps;
+            color: #006c9d;
+            font-size: x-large;
+            font-weight: 800;
+        }
+        .logo2{
+            color: #a8b5bb;
+            font-size: x-large;
+            font-weight: 600;
+        }
+
+        // .filterInput{
+        //     padding: 0 15px;
+        //     color: #293349;
+        //     font-size: 14px;
+        //     font-weight: 500;
+        //     width: 100px;
+        // }
+        // #filterInput{
+        //     border: none; 
+        //     margin-bottom: 10px
+        // }
+    }
+}
