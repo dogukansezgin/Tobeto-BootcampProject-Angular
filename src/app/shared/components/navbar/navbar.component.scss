@@ -2,14 +2,18 @@
     ::ng-deep {
         .p-menubar {
             background-color: #fff;
-            box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
             border: 0px;
             border-radius: 0px;
             padding-left: 50px;
             padding-right: 50px;
+
+            height: 68px;
+            display: grid;
+            grid-template-columns: auto 9fr auto;
         }
 
-        p-menubarsub>ul {
+        ul {
             margin: 0px;
         }
 
@@ -24,7 +28,7 @@
         }
 
         .p-menuitem-icon {
-            opacity: 0.6;
+            opacity: 1;
             color: #1D1D1D;
         }
 
@@ -40,18 +44,18 @@
         .p-menubar .p-menubar-root-list>.p-menuitem:not(.p-highlight):not(.p-disabled)>.p-menuitem-content:hover {
             .p-menuitem-icon {
                 opacity: 1;
-                color: rgb(95, 93, 93);
+                color: #1D1D1D;
             }
 
             .p-menuitem-text {
-                color: rgb(95, 93, 93);
+                color: #1D1D1D;
             }
         }
 
         .p-focus {
             .p-menuitem-icon {
                 opacity: 1;
-                color: rgb(235, 235, 235);
+                color: #1D1D1D;
             }
         }
 
@@ -67,32 +71,100 @@
             border-radius: 5px;
             height: 40px;
             width: 130px;
-            margin-left: 300px;
-            
+            margin-left: 0px;
+
         }
-        
-        .logo1{
+
+        .logo1 {
             font-variant: petite-caps;
             color: #006c9d;
             font-size: x-large;
             font-weight: 800;
         }
-        .logo2{
+
+        .logo2 {
             color: #a8b5bb;
             font-size: x-large;
             font-weight: 600;
         }
 
-        // .filterInput{
-        //     padding: 0 15px;
-        //     color: #293349;
-        //     font-size: 14px;
-        //     font-weight: 500;
-        //     width: 100px;
-        // }
-        // #filterInput{
-        //     border: none; 
-        //     margin-bottom: 10px
-        // }
+    }
+}
+
+:host {
+    ::ng-deep {
+        #navbar-dropdown {
+            .p-menubar {
+                position: absolute;
+                top: 0;
+                transform: translateX(-100%) translateY(0);
+
+                box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1);
+                border: 0px;
+                border-radius: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+
+                height: 68px;
+            }
+
+            .p-menubar .p-menubar-root-list>.p-menuitem>.p-menuitem-content {
+                border: 1px solid rgb(216, 216, 216);
+                border-radius: 6px;
+                background-color: transparent;
+            }
+
+            .p-menubar .p-submenu-list .p-menuitem-separator {
+                margin: 0px 16px;
+                border-width: 0px 0px thin;
+                border-style: solid;
+                border-color: rgb(216, 216, 216);
+                width: calc(100% - 32px);
+            }
+
+            .p-menubar .p-menubar-root-list>.p-menuitem:is(.p-highlight):not(.p-disabled)>.p-menuitem-content {
+                border: 1px solid rgb(216, 216, 216);
+                border-radius: 6px;
+                background-color: transparent;
+
+                .p-menuitem-icon {
+                    opacity: 1;
+                    color: #00C26D;
+                }
+
+                .p-menuitem-text {
+                    color: #00C26D;
+                }
+            }
+
+            .p-menubar .p-menubar-root-list .p-submenu-list {
+                background-color: rgb(255, 255, 255);
+                color: rgb(29, 29, 29);
+                border: 1px solid rgb(216, 216, 216);
+                border-radius: 0px;
+                width: 230px;
+
+                margin: 0px;
+                padding: 4px 12px;
+                right: 0;
+                transform: translateX(0%) translateY(2%);
+            }
+
+            .p-menubar .p-menubar-root-list .p-submenu-list .p-menuitem {
+                margin: 6px 0px;
+                padding: 6px 16px;
+                height: 48px;
+                font-weight: 500;
+                
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                .p-menuitem-link {
+                    padding: 0px;
+                }
+            }
+
+        }
     }
 }
