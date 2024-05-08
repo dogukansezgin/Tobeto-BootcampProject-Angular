@@ -8,7 +8,7 @@
 <h2 class="head">Başvurunu Bekleyen Etkinlikler</h2>
 
 <div style="display:ruby; text-align:center; margin-bottom:400px; margin-left: 170px;">
-  <div *ngFor="let bootcamp of bootcampList.items | filterBootcampText: filterText" class="card"
+  <div *ngFor="let bootcamp of bootcampList.items" class="card"
     style="width: 18.5vw; margin: 12px;">
     <div class="card-click-zone" (click)="navigateToBootcampDetail(bootcamp)">
       <img

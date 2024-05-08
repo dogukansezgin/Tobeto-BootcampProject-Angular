@@ -21,7 +21,7 @@ export class BootcampListGroupComponent implements OnInit {
 
   filterText!: string;
 
-  bootcampList: BootcampListItemDto ={
+  bootcampList: BootcampListItemDto<GetBootcampResponse> ={
     index: 0,
     size: 0,
     count: 0,
