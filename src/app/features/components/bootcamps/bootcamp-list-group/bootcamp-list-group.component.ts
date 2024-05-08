@@ -13,7 +13,7 @@ import { DeadLinePipe } from '../../../../shared/pipes/dead-line.pipe';
 @Component({
   selector: 'app-bootcamp-list-group',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedModule, PaginatorModule,DeadLinePipe],
+  imports: [CommonModule, FormsModule, SharedModule, PaginatorModule, DeadLinePipe],
   templateUrl: './bootcamp-list-group.component.html',
   styleUrl: './bootcamp-list-group.component.scss'
 })
@@ -21,7 +21,7 @@ export class BootcampListGroupComponent implements OnInit {
 
   filterText!: string;
 
-  bootcampList: BootcampListItemDto<GetBootcampResponse> ={
+  bootcampList: BootcampListItemDto<GetBootcampResponse> = {
     index: 0,
     size: 0,
     count: 0,
@@ -32,31 +32,24 @@ export class BootcampListGroupComponent implements OnInit {
   };
   readonly PAGE_SIZE = 3;
 
-  constructor(private bootcampService: BootcampService, private router: Router) {}
+  constructor(private bootcampService: BootcampService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getList( { pageIndex: 0, pageSize: this.PAGE_SIZE})
+    this.getList({ pageIndex: 0, pageSize: this.PAGE_SIZE })
   }
 
-  getList(pageRequest: PageRequest){
-    this.bootcampService.getList(pageRequest).subscribe((response) =>{
+  getList(pageRequest: PageRequest) {
+    this.bootcampService.getList(pageRequest).subscribe((response) => {
       this.bootcampList = response;
     })
   }
 
-  navigateToBootcampDetail(bootcamp: GetBootcampResponse){
+  navigateToBootcampDetail(bootcamp: GetBootcampResponse) {
     console.log("Selected bootcamp : ", bootcamp.id, bootcamp.name, bootcamp.instructorUserName)
     this.router.navigate(['/p', bootcamp.id])
   }
 
-  onPageChange(event: any) {
-    const pageRequest: PageRequest = {
-      pageIndex: event.page,
-      pageSize: this.PAGE_SIZE
-    };
-    this.getList(pageRequest);
-  }
-  navigateToBootcamps(){
+  navigateToBootcamps() {
     this.router.navigate(['/bootcamps']);
   }
 
