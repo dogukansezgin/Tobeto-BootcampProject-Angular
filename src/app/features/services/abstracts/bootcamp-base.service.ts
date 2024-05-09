@@ -11,5 +11,6 @@ export abstract class BootcampBaseService {
     abstract getList(pageRequest: PageRequest): Observable<BootcampListItemDto<GetBootcampResponse>>
     abstract getById(bootcampId: string): Observable<GetBootcampResponse>
     abstract getListUnfinished(): Observable<BootcampListItemDto<GetBootcampResponse>>
+    abstract getListFinished(pageRequest:PageRequest): Observable<BootcampListItemDto<GetBootcampResponse>>
     abstract searchAllBootcamps(): Observable<BootcampListItemDto<BootcampSearchItemResponse>>
 }

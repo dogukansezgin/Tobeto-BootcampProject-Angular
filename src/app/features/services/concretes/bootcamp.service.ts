@@ -51,7 +51,29 @@ export class BootcampService extends BootcampBaseService {
         let urlParameters = '?PageIndex=0&PageSize=50';
         return this.httpClient.get<BootcampListItemDto<GetBootcampResponse>>(this.apiUrl_GetUnfinished + urlParameters);
     }
+    
+    override getListFinished(pageRequest:PageRequest): Observable<BootcampListItemDto<GetBootcampResponse>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize
+        }
+        return this.httpClient.get<BootcampListItemDto<GetBootcampResponse>>(this.apiUrl_Get, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: BootcampListItemDto<GetBootcampResponse> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
 
+            )
+    }
     override searchAllBootcamps(): Observable<BootcampListItemDto<BootcampSearchItemResponse>> {
         let urlParameters = '?PageIndex=0&PageSize=5';
         console.log(this.apiUrl_SearchAll + urlParameters)

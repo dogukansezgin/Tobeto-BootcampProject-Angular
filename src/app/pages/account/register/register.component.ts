@@ -30,19 +30,16 @@ export class RegisterComponent implements OnInit {
       firstName: ["", Validators.required],
       lastName: ["", Validators.required],
       email: ["", Validators.required],
-      password: ["", Validators.required],
-      nationalIdentity: ["", Validators.required],
-      dateOfBirth: ["", Validators.required],
-      about: [""]
+      password: ["", Validators.required]
     });
   }
 
   registerApplicant() {
     if (this.registerForm.valid) {
       let registerModel = Object.assign({}, this.registerForm.value);
-      registerModel.userName = `${registerModel.firstName} ${registerModel.lastName}`
 
       this.authService.registerApplicant(registerModel).subscribe(response => {
+        console.log("Kayıta girdi")
         alert("Kayıt Başarılı");
         this.router.navigate(['login']);
         console.log(response)

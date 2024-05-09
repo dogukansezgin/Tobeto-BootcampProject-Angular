@@ -1,4 +1,7 @@
 
+.top{
+  margin-top: 60px;
+}
 .bc-text-muted {
   color: rgb(135, 135, 135);
   margin-right: 10px;
@@ -21,7 +24,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 64px auto auto;
   padding: 5px;
-  margin: 10px 0px 40px;
+  margin: 10px 0px 0px;
   row-gap: 24px;
   column-gap: 24px;
   align-items: center;
@@ -78,6 +81,7 @@
       border-width: 0;
       padding: 0.5rem 1rem;
       border-radius: 6px;
+      background-color: #f6f6f6
     }
 
     .p-paginator .p-paginator-first,
@@ -125,8 +129,8 @@
     }
 
     .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-      background: #EFF6F8;
-      border: 2px solid rgb(15, 52, 76);
+      background: white;
+      border: 1.5px solid rgb(131 134 137);
       color: #000000;
     }
 
