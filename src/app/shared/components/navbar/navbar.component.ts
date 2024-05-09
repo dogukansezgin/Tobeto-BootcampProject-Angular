@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 import { TokenService } from '../../../features/services/concretes/token.service';
 import { UserService } from '../../../features/services/concretes/user.service';
 import { GetUserInfoResponse } from '../../../features/models/responses/users/user/get-user-info-response';
+import { BootcampService } from '../../../features/services/concretes/bootcamp.service';
+import { BootcampListItemDto } from '../../../features/models/responses/bootcamps/bootcamp-list-item-dto';
+import { BootcampSearchItemResponse } from '../../../features/models/responses/bootcamps/bootcamp-search-item-response';
 
 @Component({
   selector: 'app-navbar',
@@ -16,16 +19,19 @@ export class NavbarComponent implements OnInit {
   menuItems!: MenuItem[];
   authItems!: MenuItem[];
 
-  filterText = "";
+  searchText = "";
 
   userLogged: boolean = false;
   applicantData!: GetUserInfoResponse;
+
+  bootcamps!: BootcampListItemDto<BootcampSearchItemResponse>
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private userService: UserService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private bootcampService: BootcampService
   ) { }
 
   ngOnInit(): void {
@@ -33,6 +39,7 @@ export class NavbarComponent implements OnInit {
     this.getMenuItems();
     this.setRoleItems();
     this.getApplicantData();
+    this.getBootcamps();
   }
 
   isNotOnAccountPages(): boolean {
@@ -56,6 +63,18 @@ export class NavbarComponent implements OnInit {
       })
 
     }
+  }
+
+  getBootcamps() {
+    this.bootcampService.searchAllBootcamps().subscribe(response => {
+      this.bootcamps = response;
+      console.log(response)
+    })
+  }
+
+  navigateToBootcampDetail(bootcamp: BootcampSearchItemResponse) {
+    this.searchText = "";
+    this.router.navigate(['/p', bootcamp.id])
   }
 
   menuItemClicked(item: any) {
@@ -99,7 +118,7 @@ export class NavbarComponent implements OnInit {
             },
             {
               label: 'Profilim',
-            }, 
+            },
             {
               label: 'Başvurularım',
             },

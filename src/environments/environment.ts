@@ -5,7 +5,8 @@ export const environment = {
       bootcamps: {
         getBootcamps: '/api/Bootcamps/get',
         getBootcampById: '/api/Bootcamps/',
-        getUnfinishedBootcamps:'/api/Bootcamps/getUnfinished?PageIndex=0&PageSize=50'
+        getUnfinishedBootcamps:'/api/Bootcamps/getUnfinished',
+        searchAllBootcamps: '/api/Bootcamps/searchAll'
       },
       auth: {
         register: {

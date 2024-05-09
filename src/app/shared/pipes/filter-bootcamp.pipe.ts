@@ -1,13 +1,14 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { GetBootcampResponse } from "../../features/models/responses/bootcamps/get-bootcamp-response";
+import { BootcampSearchItemResponse } from "../../features/models/responses/bootcamps/bootcamp-search-item-response";
 
 @Pipe({
-    name:'filterBootcampText'
+    name: 'filterBootcampText'
 })
-export class FilterBootcampPipe implements PipeTransform{
+export class FilterBootcampPipe implements PipeTransform {
 
-    transform(value: GetBootcampResponse[], filterText: string): GetBootcampResponse[] {
+    transform(value: BootcampSearchItemResponse[], filterText: string): BootcampSearchItemResponse[] {
         filterText = filterText ? filterText.toLocaleLowerCase() : "";
-        return filterText ? value.filter((bootcamp: GetBootcampResponse)=> bootcamp.instructorFirstName.toLocaleLowerCase().indexOf(filterText) !== -1) : value;
+        return filterText ? value.filter((bootcamp: BootcampSearchItemResponse) => bootcamp.name.toLocaleLowerCase().indexOf(filterText) !== -1) : value;
     }
+    
 }

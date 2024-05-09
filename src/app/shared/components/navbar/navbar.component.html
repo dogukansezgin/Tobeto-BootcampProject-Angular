@@ -1,9 +1,30 @@
 <p-menubar [model]="menuItems" *ngIf="isNotOnAccountPages()">
     <ng-template pTemplate="start">
-        <a pRipple class="p-ripple p-element p-menuitem-link" routerLink="">
-            <span class="logo1">Code</span>
-            <span class="logo2">Camp</span>
-        </a>
+        <div class="navbar-start">
+            <a pRipple class="p-ripple p-element p-menuitem-link navbar-logo" routerLink="">
+                <span class="logo1">Code</span>
+                <span class="logo2">Camp</span>
+            </a>
+            <input type="text" [(ngModel)]="searchText" class="search-input form-control" id="searchText"
+                placeholder="Bootcamp Ara">
+            <div *ngIf="searchText" class="search-result-dropdown">
+                <div class="search-result-list">
+                    <ng-container *ngIf="(bootcamps.items | filterBootcampText: searchText).length > 0; else noResults">
+                        <a *ngFor="let bootcamp of bootcamps.items | filterBootcampText: searchText"
+                            class="search-result" (click)="navigateToBootcampDetail(bootcamp)">
+                            <span>
+                                {{bootcamp.name}}
+                            </span>
+                        </a>
+                    </ng-container>
+                    <ng-template #noResults>
+                        <div class="search-result no-results-message">
+                            <span>Sonuç Bulunamadı</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
     </ng-template>
 
     <ng-template pTemplate="item" let-item>

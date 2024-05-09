@@ -6,6 +6,7 @@ import { BootcampListItemDto } from "../../models/responses/bootcamps/bootcamp-l
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
 import { GetBootcampResponse } from "../../models/responses/bootcamps/get-bootcamp-response";
+import { BootcampSearchItemResponse } from "../../models/responses/bootcamps/bootcamp-search-item-response";
 
 @Injectable({
     providedIn: 'root'
@@ -14,19 +15,20 @@ export class BootcampService extends BootcampBaseService {
 
     private readonly apiUrl_Get: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcamps;
     private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcampById;
-    private readonly apiUrl_GetUnfinished=environment.apiUrl+environment.endpoints.bootcamps.getUnfinishedBootcamps;
+    private readonly apiUrl_GetUnfinished = environment.apiUrl + environment.endpoints.bootcamps.getUnfinishedBootcamps;
+    private readonly apiUrl_SearchAll = environment.apiUrl + environment.endpoints.bootcamps.searchAllBootcamps;
 
     constructor(private httpClient: HttpClient) { super(); }
 
-    override getList(pageRequest: PageRequest): Observable<BootcampListItemDto> {
+    override getList(pageRequest: PageRequest): Observable<BootcampListItemDto<GetBootcampResponse>> {
         const newRequest: { [key: string]: string | number } = {
             pageIndex: pageRequest.pageIndex,
             pageSize: pageRequest.pageSize
         }
-        return this.httpClient.get<BootcampListItemDto>(this.apiUrl_Get, { params: newRequest })
+        return this.httpClient.get<BootcampListItemDto<GetBootcampResponse>>(this.apiUrl_Get, { params: newRequest })
             .pipe(
                 map((response) => {
-                    const newResponse: BootcampListItemDto = {
+                    const newResponse: BootcampListItemDto<GetBootcampResponse> = {
                         items: response.items,
                         index: response.index,
                         size: response.size,
@@ -44,9 +46,37 @@ export class BootcampService extends BootcampBaseService {
     override getById(bootcampId: string): Observable<GetBootcampResponse> {
         return this.httpClient.get<GetBootcampResponse>(this.apiUrl_GetById + bootcampId)
     }
-    override getAllList(): Observable<BootcampListItemDto> {
-        let newUrl = this.apiUrl_GetUnfinished;
-        return this.httpClient.get<BootcampListItemDto>(newUrl);
-    }
 
+    override getListUnfinished(): Observable<BootcampListItemDto<GetBootcampResponse>> {
+        let urlParameters = '?PageIndex=0&PageSize=50';
+        return this.httpClient.get<BootcampListItemDto<GetBootcampResponse>>(this.apiUrl_GetUnfinished + urlParameters);
+    }
+    
+    override getListFinished(pageRequest:PageRequest): Observable<BootcampListItemDto<GetBootcampResponse>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize
+        }
+        return this.httpClient.get<BootcampListItemDto<GetBootcampResponse>>(this.apiUrl_Get, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: BootcampListItemDto<GetBootcampResponse> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
+
+            )
+    }
+    override searchAllBootcamps(): Observable<BootcampListItemDto<BootcampSearchItemResponse>> {
+        let urlParameters = '?PageIndex=0&PageSize=5';
+        console.log(this.apiUrl_SearchAll + urlParameters)
+        return this.httpClient.get<BootcampListItemDto<GetBootcampResponse>>(this.apiUrl_SearchAll + urlParameters);
+    }
 }

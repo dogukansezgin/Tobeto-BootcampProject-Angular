@@ -15,6 +15,7 @@
 
         ul {
             margin: 0px;
+            padding-inline-start: 0px;
         }
 
         .p-menuitem {
@@ -74,22 +75,108 @@
             margin-left: 0px;
 
         }
-
-        .logo1 {
-            font-variant: petite-caps;
-            color: #006c9d;
-            font-size: x-large;
-            font-weight: 800;
-        }
-
-        .logo2 {
-            color: #a8b5bb;
-            font-size: x-large;
-            font-weight: 600;
-        }
-
     }
 }
+
+:host {
+    .navbar-start {
+        display: grid;
+        grid-template-columns: auto 2fr;
+        padding: 0px 0px 0px 6px;
+
+        .navbar-logo {
+            margin: 0px 2rem;
+
+            .logo1 {
+                font-variant: petite-caps;
+                color: #006c9d;
+                font-size: x-large;
+                font-weight: 800;
+            }
+
+            .logo2 {
+                color: #a8b5bb;
+                font-size: x-large;
+                font-weight: 600;
+            }
+        }
+
+        .search-input {
+            flex-grow: 1;
+            text-overflow: ellipsis;
+            opacity: 1;
+            width: 280px;
+        }
+
+        .search-result-dropdown {
+            position: absolute;
+            padding: 0px 1px;
+            left: 0;
+            transform: translateX(246.8px) translateY(44px);
+
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+
+            min-height: 48px;
+            min-width: 480px;
+            max-width: 480px;
+
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 6px;
+
+            z-index: 100;
+            text-overflow: ellipsis;
+        }
+
+        .search-result-list {
+            width: 100%;
+            max-height: 390px;
+
+            margin: 4px 0px 8px;
+
+            display: flex;
+            align-items: start;
+            flex-direction: column;
+
+        }
+
+        .search-result {
+            width: 100%;
+            margin: 0px 0px 0px;
+            padding: 6px 0px 12px 12px;
+
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+
+            border-width: 0px 0px 1px;
+            border-style: solid;
+            border-color: #D8D8D8;
+
+            background-color: transparent;
+
+            font-size: medium;
+            text-decoration: none;
+            color: black;
+        }
+
+        .search-result:hover {
+            background-color: #F0F0F0;
+            cursor: pointer;
+        }
+
+        .no-results-message {
+            opacity: 0.6;
+        }
+
+        .no-results-message:hover {
+            cursor: default;
+        }
+    }
+}
+
 
 :host {
     ::ng-deep {
@@ -155,7 +242,7 @@
                 padding: 6px 16px;
                 height: 48px;
                 font-weight: 500;
-                
+
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
