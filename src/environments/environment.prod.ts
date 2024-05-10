@@ -6,6 +6,7 @@ export const environment = {
       getBootcamps: '',
       getBootcampById: '',
       getUnfinishedBootcamps:'',
+      getFinishedBootcamps:'',
       searchAllBootcamps: ''
     },
     auth: {

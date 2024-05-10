@@ -1,0 +1,33 @@
+<div class="container d-flex justify-content-center">
+
+    <div class="bc-card-container">
+        <div class="bc-container-item-header">
+            <h2 class="head">Başvurunu Bekleyen Etkinlikler</h2>
+        </div>
+
+        <div *ngFor="let bootcamp of allUnfinishedBootcamps.items" class="bc-container-item-card card"
+            (click)="navigateToBootcampDetail(bootcamp)">
+
+            <img src="https://process.fs.teachablecdn.com/ADNupMnWyR7kCWRvm76Laz/resize=width:705/https://www.filepicker.io/api/file/Zk7d1MdoSJ6cEShVbfd0"
+                class="card-img-top" alt="Course Image" style="object-fit: cover; height: 200px;">
+            <div class="card-body">
+                <h5 class="card-title" style="width: 100%;">{{ bootcamp.name }}</h5>
+                <p class="card-text"> Kurs açıklaması </p>
+            </div>
+
+
+            <div class="card-footer bg-transparent">
+                <div class="d-flex justify-content-between mt-2">
+                    <p class="bc-text-muted">
+                        SON BAŞVURU:<br>
+                        <span style="font-size: 0.875rem; font-weight: 500; color: #1D1D1D">
+                            {{bootcamp.startDate.toString().substring(0,10)|deadLine:15}}
+                        </span>
+                    </p>
+                    <button class="bc-btn">Başvur</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
