@@ -4,7 +4,9 @@ export const environment = {
   endpoints: {
     bootcamps: {
       getBootcamps: '',
-      getBootcampById: ''
+      getBootcampById: '',
+      getUnfinishedBootcamps:'',
+      searchAllBootcamps: ''
     },
     auth: {
       register: {
