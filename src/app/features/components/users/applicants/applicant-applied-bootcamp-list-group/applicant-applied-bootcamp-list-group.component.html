@@ -9,7 +9,7 @@
 
 
 <div class="d-flex flex-wrap" style="width: fit-content; justify-content: center;">
-  <div *ngFor="let appliedBootcamp of appliedBootcampsList.items | filterAppliedBootcampText: filterText" class="card" style="width: 18.5vw; margin: 12px;">
+  <div *ngFor="let appliedBootcamp of appliedBootcampsList.items" class="card" style="width: 18.5vw; margin: 12px;">
     <div class="card-click-zone" (click)="navigateToBootcampDetail(appliedBootcamp)">
       <img src="https://process.fs.teachablecdn.com/ADNupMnWyR7kCWRvm76Laz/resize=width:705/https://www.filepicker.io/api/file/Zk7d1MdoSJ6cEShVbfd0" class="card-img-top" alt="Course Image" style="object-fit: cover; height: 200px;">
       <div class="card-body">

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { RegisterFormComponent } from '../../features/components/auth/register-form/register-form.component';
+import { RegisterFormComponent } from '../../../features/components/auth/register-form/register-form.component';
 
 @Component({
-  selector: 'app-register-page',
+  selector: 'app-register',
   standalone: true,
   imports: [RegisterFormComponent],
   templateUrl: './register-page.component.html',

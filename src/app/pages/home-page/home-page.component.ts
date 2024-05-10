@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { BootcampListGroupComponent } from '../../features/components/bootcamps/bootcamp-list-group/bootcamp-list-group.component';
+import { BootcampShowcaseComponent } from '../../features/components/bootcamps/bootcamp-showcase/bootcamp-showcase.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [BootcampListGroupComponent],
+  imports: [BootcampShowcaseComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })

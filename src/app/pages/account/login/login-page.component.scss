@@ -1,0 +1,23 @@
+.ac-container {
+    width: 100vmax;
+    height: 100vmin;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+
+}
+
+.left-half {
+    align-self: stretch;
+    justify-self: stretch;
+
+    img {
+        width: 500px;
+        height: 350px;
+        margin-top: 30px;
+    }
+}
+
+.right-half {
+    align-self: center;
+    justify-self: center;
+}
