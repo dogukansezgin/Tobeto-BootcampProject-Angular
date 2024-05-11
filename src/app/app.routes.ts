@@ -14,6 +14,7 @@ import { ApplicantDashboardPageComponent } from './pages/dashboards/applicant-da
 import { LoginComponent } from './pages/account/login/login.component';
 import { RegisterComponent } from './pages/account/register/register.component';
 import { BootcampAllPageComponent } from './pages/bootcamp-all-page/bootcamp-all-page.component';
+import { ProfileComponent } from './pages/account/profile/profile.component';
 
 export const routes: Routes =
     [
@@ -45,6 +46,7 @@ export const routes: Routes =
         },
         { path: "Account/Login", component: LoginComponent },
         { path: "Account/Register", component: RegisterComponent },
-        {path:"bootcamps",component:BootcampAllPageComponent},
+        { path: "bootcamps", component: BootcampAllPageComponent },
+        { path: "Account/Profile", component: ProfileComponent, canActivate: [AuthGuard] },
         { path: '**', redirectTo: '' }
     ];

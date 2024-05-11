@@ -39,9 +39,8 @@ export class RegisterComponent implements OnInit {
       let registerModel = Object.assign({}, this.registerForm.value);
 
       this.authService.registerApplicant(registerModel).subscribe(response => {
-        console.log("Kayıta girdi")
         alert("Kayıt Başarılı");
-        this.router.navigate(['login']);
+        this.router.navigate(['Account/Login']);
         console.log(response)
       }, error => {
         console.error("Kayıt işlemi başarısız", error);
