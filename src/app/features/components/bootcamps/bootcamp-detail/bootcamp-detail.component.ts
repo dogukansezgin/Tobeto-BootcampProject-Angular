@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { CheckApplicationResponse } from '../../../models/responses/applications/check-application-response';
 import { TokenService } from '../../../services/concretes/token.service';
 import { AuthService } from '../../../services/concretes/auth.service';
+import { ApplicationStateService } from '../../../services/concretes/application-state.service';
 
 @Component({
   selector: 'app-bootcamp-detail',
@@ -41,7 +42,7 @@ export class BootcampDetailComponent implements OnInit {
 
   userId!: string;
 
-  initialApplicationState: any = "fc031faa-a232-48cf-616b-08dc5a3ae9dc"; // "Beklemede"
+  isInitialStateIdValid: boolean = false;
   applicationRequest!: ApplicationPostRequest;
 
   applicationInfo: CheckApplicationResponse = {
@@ -62,6 +63,7 @@ export class BootcampDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private applicationService: ApplicationService,
+    private applicationStateService: ApplicationStateService,
     private tokenService: TokenService,
     private authService: AuthService
   ) { }
@@ -73,8 +75,6 @@ export class BootcampDetailComponent implements OnInit {
     })
 
     this.userId = this.tokenService.getCurrentUserId();
-
-
 
   }
 
@@ -96,15 +96,19 @@ export class BootcampDetailComponent implements OnInit {
         if (this.userId != "null" && this.isBootcampExists) {
           this.checkApplication(this.userId, this.bootcampId);
 
-          this.applicationRequest = {
-            applicantId: this.userId,
-            bootcampId: this.bootcampId,
-            applicationStateId: this.initialApplicationState
-          };
-
+          this.applicationStateService.getByName("Beklemede").subscribe(response => {
+            this.isInitialStateIdValid = true;
+            
+            this.applicationRequest = {
+              applicantId: this.userId,
+              bootcampId: this.bootcampId,
+              applicationStateId: response.id,
+            };
+          });
+          
         } else {
-          // console.log(new Error('applicantId and bootcampId cannot be null or undefined.'));
-
+          console.log(new Error('applicantId and bootcampId cannot be null or undefined.'));
+          
         }
       }
     });
@@ -145,7 +149,8 @@ export class BootcampDetailComponent implements OnInit {
   }
 
   isApplicationButtonDisabled(): boolean {
-    if (this.isApplicationAlreadyExist || !this.isBootcampActive || !this.isBootcampExists) {
+    if (this.isApplicationAlreadyExist || !this.isBootcampActive || 
+        !this.isBootcampExists || !this.isInitialStateIdValid) {
       return true;
     } else {
       return false;

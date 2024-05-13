@@ -28,6 +28,9 @@ export const environment = {
         post: '/api/Applications/post',
         checkApplication: '/api/Applications/checkApplication',
         appliedBootcamps: '/api/Applications/appliedBootcamps'
+      },
+      applicationStates: {
+        getByName: '/api/ApplicationStates/getByName/'
       }
 
       // Diğer endpointler buraya eklenebilir
