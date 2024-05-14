@@ -1,0 +1,60 @@
+<div class="content-container">
+    <h2 class="content-header">
+        Etkinlik Başvurularım
+    </h2>
+
+    <div class="content-body">
+
+        <ng-container
+            *ngIf="appliedBootcampsList.items && appliedBootcampsList.items.length > 0; else noAppliedBootcamps">
+
+            <div *ngFor="let appliedBootcamp of appliedBootcampsList.items" class="content-box">
+                <div class="content">
+
+                    <div class="content-item">
+                        <div class="subtitle-1">
+                            ETKİNLİK ADI
+                        </div>
+                        <span class="subtitle-2">
+                            {{appliedBootcamp.bootcampName}}
+                        </span>
+                    </div>
+                    <div class="content-item">
+                        <div class="subtitle-1">
+                            BAŞVURU TARİHİ
+                        </div>
+                        <span class="subtitle-2">
+                            {{appliedBootcamp.createdDate.toString().substring(0,10) | deadLine: 0}}
+                        </span>
+                    </div>
+                    <div class="content-item">
+                        <div class="subtitle-1">
+                            BAŞVURU BİTİŞ
+                        </div>
+                        <span class="subtitle-2">
+                            {{appliedBootcamp.bootcampStartDate.toString().substring(0,10) | deadLine:15}}
+                        </span>
+                    </div>
+                    <div class="content-item btn-item">
+                        <a class="c-btn" (click)="navigateToBootcampDetailPage(appliedBootcamp)">Etkinliğe Git</a>
+                    </div>
+
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #noAppliedBootcamps>
+            <div class="no-content-box">
+                <div class="text-box">
+                    <div class="subtitle-1">
+                        Henüz başvurduğun bir etkinlik yok
+                    </div>
+                    <div class="subtitle-2">
+                        "Tam benlik" diyeceğin etkinliklere başvurmaya başla!
+                    </div>
+                </div>
+                <a class="c-btn" (click)="navigateToBootcampsPage()">Etkinlikleri Gör</a>
+            </div>
+        </ng-template>
+    </div>
+
+</div>

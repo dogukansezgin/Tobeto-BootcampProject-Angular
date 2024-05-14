@@ -28,6 +28,9 @@ export const environment = {
       post: '',
       checkApplication: '',
       appliedBootcamps: ''
+    },
+    applicationStates: {
+      getByName: ''
     }
 
     // Diğer endpointler buraya eklenebilir
