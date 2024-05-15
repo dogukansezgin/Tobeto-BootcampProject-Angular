@@ -39,6 +39,21 @@ export class TokenService {
         }
     }
 
+    getCurrentEmailAddress(): string{
+        try{
+        var decoded = this.getDecodedToken();
+        var propUserEmail = Object.keys(decoded).filter(x=>x.endsWith("/emailaddress"))[0]
+        var userEmail = decoded[propUserEmail]
+        return userEmail;
+
+        }
+        catch(error){
+        console.log(error);
+        return "null"
+
+        }
+    }
+
     getUserRoles(): string[] {
         const token = this.localStorageService.getToken();
         if (token) {

@@ -24,12 +24,25 @@ export class NavbarComponent implements OnInit {
   userLogged: boolean = false;
   applicantData!: GetUserInfoResponse;
 
-  bootcamps!: BootcampListItemDto<BootcampSearchItemResponse>
+  bootcamps: BootcampListItemDto<BootcampSearchItemResponse> = {
+    index: 0,
+    size: 0,
+    count: 0,
+    hasNext: false,
+    hasPrevious: false,
+    pages: 0,
+    items: [
+      {
+        id: '',
+        name: '',
+        startDate: new Date("0001-01-01T01:00:00"),
+        endDate: new Date("0001-01-01T01:00:00"),
+      }]
+  }
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private userService: UserService,
     private tokenService: TokenService,
     private bootcampService: BootcampService
   ) { }
@@ -38,11 +51,10 @@ export class NavbarComponent implements OnInit {
     this.setUserLoggedIn();
     this.getMenuItems();
     this.setRoleItems();
-    this.getApplicantData();
     this.getBootcamps();
   }
 
-  isNotOnAccountPages(): boolean {
+  isNotOnAuthPages(): boolean {
     const url: string = this.router.url;
     if (url.includes('Login') || url.includes('Register')) {
       return false;
@@ -53,16 +65,6 @@ export class NavbarComponent implements OnInit {
 
   setUserLoggedIn(): boolean {
     return this.userLogged = this.authService.isAuthenticated()
-  }
-
-  getApplicantData() {
-    if (this.userLogged) {
-      this.userService.getUserInfo(this.tokenService.getCurrentUserId()).subscribe(response => {
-        this.applicantData = response;
-
-      })
-
-    }
   }
 
   getBootcamps() {
@@ -112,6 +114,13 @@ export class NavbarComponent implements OnInit {
           items: [
             {
               label: 'Merhaba',
+              styleClass: 'header-text',
+              disabled: true
+            },
+            {
+              label: this.tokenService.getCurrentEmailAddress(),
+              styleClass: 'subtext',
+              disabled: true
             },
             {
               separator: true

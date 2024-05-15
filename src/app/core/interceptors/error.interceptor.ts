@@ -7,11 +7,19 @@ export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
      let errorMsg = "";
      if (error.error instanceof ErrorEvent) {
-      console.log("this is client side error");
+      console.log(">>> This is 'Client Side Error'");
       errorMsg = `Client Error: ${error.error.message}`;
+
      } else {
-      console.log("this is server side error");
-      errorMsg = `Server Error Code: ${error.status}, Message: ${error.message}`;
+      console.log(">>> This is 'Server Side Error'");
+      console.log(error.error.errors);
+      
+      let fullError: string = error.error as string
+      let startIndex = fullError.indexOf('BusinessException:') + 'BusinessException:'.length;
+      let endIndex = fullError.indexOf('at '); // 'at ' ifadesinden öncesini alır
+      let errorMessagePart = fullError.substring(startIndex, endIndex).trim();
+      
+      errorMsg = `Server Error Code: ${error.status}, Message: ${errorMessagePart}`;
      }
   
      console.log(errorMsg);

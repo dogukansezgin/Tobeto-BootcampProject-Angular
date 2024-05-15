@@ -4,7 +4,10 @@ export const environment = {
   endpoints: {
     bootcamps: {
       getBootcamps: '',
-      getBootcampById: ''
+      getBootcampById: '',
+      getUnfinishedBootcamps:'',
+      getFinishedBootcamps:'',
+      searchAllBootcamps: ''
     },
     auth: {
       register: {
@@ -25,6 +28,9 @@ export const environment = {
       post: '',
       checkApplication: '',
       appliedBootcamps: ''
+    },
+    applicationStates: {
+      getByName: ''
     }
 
     // Diğer endpointler buraya eklenebilir

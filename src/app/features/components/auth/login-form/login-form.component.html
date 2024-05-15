@@ -1,21 +1,24 @@
-<div class="container">
-    <div class="row justify-content-center mt-5">
-      <div class="col-md-6" style="border: 2px solid slategray; padding: 65px;">
-        <h2 class="text-center">Giriş Formu</h2>
-        <form [formGroup]="loginForm">
-          <div class="form-group">
-            <label for="email">E-posta Adresi</label>
-            <input formControlName="email" type="email" class="form-control" id="email" name="email" placeholder="E-posta adresinizi girin">
-          </div>
-          <div class="form-group">
-            <label for="password">Şifre</label>
-            <input formControlName="password" type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi girin">
-          </div>
-           <div class="text-center">
-              <button (click)="login()" class="btn btn-primary btn-lg btn-block">Giriş Yap</button> 
-           </div>
-        </form>
-      </div>
-    </div>
+<form [formGroup]="loginForm">
+  <span class="p-float-label">
+    <h4>CodeCamp'a Giriş Yap</h4>
+  </span>
+  <span class="p-float-label">
+    <input type="email" pInputText formControlName="email" id="email" />
+    <label for="email">E-mail</label>
+  </span>
+  <span class="p-float-label">
+    <input type="password" pInputText formControlName="password" id="password" />
+    <label for="password">Şifre</label>
+  </span>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="checkbox" id="remember">
+    <label for="remember" class="form-check-label">Beni hatırla</label>
   </div>
-  
+  <span class="p-float-label">
+    <p-button (onClick)="login()" label="Giriş Yap" severity="success"></p-button>
+  </span>
+</form>
+
+<div class="have-account">
+  <label>Hesabın yok mu? <a routerLink="../Register">Kayıt Ol</a></label>
+</div>

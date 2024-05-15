@@ -17,7 +17,12 @@
 
     <div class="card-footer bg-transparent">
       <div class="d-flex justify-content-between mt-2">
-        <p class="bc-text-muted">Son Başvuru: <br> {{bootcamp.startDate.toString().substring(0,10)|deadLine:15}}</p>
+        <p class="bc-text-muted">
+          Son Başvuru:<br>
+          <span style="font-size: 0.875rem; font-weight: 500; color: #1D1D1D">
+            {{bootcamp.startDate.toString().substring(0,10)|deadLine:15}}
+          </span>
+        </p>
         <button class="bc-btn">Başvur</button>
       </div>
     </div>
@@ -25,6 +30,6 @@
   </div>
 
   <div class="bc-container-item-footer">
-    <button type="button" class="btn btn-success" (click)="navigateToBootcamps()">Tüm Etkinlikleri Gör</button>
+    <button type="button" class="btn btn-success" (click)="navigateToBootcampsPage()">Tüm Etkinlikleri Gör</button>
   </div>
 </div>
