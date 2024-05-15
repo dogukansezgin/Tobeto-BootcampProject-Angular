@@ -1,4 +1,8 @@
 :host {
+    width: 100%;
+}
+
+:host {
     ::ng-deep {
         .p-menubar {
             background-color: #fff;
