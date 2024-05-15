@@ -1,59 +1,25 @@
-<div [ngStyle]="{'background-color':profileComponentBackgroundColor}">
-    <div class="container">
-        <div class="left-half">
-            <div class="card">
-                <div class="card-body">
-                    <i style="font-size: 5em; color: gray; margin-left: 60px; " class="bi bi-person"></i>
-                    <h6 class="head" style="line-height: 1.75;font-weight: 550;">Merhaba!</h6>
-                    <h6 class="head" style="color: rgb(135, 135, 135);font-weight: 530;">ece&#64;gmail.com</h6>
-                    <hr>
-                    <ul class="list-group">
-                        <li (click)="setCurrentItem(item)" [class]="getCurrentItemClass(item)"
-                            *ngFor="let item of items">
-                            {{item}}</li>
-                        <hr>
-                        <li (click)="setNullCurrentItem()" class="list-group-item-action log-out"><i
-                                data-feather="log-out"></i>Çıkış</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="right-half">
-            <div>
-                <h5 style="margin-bottom: 15px;">
-                    Kişisel Bilgiler
-                </h5>
-            </div>
-            <div class="card" style="width: 40rem; height: 20rem; padding: 20px;">
-                <div class="card-body">
-                    <form [formGroup]="applicantUpdateForm">
-                        <div class="container">
-                            <div class="half">
-                                <span class="p-float-label">
-                                    <input class="input-text" type="text" pInputText value="Ecenur" />
-                                    <label for="email">İsim</label>
-                                </span>
-                                <div class="mt-3">
-                                    <p-dropdown formControlName="selectedGender" [options]="genders" optionLabel="name"
-                                        placeholder="Cinsiyet" />
-                                </div>
-                                <div class="mt-3">
-                                    <p-calendar [iconDisplay]="'input'" [showIcon]="true" view="month"
-                                        inputId="icondisplay" formControlName="birthDate" />
-                                </div>
-
-                            </div>
-                            <div class="half">
-                                <span class="p-float-label">
-                                    <input class="input-text" type="text" pInputText value="Yıldız" />
-                                    <label for="email">Soyisim</label>
-                                </span>
-                                <button type="button" class="btn btn-secondary" disabled>Kaydet</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="card">
+    <p-tabMenu [model]="items">
+        <ng-template pTemplate="item" let-item>
+            <ng-container *ngIf="item.route; else elseBlock">
+                <a [routerLink]="item.route" class="p-menuitem-link">
+                    <span [class]="item.icon"></span>
+                    <span class="ml-2">
+                        {{ item.label }}
+                    </span>
+                </a>
+            </ng-container>
+            <ng-template #elseBlock>
+                <a [href]="item.url" class="p-menuitem-link">
+                    <span [class]="item.icon"></span>
+                    <span class="ml-2">
+                        {{ item.label }}
+                    </span>
+                </a>
+            </ng-template>
+        </ng-template>
+    </p-tabMenu>
+<router-outlet></router-outlet>
 </div>
+
+

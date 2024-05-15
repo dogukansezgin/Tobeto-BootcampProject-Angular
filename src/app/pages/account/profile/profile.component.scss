@@ -1,89 +1,12 @@
-.container {
-    display: flex;
-}
-.form-container{
-    display: flex;
-    width: 100px;
-}
-.half{
-    padding: 20px;
-}
-.left-half {
-    width: 30%;
-    padding: 20px;
-    margin-top: 40px;
-}
-
-.right-half {
-    width: 70%;
-    padding: 20px;
-    margin-top: 40px;
-}
-
-.card {
-    width: 15rem;
-    border: 1px solid rgb(216, 216, 216);
-    border-radius: 4px;
-}
-
-.head {
-    margin: 0px;
-    font-size: 0.875rem;
-    letter-spacing: 0.15px;
-    font-family: Roboto, sans-serif;
-    line-height: 1.57;
-    text-align: center;
-}
-
-.active {
-    color: #0ea5e9;
-    background-color: #0ea4e952;
-}
-
-.list-item {
-    padding: 6px 16px;
-    border: 0px;
-    cursor: pointer;
-    font-family: Roboto, sans-serif;
-    line-height: 1.5;
-    height: 48px;
-    border-radius: 4px;
-    display: flex;
-    font-size: 17px;
-    align-items: center;
-}
-
-.log-out {
-    padding: 6px 16px;
-    border: 0px;
-    cursor: pointer;
-    font-family: Roboto, sans-serif;
-    line-height: 1.5;
-    height: 48px;
-    border-radius: 4px;
-    display: flex;
-    font-size: 17px;
-    align-items: center;
-    color: black;
-}
-
-.log-out:active {
-    background-color: rgb(216, 216, 216);
-}
-.input-text{
-    width: 235px;
-}
 .p-calendar{
     border-radius: 4px;
 }
-.btn{
-    margin-top: 150px;
-    margin-left: 160px;
+.card{
+    width: 45rem;
+    height: 380px;
+    padding: 3px;
 }
-// .p-dropdown{
-//     display: flex !important;
-//     width: 250px;
-//     border-radius: 4px;
-// }
-
-
+.p-menuitem-link{
+    text-decoration: none;
+    color: #1D1D1D;
+}

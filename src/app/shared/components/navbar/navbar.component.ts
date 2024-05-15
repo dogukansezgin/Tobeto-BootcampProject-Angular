@@ -82,7 +82,7 @@ export class NavbarComponent implements OnInit {
       this.logOut();
     }
     else if(item.label=='Profilim'){
-      this.router.navigate(['Account/Profile']);
+      this.router.navigate(['Account/Profile/'])
     }
 
   }

@@ -1,49 +1,39 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputTextModule } from 'primeng/inputtext';
-import { CalendarModule } from 'primeng/calendar';
-declare var feather: any;
+import { TabMenuModule } from 'primeng/tabmenu'
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputTextModule, DropdownModule, CalendarModule],
+  imports: [CommonModule, TabMenuModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
-  profileComponentBackgroundColor: any = "#F6F6F6";
-  items: string[] = ["Profilim", "Başvurularım", "Şifre Güncelle"]
-  currentItem!: string;
-  
-  applicantUpdateForm!: FormGroup;
-  genders: any[] = [
-    { label: 'name', value: 'Kadın' },
-    { label: 'name', value: 'Erkek' }
-  ];
-  date: Date = new Date(1996, 7, 3);
+
+  items!: MenuItem[];
+
+  constructor(private router: Router) { }
+
   ngOnInit(): void {
-    feather.replace();
+    this.items = [
+      {
+        label: 'Ön Yazı',
+        // icon:'pi pi-question-circle',
+        command: () => {
+          this.router.navigate(['Account/Profile/CoverLetter']);
+        }
+      },
+      {
+        label: 'Kişisel Bilgiler',
+        // icon:'pi pi-user-edit',
+        command: () => {
+          this.router.navigate(['Account/Profile/Personal']);
+        }
+      }
+    ];
   }
 
-  setCurrentItem(item: string) {
-    this.currentItem = item;
-  }
-  getCurrentItemClass(item: string) {
-    if (this.currentItem == item) {
-      return "list-item list-group-item-action list-group-item active"
-    }
-    return "list-item list-group-item-action list-group-item"
-  }
-  setNullCurrentItem() {
-    this.currentItem = "";
-  }
-  getApplicantInfo(){
-    
-  }
-  updateApplicant(){
-
-  }
 }
