@@ -11,7 +11,14 @@ import { ApplicantDashboardPageComponent } from './pages/dashboards/applicant-da
 import { LoginPageComponent } from './pages/account/login/login-page.component';
 import { RegisterPageComponent } from './pages/account/register/register-page.component';
 import { BootcampAllPageComponent } from './pages/bootcamp-all-page/bootcamp-all-page.component';
+<<<<<<< HEAD
 import { AppliedBootcampListComponent } from './features/components/users/applicants/applied-bootcamp-list/applied-bootcamp-list.component';
+=======
+import { ProfileComponent } from './pages/account/profile/profile.component';
+import { AccountPageComponent } from './pages/account-page/account-page.component';
+import { CoverletterComponent } from './pages/account/coverletter/coverletter.component';
+import { PersonalComponent } from './pages/account/personal/personal.component';
+>>>>>>> 46cbcbc97b2f1f7853b1e8d07a29082e5b330c09
 
 export const routes: Routes =
     [
@@ -48,5 +55,24 @@ export const routes: Routes =
 
         { path: "applications", component: AppliedBootcampListComponent },
 
+        {
+            path: "Account/Profile", component: AccountPageComponent, canActivate: [AuthGuard], children:
+                [
+                    { path: '', pathMatch: 'full', component: CoverletterComponent }
+                ]
+        },
+        {
+            path: "Account/Profile/CoverLetter", component: AccountPageComponent, canActivate: [AuthGuard], children:
+                [
+                    { path: '', pathMatch: 'full', component: CoverletterComponent }
+                ]
+        },
+        {
+            path: "Account/Profile/Personal", component: AccountPageComponent, canActivate: [AuthGuard], children:
+                [
+                    { path: '', pathMatch: 'full', component: PersonalComponent }
+                ]
+        },
+        
         { path: '**', redirectTo: '' }
     ];

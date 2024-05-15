@@ -83,6 +83,9 @@ export class NavbarComponent implements OnInit {
     if (item.label === 'Çıkış Yap') {
       this.logOut();
     }
+    else if(item.label=='Profilim'){
+      this.router.navigate(['Account/Profile/'])
+    }
 
   }
 
