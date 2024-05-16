@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ProfileComponent } from '../account/profile/profile.component';
+import { GetApplicantResponse } from '../../features/models/responses/users/applicant/get-applicant-response';
+import { ApplicantService } from '../../features/services/concretes/applicant.service';
+import { TokenService } from '../../features/services/concretes/token.service';
 declare var feather: any;
 
 @Component({
@@ -15,10 +18,14 @@ export class AccountPageComponent implements OnInit{
   profileComponentBackgroundColor: any = "#F6F6F6";
   items: string[] = ["Profilim", "Başvurularım", "Şifre Güncelle"]
   currentItem!: string;
+  applicantData!:GetApplicantResponse;
+  applicantEmail!:string;
+
+  constructor(private applicantService: ApplicantService, private tokenService: TokenService){}
 
   ngOnInit(): void {
     feather.replace();
-
+    this.getApplicantData(this.tokenService.getCurrentUserId());
   }
   setCurrentItem(item: string) {
     this.currentItem = item;
@@ -31,5 +38,11 @@ export class AccountPageComponent implements OnInit{
   }
   setNullCurrentItem() {
     this.currentItem = "";
+  }
+  getApplicantData(applicantId: string) {
+    this.applicantService.getApplicant(applicantId).subscribe(response => {
+      this.applicantData = response;
+      this.applicantEmail=response.email;
+    })
   }
 }

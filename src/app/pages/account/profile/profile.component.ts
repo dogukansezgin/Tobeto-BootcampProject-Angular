@@ -21,19 +21,16 @@ export class ProfileComponent implements OnInit {
     this.items = [
       {
         label: 'Ön Yazı',
-        // icon:'pi pi-question-circle',
         command: () => {
           this.router.navigate(['Account/Profile/CoverLetter']);
         }
       },
       {
         label: 'Kişisel Bilgiler',
-        // icon:'pi pi-user-edit',
         command: () => {
           this.router.navigate(['Account/Profile/Personal']);
         }
       }
     ];
   }
-
 }

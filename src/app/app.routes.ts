@@ -12,7 +12,6 @@ import { LoginPageComponent } from './pages/account/login/login-page.component';
 import { RegisterPageComponent } from './pages/account/register/register-page.component';
 import { BootcampAllPageComponent } from './pages/bootcamp-all-page/bootcamp-all-page.component';
 import { AppliedBootcampListComponent } from './features/components/users/applicants/applied-bootcamp-list/applied-bootcamp-list.component';
-import { ProfileComponent } from './pages/account/profile/profile.component';
 import { AccountPageComponent } from './pages/account-page/account-page.component';
 import { CoverletterComponent } from './pages/account/coverletter/coverletter.component';
 import { PersonalComponent } from './pages/account/personal/personal.component';
