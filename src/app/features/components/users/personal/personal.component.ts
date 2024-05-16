@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
-import { ApplicantService } from '../../../features/services/concretes/applicant.service';
-import { TokenService } from '../../../features/services/concretes/token.service';
-import { GetApplicantInfoResponse } from '../../../features/models/responses/users/applicant/get-applicant-info-response';
-import { ApplicantInfoUpdateRequest } from '../../../features/models/requests/users/applicants/applicant-info-update-request';
-import { GetApplicantResponse } from '../../../features/models/responses/users/applicant/get-applicant-response';
-import { ApplicantUpdateRequest } from '../../../features/models/requests/users/applicants/applicant-update-request';
-import { DatePipe } from '@angular/common';
-
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ApplicantUpdateRequest } from '../../../models/requests/users/applicants/applicant-update-request';
+import { GetApplicantResponse } from '../../../models/responses/users/applicant/get-applicant-response';
+import { ApplicantService } from '../../../services/concretes/applicant.service';
+import { TokenService } from '../../../services/concretes/token.service';
 
 @Component({
   selector: 'app-personal',
@@ -22,8 +17,8 @@ export class PersonalComponent implements OnInit {
   updateForm!: FormGroup;
   applicantData!: GetApplicantResponse;
   updatedData!: ApplicantUpdateRequest;
-  personalInfo!:string;
-  isUpdated:boolean=false;
+  personalInfo!: string;
+  isUpdated: boolean = false;
 
   constructor(private applicantService: ApplicantService, private formBuilder: FormBuilder, private tokenService: TokenService) { }
 
@@ -35,7 +30,7 @@ export class PersonalComponent implements OnInit {
     this.updateForm = this.formBuilder.group({
       firstName: ["", Validators.required],
       lastName: ["", Validators.required],
-      dateOfBirth:["", Validators.required]
+      dateOfBirth: ["", Validators.required]
       // city:["",Validators.required]
     });
   }
@@ -66,7 +61,7 @@ export class PersonalComponent implements OnInit {
         console.error("Güncelleme sırasında bir hata oluştu:", error);
       });
     }
-    else{
+    else {
       alert("Hatalı alanlar.")
     }
   }

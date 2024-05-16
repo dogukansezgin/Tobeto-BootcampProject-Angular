@@ -56,7 +56,7 @@ export class NavbarComponent implements OnInit {
 
   isNotOnAuthPages(): boolean {
     const url: string = this.router.url;
-    if (url.includes('Login') || url.includes('Register')) {
+    if (url.includes('Auth') || url.includes('Admin'))  {
       return false;
     } else {
       return true;
@@ -85,6 +85,9 @@ export class NavbarComponent implements OnInit {
     }
     else if(item.label=='Profilim'){
       this.router.navigate(['Account/Profile/'])
+    } 
+    else if(item.label=='Başvurularım'){
+      this.router.navigate(['Account/Applications/'])
     }
 
   }

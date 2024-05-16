@@ -13,8 +13,13 @@ import { RegisterPageComponent } from './pages/account/register/register-page.co
 import { BootcampAllPageComponent } from './pages/bootcamp-all-page/bootcamp-all-page.component';
 import { AppliedBootcampListComponent } from './features/components/users/applicants/applied-bootcamp-list/applied-bootcamp-list.component';
 import { AccountPageComponent } from './pages/account-page/account-page.component';
-import { CoverletterComponent } from './pages/account/coverletter/coverletter.component';
-import { PersonalComponent } from './pages/account/personal/personal.component';
+import { ProfileComponent } from './features/components/users/profile/profile.component';
+import { CoverletterComponent } from './features/components/users/coverletter/coverletter.component';
+import { PersonalComponent } from './features/components/users/personal/personal.component';
+import { AdminPageComponent } from './pages/admin-page/admin-page.component';
+import { LoginFormComponent } from './features/components/auth/login-form/login-form.component';
+import { RegisterFormComponent } from './features/components/auth/register-form/register-form.component';
+import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 
 export const routes: Routes =
     [
@@ -42,33 +47,53 @@ export const routes: Routes =
             ]
         },
 
-        { path: 'login', redirectTo: 'Account/Login' },
-        { path: "Account/Login", component: LoginPageComponent, canActivate: [PreventLoginAccessGuard] },
-        { path: 'register', redirectTo: 'Account/Register' },
-        { path: "Account/Register", component: RegisterPageComponent, canActivate: [PreventLoginAccessGuard] },
-
         { path: "bootcamps", component: BootcampAllPageComponent },
-
+        
         { path: "applications", component: AppliedBootcampListComponent },
-
+        
         {
-            path: "Account/Profile", component: AccountPageComponent, canActivate: [AuthGuard], children:
-                [
-                    { path: '', pathMatch: 'full', component: CoverletterComponent }
-                ]
+            path: "Account", component: AccountPageComponent, canActivate: [AuthGuard],
+            children: [
+                {
+                    path: 'Profile', component: ProfileComponent,
+                    children: [
+                        {
+                            path: "CoverLetter", component: CoverletterComponent, canActivate: [AuthGuard]
+                        },
+                        {
+                            path: "Personal", component: PersonalComponent, canActivate: [AuthGuard]
+                            
+                        },
+                        {
+                            path: '', redirectTo: 'CoverLetter', pathMatch: "full"
+                        }
+                    ]
+                },
+                {
+                    path: 'Applications', component: AppliedBootcampListComponent
+                }
+            ]
         },
+        
         {
-            path: "Account/Profile/CoverLetter", component: AccountPageComponent, canActivate: [AuthGuard], children:
-                [
-                    { path: '', pathMatch: 'full', component: CoverletterComponent }
-                ]
+            path: "Auth", component: AuthPageComponent,
+            canActivate: [PreventLoginAccessGuard],
+            children: [
+                {
+                    path: 'Login', component: LoginFormComponent
+                },
+                {
+                    path: 'Register', component: RegisterFormComponent
+                },
+                {
+                    path: '', redirectTo: 'Login', pathMatch: "full"
+                }
+            ]
         },
-        {
-            path: "Account/Profile/Personal", component: AccountPageComponent, canActivate: [AuthGuard], children:
-                [
-                    { path: '', pathMatch: 'full', component: PersonalComponent }
-                ]
-        },
+        { path: 'login', redirectTo: 'Auth/Login' },
+        { path: 'register', redirectTo: 'Auth/Register' },
+        
+        { path: 'Admin', component: AdminPageComponent },
         
         { path: '**', redirectTo: '' }
     ];
