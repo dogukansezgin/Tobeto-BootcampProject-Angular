@@ -4,7 +4,8 @@ export const environment = {
     endpoints: {
       bootcamps: {
         getBootcamps: '/api/Bootcamps/get',
-        getBootcampById: '/api/Bootcamps/',
+        getBootcampById: '/api/Bootcamps/id',
+        getBootcampByName: '/api/Bootcamps/name/',
         getUnfinishedBootcamps:'/api/Bootcamps/getUnfinished',
         getFinishedBootcamps:'/api/Bootcamps/getFinished',
         searchAllBootcamps: '/api/Bootcamps/searchAll'

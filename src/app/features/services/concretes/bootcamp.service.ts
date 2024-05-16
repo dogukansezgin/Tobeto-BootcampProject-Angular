@@ -15,9 +15,12 @@ export class BootcampService extends BootcampBaseService {
 
     private readonly apiUrl_Get: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcamps;
     private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcampById;
+    private readonly apiUrl_GetByName: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcampByName;
     private readonly apiUrl_GetUnfinished = environment.apiUrl + environment.endpoints.bootcamps.getUnfinishedBootcamps;
     private readonly apiUrl_GetFinished = environment.apiUrl + environment.endpoints.bootcamps.getFinishedBootcamps;
     private readonly apiUrl_SearchAll = environment.apiUrl + environment.endpoints.bootcamps.searchAllBootcamps;
+
+    selectedBootcampId!: string;
 
     constructor(private httpClient: HttpClient) { super(); }
 
@@ -41,11 +44,15 @@ export class BootcampService extends BootcampBaseService {
                     return newResponse;
                 })
 
-            )
+            );
     }
 
     override getById(bootcampId: string): Observable<GetBootcampResponse> {
-        return this.httpClient.get<GetBootcampResponse>(this.apiUrl_GetById + bootcampId)
+        return this.httpClient.get<GetBootcampResponse>(this.apiUrl_GetById + bootcampId);
+    }
+
+    override getByName(bootcampName: string): Observable<GetBootcampResponse> {
+        return this.httpClient.get<GetBootcampResponse>(this.apiUrl_GetByName + bootcampName);
     }
 
     override getListUnfinished(pageRequest: PageRequest): Observable<BootcampListItemDto<GetBootcampResponse>> {
@@ -68,7 +75,7 @@ export class BootcampService extends BootcampBaseService {
                     return newResponse;
                 })
 
-            )
+            );
     }
 
     override getListFinished(pageRequest: PageRequest): Observable<BootcampListItemDto<GetBootcampResponse>> {
@@ -91,7 +98,7 @@ export class BootcampService extends BootcampBaseService {
                     return newResponse;
                 })
 
-            )
+            );
     }
 
     override searchAllBootcamps(): Observable<BootcampListItemDto<BootcampSearchItemResponse>> {

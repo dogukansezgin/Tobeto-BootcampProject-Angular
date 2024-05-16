@@ -21,7 +21,6 @@ export const routes: Routes =
     [
         { path: '', pathMatch: 'full', component: HomePageComponent },
         { path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard] },
-        { path: 'p/:bootcampId', component: BootcampDetailPageComponent },
         {
             path: 'dashboard',
             component: BaseDashboardPageComponent,
@@ -42,14 +41,15 @@ export const routes: Routes =
                 },
             ]
         },
-
+        
         { path: 'login', redirectTo: 'Account/Login' },
         { path: "Account/Login", component: LoginPageComponent, canActivate: [PreventLoginAccessGuard] },
         { path: 'register', redirectTo: 'Account/Register' },
         { path: "Account/Register", component: RegisterPageComponent, canActivate: [PreventLoginAccessGuard] },
-
-        { path: "bootcamps", component: BootcampAllPageComponent },
-
+        
+        { path: "bootcamp", component: BootcampAllPageComponent },
+        { path: 'bootcamp/:bootcampName', component: BootcampDetailPageComponent, data: { id: [''] }},
+        
         { path: "applications", component: AppliedBootcampListComponent },
 
         {

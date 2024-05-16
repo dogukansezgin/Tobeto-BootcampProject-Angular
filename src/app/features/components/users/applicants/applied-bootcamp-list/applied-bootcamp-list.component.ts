@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { ApplicationListItemDto } from '../../../../models/responses/applications/application-list-item-dto';
 import { ApplicationService } from '../../../../services/concretes/application.service';
 import { TokenService } from '../../../../services/concretes/token.service';
@@ -7,6 +7,7 @@ import { PageRequest } from '../../../../../core/models/pagination/page-request'
 import { AppliedBootcampResponse } from '../../../../models/responses/applications/applied-bootcamp-response';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../../../shared/shared.module';
+import { FormatService } from '../../../../services/concretes/format.service';
 
 @Component({
   selector: 'app-applied-bootcamp-list',
@@ -33,13 +34,14 @@ export class AppliedBootcampListComponent implements OnInit {
   constructor(
     private applicationService: ApplicationService,
     private router: Router,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private formatService: FormatService
   ) { }
 
   ngOnInit(): void {
     this.userId = this.tokenService.getCurrentUserId();
 
-    this.getAppliedBootcampList(this.userId, { pageIndex: 0, pageSize: this.PAGE_SIZE })
+    this.getAppliedBootcampList(this.userId, { pageIndex: 0, pageSize: this.PAGE_SIZE });
   }
 
   getAppliedBootcampList(applicantId: string, pageRequest: PageRequest) {
@@ -50,13 +52,13 @@ export class AppliedBootcampListComponent implements OnInit {
   }
 
   navigateToBootcampDetailPage(appliedBootcamp: AppliedBootcampResponse) {
-    console.log("Selected bootcamp : ", appliedBootcamp.bootcampId, appliedBootcamp.bootcampName, appliedBootcamp.bootcampInstructorUserName)
-    this.router.navigate(['/p', appliedBootcamp.bootcampId])
+    const formattedName = this.formatService.formatBootcampDetailRoute(appliedBootcamp.bootcampName);
+    this.router.navigate(['/bootcamp', formattedName]);
 
   }
 
   navigateToBootcampsPage() {
-    this.router.navigate(['bootcamps'])
+    this.router.navigate(['bootcamps']);
 
   }
 }

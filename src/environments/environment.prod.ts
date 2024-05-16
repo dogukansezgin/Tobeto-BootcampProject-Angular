@@ -5,6 +5,7 @@ export const environment = {
     bootcamps: {
       getBootcamps: '',
       getBootcampById: '',
+      getBootcampByName: '',
       getUnfinishedBootcamps:'',
       getFinishedBootcamps:'',
       searchAllBootcamps: ''

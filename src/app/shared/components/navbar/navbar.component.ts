@@ -100,7 +100,7 @@ export class NavbarComponent implements OnInit {
       this.menuItems = [
         {
           label: "Etkinlikler",
-          routerLink: '../../bootcamps',
+          routerLink: '../../bootcamp',
         },
         {
           label: "Şirketler"

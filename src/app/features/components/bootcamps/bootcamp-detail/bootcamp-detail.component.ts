@@ -9,6 +9,7 @@ import { CheckApplicationResponse } from '../../../models/responses/applications
 import { TokenService } from '../../../services/concretes/token.service';
 import { AuthService } from '../../../services/concretes/auth.service';
 import { ApplicationStateService } from '../../../services/concretes/application-state.service';
+import { FormatService } from '../../../services/concretes/format.service';
 
 @Component({
   selector: 'app-bootcamp-detail',
@@ -19,6 +20,7 @@ import { ApplicationStateService } from '../../../services/concretes/application
 })
 export class BootcampDetailComponent implements OnInit {
 
+  routeBootcampName!: string;
   bootcampId!: string;
   bootcamp: GetBootcampResponse = {
     id: '',
@@ -65,25 +67,37 @@ export class BootcampDetailComponent implements OnInit {
     private applicationService: ApplicationService,
     private applicationStateService: ApplicationStateService,
     private tokenService: TokenService,
-    private authService: AuthService
+    private authService: AuthService,
+    private formatService: FormatService
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
-      this.bootcampId = params['bootcampId'];
-      this.getBootcampById(this.bootcampId);
-    })
+
+    this.activatedRoute.url.subscribe(params => {
+      var parameters = params;
+
+      if (parameters !== null) {
+        this.routeBootcampName = parameters[1].toString();
+        this.routeBootcampName = this.formatService.convertUrlToName(this.routeBootcampName)
+
+        this.getBootcampByName(this.routeBootcampName);
+      } else {
+        console.error('Bootcamp ID not found');
+
+      }
+    });
 
     this.userId = this.tokenService.getCurrentUserId();
 
   }
 
-  getBootcampById(bootcampId: string) {
-    this.bootcampService.getById(bootcampId).subscribe(response => {
+  getBootcampByName(bootcampName: string) {
+    this.bootcampService.getByName(this.routeBootcampName).subscribe(response => {
       this.bootcamp = response;
+      this.bootcampId = response.id;
+      this.bootcampFullName = this.bootcamp.name;
 
       this.isBootcampActive = this.checkBootcampActive();
-      this.bootcampFullName = this.bootcamp.name;
       this.divideBootcampName();
 
       this.isBootcampExists = true;
@@ -98,17 +112,17 @@ export class BootcampDetailComponent implements OnInit {
 
           this.applicationStateService.getByName("Beklemede").subscribe(response => {
             this.isInitialStateIdValid = true;
-            
+
             this.applicationRequest = {
               applicantId: this.userId,
               bootcampId: this.bootcampId,
               applicationStateId: response.id,
             };
           });
-          
+
         } else {
-          console.log(new Error('applicantId and bootcampId cannot be null or undefined.'));
-          
+          console.error('applicantId and bootcampId cannot be null or undefined.');
+
         }
       }
     });
@@ -149,8 +163,8 @@ export class BootcampDetailComponent implements OnInit {
   }
 
   isApplicationButtonDisabled(): boolean {
-    if (this.isApplicationAlreadyExist || !this.isBootcampActive || 
-        !this.isBootcampExists || !this.isInitialStateIdValid) {
+    if (this.isApplicationAlreadyExist || !this.isBootcampActive ||
+      !this.isBootcampExists || !this.isInitialStateIdValid) {
       return true;
     } else {
       return false;
