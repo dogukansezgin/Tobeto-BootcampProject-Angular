@@ -56,7 +56,7 @@ export class NavbarComponent implements OnInit {
 
   isNotOnAuthPages(): boolean {
     const url: string = this.router.url;
-    if (url.includes('Auth') || url.includes('Admin'))  {
+    if (url.includes('Auth') || url.includes('admin'))  {
       return false;
     } else {
       return true;

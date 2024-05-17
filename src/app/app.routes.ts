@@ -20,6 +20,12 @@ import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { LoginFormComponent } from './features/components/auth/login-form/login-form.component';
 import { RegisterFormComponent } from './features/components/auth/register-form/register-form.component';
 import { AuthPageComponent } from './pages/auth-page/auth-page.component';
+import { DashboardComponent } from './features/components/admin/dashboard/dashboard.component';
+import { BootcampsComponent } from './features/components/admin/bootcamps/bootcamps.component';
+import { ApplicationsComponent } from './features/components/admin/applications/applications.component';
+import { InstructorsComponent } from './features/components/admin/instructors/instructors.component';
+import { SettingsComponent } from './features/components/admin/settings/settings.component';
+import { AccountComponent } from './features/components/admin/account/account.component';
 
 export const routes: Routes =
     [
@@ -48,9 +54,9 @@ export const routes: Routes =
         },
 
         { path: "bootcamps", component: BootcampAllPageComponent },
-        
+
         { path: "applications", component: AppliedBootcampListComponent },
-        
+
         {
             path: "Account", component: AccountPageComponent, canActivate: [AuthGuard],
             children: [
@@ -62,7 +68,7 @@ export const routes: Routes =
                         },
                         {
                             path: "Personal", component: PersonalComponent, canActivate: [AuthGuard]
-                            
+
                         },
                         {
                             path: '', redirectTo: 'CoverLetter', pathMatch: "full"
@@ -74,7 +80,7 @@ export const routes: Routes =
                 }
             ]
         },
-        
+
         {
             path: "Auth", component: AuthPageComponent,
             canActivate: [PreventLoginAccessGuard],
@@ -92,8 +98,17 @@ export const routes: Routes =
         },
         { path: 'login', redirectTo: 'Auth/Login' },
         { path: 'register', redirectTo: 'Auth/Register' },
-        
-        { path: 'Admin', component: AdminPageComponent },
-        
-        { path: '**', redirectTo: '' }
+        {
+            path: 'admin', component: AdminPageComponent, canActivate: [AuthGuard],
+            children: [
+                {path:'',pathMatch:'full',redirectTo:'Dashboard'},
+                { path: 'Dashboard', component: DashboardComponent },
+                { path: 'Bootcamps', component: BootcampsComponent },
+                { path: 'Applications', component: ApplicationsComponent },
+                { path: 'Instructors', component: InstructorsComponent },
+                { path: 'Settings', component: SettingsComponent },
+                { path: 'Account', component: AccountComponent }
+            ]
+        },
+        // { path: '**', redirectTo: '' }
     ];
