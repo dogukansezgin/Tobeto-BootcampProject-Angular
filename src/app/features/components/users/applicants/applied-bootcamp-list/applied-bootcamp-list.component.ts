@@ -58,7 +58,7 @@ export class AppliedBootcampListComponent implements OnInit {
   }
 
   navigateToBootcampsPage() {
-    this.router.navigate(['bootcamps']);
+    this.router.navigate(['bootcamp']);
 
   }
 }

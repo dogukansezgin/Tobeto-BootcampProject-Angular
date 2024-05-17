@@ -35,11 +35,11 @@ export class BootcampShowcaseComponent implements OnInit {
   constructor(private bootcampService: BootcampService, private router: Router, private formatService: FormatService) { }
 
   ngOnInit(): void {
-    this.getList({ pageIndex: 0, pageSize: this.PAGE_SIZE })
+    this.getBootcampShowcaseList({ pageIndex: 0, pageSize: this.PAGE_SIZE })
   }
 
-  getList(pageRequest: PageRequest) {
-    this.bootcampService.getList(pageRequest).subscribe((response) => {
+  getBootcampShowcaseList(pageRequest: PageRequest) {
+    this.bootcampService.getListUnfinished(pageRequest).subscribe((response) => {
       this.bootcampList = response;
     })
   }
@@ -51,7 +51,7 @@ export class BootcampShowcaseComponent implements OnInit {
   }
 
   navigateToBootcampsPage() {
-    this.router.navigate(['/bootcamps']);
+    this.router.navigate(['/bootcamp']);
   }
 
 }
