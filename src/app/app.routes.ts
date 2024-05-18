@@ -8,8 +8,6 @@ import { BaseDashboardPageComponent } from './pages/dashboards/base-dashboard-pa
 import { RoleGuard } from './core/guards/role.guard';
 import { AdminDashboardPageComponent } from './pages/dashboards/admin-dashboard-page/admin-dashboard-page.component';
 import { ApplicantDashboardPageComponent } from './pages/dashboards/applicant-dashboard-page/applicant-dashboard-page.component';
-import { LoginPageComponent } from './pages/account/login/login-page.component';
-import { RegisterPageComponent } from './pages/account/register/register-page.component';
 import { BootcampAllPageComponent } from './pages/bootcamp-all-page/bootcamp-all-page.component';
 import { AppliedBootcampListComponent } from './features/components/users/applicants/applied-bootcamp-list/applied-bootcamp-list.component';
 import { AccountPageComponent } from './pages/account-page/account-page.component';
