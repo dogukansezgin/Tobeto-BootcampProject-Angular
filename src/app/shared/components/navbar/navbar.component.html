@@ -11,7 +11,7 @@
                 <div class="search-result-list">
                     <ng-container *ngIf="(bootcamps.items | filterBootcampText: searchText).length > 0; else noResults">
                         <a *ngFor="let bootcamp of bootcamps.items | filterBootcampText: searchText"
-                            class="search-result" (click)="navigateToBootcampDetail(bootcamp)">
+                            class="search-result" (click)="navigateToBootcampDetailPage(bootcamp)">
                             <span>
                                 {{bootcamp.name}}
                             </span>
@@ -22,6 +22,10 @@
                             <span>Sonuç Bulunamadı</span>
                         </div>
                     </ng-template>
+                    
+                    <a (click)="showMore()" class="search-result show-more-button">
+                        Tüm Etkinlikleri Gör
+                    </a>
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ import { GetUserInfoResponse } from '../../../features/models/responses/users/us
 import { BootcampService } from '../../../features/services/concretes/bootcamp.service';
 import { BootcampListItemDto } from '../../../features/models/responses/bootcamps/bootcamp-list-item-dto';
 import { BootcampSearchItemResponse } from '../../../features/models/responses/bootcamps/bootcamp-search-item-response';
+import { FormatService } from '../../../features/services/concretes/format.service';
 
 @Component({
   selector: 'app-navbar',
@@ -44,7 +45,8 @@ export class NavbarComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private tokenService: TokenService,
-    private bootcampService: BootcampService
+    private bootcampService: BootcampService,
+    private formatService: FormatService
   ) { }
 
   ngOnInit(): void {
@@ -74,9 +76,15 @@ export class NavbarComponent implements OnInit {
     })
   }
 
-  navigateToBootcampDetail(bootcamp: BootcampSearchItemResponse) {
+  navigateToBootcampDetailPage(bootcamp: BootcampSearchItemResponse) {
     this.searchText = "";
-    this.router.navigate(['/p', bootcamp.id])
+    const formattedName = this.formatService.formatBootcampDetailRoute(bootcamp.name);
+    this.router.navigate(['/bootcamp', formattedName]);
+  }
+
+  showMore() {
+    this.searchText = "";
+    this.router.navigate(['bootcamp']);
   }
 
   menuItemClicked(item: any) {
