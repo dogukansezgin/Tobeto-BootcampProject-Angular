@@ -1,4 +1,4 @@
-export interface GetBootcampResponse{
+export interface GetBootcampResponse {
     id: string,
     name: string,
     startDate: Date,
@@ -12,4 +12,6 @@ export interface GetBootcampResponse{
 
     bootcampStateId: string,
     bootcampStateName: string
+
+    createdDate: Date,
 }
