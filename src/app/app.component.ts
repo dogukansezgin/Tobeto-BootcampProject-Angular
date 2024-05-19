@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
 
-  private hiddenRoutes: string[] = ['/admin', '/Account'];
+  private hiddenRoutes: string[] = ['/admin', '/Auth'];
 
   constructor(private router: Router) {}
 

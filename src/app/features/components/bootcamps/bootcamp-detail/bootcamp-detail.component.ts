@@ -169,13 +169,12 @@ export class BootcampDetailComponent implements OnInit {
   isApplicationButtonDisabled(): boolean {
     if (this.isApplicationAlreadyExist || !this.isBootcampActive ||
       !this.isBootcampExists || !this.isInitialStateIdValid) {
-    if (this.isApplicationAlreadyExist || !this.isBootcampActive ||
-      !this.isBootcampExists || !this.isInitialStateIdValid) {
       return true;
     } else {
       return false;
     }
   }
+  
 
   applyToBootcamp() {
     if (!this.authService.isAuthenticated()) {

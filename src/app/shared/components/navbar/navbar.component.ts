@@ -93,7 +93,7 @@ export class NavbarComponent implements OnInit {
 
   logOut() {
     this.authService.logOut();
-    this.router.navigate(['homepage'])
+    this.router.navigate([''])
   }
 
   async getMenuItems() {
@@ -102,7 +102,7 @@ export class NavbarComponent implements OnInit {
       this.menuItems = [
         {
           label: "Etkinlikler",
-          routerLink: '../../bootcamp',
+          routerLink: '/bootcamp',
         },
         {
           label: "Şirketler"
@@ -155,7 +155,7 @@ export class NavbarComponent implements OnInit {
       this.menuItems = [
         {
           label: "Etkinlikler",
-          routerLink: '../../bootcamps',
+          routerLink: '/bootcamp',
         },
         {
           label: "Şirketler"
@@ -171,7 +171,7 @@ export class NavbarComponent implements OnInit {
         {
           label: "Yönetim Paneli",
           icon: "pi pi-wrench",
-          routerLink: 'dashboard/admin',
+          routerLink: 'admin',
         })
     }
 
