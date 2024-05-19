@@ -56,15 +56,6 @@ export class NavbarComponent implements OnInit {
     this.getBootcamps();
   }
 
-  isNotOnAuthPages(): boolean {
-    const url: string = this.router.url;
-    if (url.includes('Login') || url.includes('Register')) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   setUserLoggedIn(): boolean {
     return this.userLogged = this.authService.isAuthenticated()
   }

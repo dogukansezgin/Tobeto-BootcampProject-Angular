@@ -6,16 +6,19 @@ import { FilterBootcampPipe } from "./pipes/filter-bootcamp.pipe";
 import { ButtonModule } from "primeng/button";
 import { FormsModule } from "@angular/forms";
 import { DeadLinePipe } from "./pipes/dead-line.pipe";
+import { FooterComponent } from "./components/footer/footer.component";
 
 
 @NgModule({
     declarations:[
         NavbarComponent,
+        FooterComponent,
         FilterBootcampPipe,
         DeadLinePipe
     ],
     exports:[
         NavbarComponent,
+        FooterComponent,
         FilterBootcampPipe,
         DeadLinePipe
     ],
