@@ -4,6 +4,7 @@ import { GetApplicantInfoResponse } from '../../../../models/responses/users/app
 import { ApplicantInfoUpdateRequest } from '../../../../models/requests/users/applicants/applicant-info-update-request';
 import { ApplicantService } from '../../../../services/concretes/applicant.service';
 import { TokenService } from '../../../../services/concretes/token.service';
+import { GetApplicantResponse } from '../../../../models/responses/users/applicant/get-applicant-response';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class ApplicantInfoUpdateFormComponent implements OnInit {
 
   formSubmitted: boolean = false;
   updateForm!: FormGroup;
-  applicantData!: GetApplicantInfoResponse;
+  applicantData!: GetApplicantResponse;
   updatedData!: ApplicantInfoUpdateRequest;
 
   constructor(private applicantService: ApplicantService, private formBuilder: FormBuilder, private tokenService: TokenService) {}
@@ -44,7 +45,7 @@ export class ApplicantInfoUpdateFormComponent implements OnInit {
   }
 
   getApplicantData(applicantId: string) {
-    this.applicantService.getApplicantInfo(applicantId).subscribe(response =>{
+    this.applicantService.getApplicant(applicantId).subscribe(response =>{
       this.applicantData = response;
       this.updateForm.patchValue(this.applicantData);
 

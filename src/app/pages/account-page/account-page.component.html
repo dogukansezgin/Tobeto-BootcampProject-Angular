@@ -1,26 +1,32 @@
-<div [ngStyle]="{'background-color':profileComponentBackgroundColor}">
-    <div class="container">
-        <div class="left-half">
-            <div class="card">
-                <div class="card-body">
-                    <i style="font-size: 5em; color: gray; margin-left: 60px; " class="bi bi-person"></i>
-                    <h6 class="head" style="line-height: 1.75;font-weight: 550;">Merhaba!</h6>
-                    <h6 class="head" style="color: rgb(135, 135, 135);font-weight: 530;">ece&#64;gmail.com</h6>
+<div class="container">
+    <div class="left-half">
+        <div class="card">
+            <div class="card-body">
+                <i style="font-size: 5em; color: gray; margin-left: 60px; " class="bi bi-person"></i>
+                <h6 class="head" style="line-height: 1.75;font-weight: 550;">Merhaba!</h6>
+                <h6 class="head" style="color: rgb(135, 135, 135);font-weight: 530;">{{applicantEmail}}</h6>
+                <hr>
+                <ul class="list-group">
+                    <li (click)="menuItemClicked('Profile')" [ngClass]="isProfileButtonActive ? 'active' : 'inactive'"
+                        class="list-item list-group-item-action list-group-item">
+                        Profilim
+                    </li>
+                    <li (click)="menuItemClicked('Applications')" [ngClass]="isApplicationButtonActive ? 'active' : 'inactive'"
+                        class="list-item list-group-item-action list-group-item">
+                        Başvurularım
+                    </li>
+                    <li (click)="menuItemClicked('')"
+                        class="list-item list-group-item-action list-group-item">
+                        Şifre Güncelle
+                    </li>
                     <hr>
-                    <ul class="list-group">
-                        <li (click)="setCurrentItem(item)" [class]="getCurrentItemClass(item)"
-                            *ngFor="let item of items">
-                            {{item}}</li>
-                        <hr>
-                        <li (click)="setNullCurrentItem()" class="list-group-item-action log-out"><i
-                                data-feather="log-out"></i>Çıkış</li>
-                    </ul>
-                </div>
+                    <li (click)="setNullCurrentItem()" class="list-group-item-action log-out"><i
+                            data-feather="log-out"></i>Çıkış</li>
+                </ul>
             </div>
         </div>
-        <div class="right-half">
-            <app-profile></app-profile>
-        </div>
+    </div>
+    <div class="right-half">
+        <router-outlet></router-outlet>
     </div>
 </div>
-

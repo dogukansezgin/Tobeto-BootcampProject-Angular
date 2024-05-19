@@ -21,36 +21,15 @@ export class ApplicantService extends ApplicantBaseService {
 
     constructor(private httpClient: HttpClient, private localStorageService: LocalStorageService) { super(); }
 
-    override getApplicantInfo(applicantId: string): Observable<GetApplicantInfoResponse> {
-        return this.httpClient.get<GetApplicantInfoResponse>(this.apiUrl_GetById + applicantId)
-    }
-
-    override updateApplicant(request: ApplicantInfoUpdateRequest): Observable<GetApplicantInfoResponse> {
-        return this.httpClient.put<GetApplicantInfoResponse>(this.apiUrl_UpdateInfo, request)
-            .pipe(map(response => {
-                this.localStorageService.removeToken();
-                this.localStorageService.setToken(response.accessToken.token);
-
-                alert("Güncelleme başarılı.");
-                return response;
-
-            }, catchError(responseError => {
-                alert(responseError.error)
-                throw responseError;
-
-            })
-            ));
-    }
     override getApplicant(applicantId: string): Observable<GetApplicantResponse> {
         return this.httpClient.get<GetApplicantResponse>(this.apiUrl_GetById + applicantId)
     }
-    override updateApp(request: ApplicantUpdateRequest): Observable<GetApplicantResponse> {
+
+    override updateApplicant(request: ApplicantUpdateRequest): Observable<GetApplicantResponse> {
         return this.httpClient.put<GetApplicantResponse>(this.apiUrl_UpdateInfo, request)
             .pipe(map(response => {
                 this.localStorageService.removeToken();
                 this.localStorageService.setToken(response.accessToken.token);
-
-                alert("Güncelleme başarılı.");
                 return response;
 
             }, catchError(responseError => {

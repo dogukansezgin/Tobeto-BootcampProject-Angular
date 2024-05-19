@@ -9,11 +9,8 @@ import { ApplicantAboutUpdateRequest } from "../../models/requests/users/applica
 @Injectable()
 export abstract class ApplicantBaseService {
 
-    abstract getApplicantInfo(applicantId: string) : Observable<GetApplicantInfoResponse> // accesstoken'a bak
-    abstract updateApplicant(request: ApplicantInfoUpdateRequest) : Observable<GetApplicantInfoResponse>
-
     abstract getApplicant(applicantId:string):Observable<GetApplicantResponse>
-    abstract updateApp(request:ApplicantUpdateRequest):Observable<GetApplicantResponse>
+    abstract updateApplicant(request: ApplicantUpdateRequest) : Observable<GetApplicantResponse>
 
     abstract updateAboutApplicant(request:ApplicantAboutUpdateRequest):Observable<GetApplicantResponse>
 }

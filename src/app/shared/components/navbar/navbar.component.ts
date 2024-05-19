@@ -84,6 +84,9 @@ export class NavbarComponent implements OnInit {
     }
     else if(item.label=='Profilim'){
       this.router.navigate(['Account/Profile/'])
+    } 
+    else if(item.label=='Başvurularım'){
+      this.router.navigate(['Account/Applications/'])
     }
 
   }

@@ -35,7 +35,9 @@ export class BootcampDetailComponent implements OnInit {
     instructorCompanyName: '',
 
     bootcampStateId: '',
-    bootcampStateName: ''
+    bootcampStateName: '',
+
+    createdDate: new Date("0001-01-01T01:00:00")
   };
   isBootcampExists: boolean = false;
   bootcampFullName!: string;
@@ -113,12 +115,14 @@ export class BootcampDetailComponent implements OnInit {
           this.applicationStateService.getByName("Beklemede").subscribe(response => {
             this.isInitialStateIdValid = true;
 
+
             this.applicationRequest = {
               applicantId: this.userId,
               bootcampId: this.bootcampId,
               applicationStateId: response.id,
             };
           });
+
 
         } else {
           console.error('applicantId and bootcampId cannot be null or undefined.');
@@ -163,6 +167,8 @@ export class BootcampDetailComponent implements OnInit {
   }
 
   isApplicationButtonDisabled(): boolean {
+    if (this.isApplicationAlreadyExist || !this.isBootcampActive ||
+      !this.isBootcampExists || !this.isInitialStateIdValid) {
     if (this.isApplicationAlreadyExist || !this.isBootcampActive ||
       !this.isBootcampExists || !this.isInitialStateIdValid) {
       return true;

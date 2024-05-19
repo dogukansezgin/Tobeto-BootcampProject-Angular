@@ -1,0 +1,32 @@
+.btn {
+    margin-top: 40px;
+    margin-left: 555px;
+    background-color: #0ea5e9;
+    padding: 8px 22px;
+    border: none;
+}
+
+textarea {
+    height: 110px;
+}
+
+textarea::placeholder {
+    font-size: smaller;
+}
+
+.alert {
+    display: block;
+    margin-bottom: 1rem;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+    padding: 5px 5px 10px;
+    font-size: 14px;
+    border-radius: 3px;
+    height: 33px;
+}
+
+.btn-close {
+    font-size: xx-small;
+    padding: 0.85rem 1rem;
+}

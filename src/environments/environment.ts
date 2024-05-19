@@ -32,6 +32,9 @@ export const environment = {
       },
       applicationStates: {
         getByName: '/api/ApplicationStates/getByName/'
+      },
+      instructors: {
+        getList: '/api/Instructors/'
       }
 
       // Diğer endpointler buraya eklenebilir

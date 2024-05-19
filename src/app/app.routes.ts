@@ -8,14 +8,22 @@ import { BaseDashboardPageComponent } from './pages/dashboards/base-dashboard-pa
 import { RoleGuard } from './core/guards/role.guard';
 import { AdminDashboardPageComponent } from './pages/dashboards/admin-dashboard-page/admin-dashboard-page.component';
 import { ApplicantDashboardPageComponent } from './pages/dashboards/applicant-dashboard-page/applicant-dashboard-page.component';
-import { LoginPageComponent } from './pages/account/login/login-page.component';
-import { RegisterPageComponent } from './pages/account/register/register-page.component';
 import { BootcampAllPageComponent } from './pages/bootcamp-all-page/bootcamp-all-page.component';
 import { AppliedBootcampListComponent } from './features/components/users/applicants/applied-bootcamp-list/applied-bootcamp-list.component';
-import { ProfileComponent } from './pages/account/profile/profile.component';
 import { AccountPageComponent } from './pages/account-page/account-page.component';
-import { CoverletterComponent } from './pages/account/coverletter/coverletter.component';
-import { PersonalComponent } from './pages/account/personal/personal.component';
+import { ProfileComponent } from './features/components/users/profile/profile.component';
+import { CoverletterComponent } from './features/components/users/coverletter/coverletter.component';
+import { PersonalComponent } from './features/components/users/personal/personal.component';
+import { AdminPageComponent } from './pages/admin-page/admin-page.component';
+import { LoginFormComponent } from './features/components/auth/login-form/login-form.component';
+import { RegisterFormComponent } from './features/components/auth/register-form/register-form.component';
+import { AuthPageComponent } from './pages/auth-page/auth-page.component';
+import { DashboardComponent } from './features/components/admin/dashboard/dashboard.component';
+import { BootcampsComponent } from './features/components/admin/bootcamps/bootcamps.component';
+import { ApplicationsComponent } from './features/components/admin/applications/applications.component';
+import { InstructorsComponent } from './features/components/admin/instructors/instructors.component';
+import { SettingsComponent } from './features/components/admin/settings/settings.component';
+import { AccountComponent } from './features/components/admin/account/account.component';
 
 export const routes: Routes =
     [
@@ -53,23 +61,57 @@ export const routes: Routes =
         { path: "applications", component: AppliedBootcampListComponent },
 
         {
-            path: "Account/Profile", component: AccountPageComponent, canActivate: [AuthGuard], children:
-                [
-                    { path: '', pathMatch: 'full', component: CoverletterComponent }
-                ]
+            path: "Account", component: AccountPageComponent, canActivate: [AuthGuard],
+            children: [
+                {
+                    path: 'Profile', component: ProfileComponent,
+                    children: [
+                        {
+                            path: "CoverLetter", component: CoverletterComponent, canActivate: [AuthGuard]
+                        },
+                        {
+                            path: "Personal", component: PersonalComponent, canActivate: [AuthGuard]
+
+                        },
+                        {
+                            path: '', redirectTo: 'CoverLetter', pathMatch: "full"
+                        }
+                    ]
+                },
+                {
+                    path: 'Applications', component: AppliedBootcampListComponent
+                }
+            ]
         },
+
         {
-            path: "Account/Profile/CoverLetter", component: AccountPageComponent, canActivate: [AuthGuard], children:
-                [
-                    { path: '', pathMatch: 'full', component: CoverletterComponent }
-                ]
+            path: "Auth", component: AuthPageComponent,
+            canActivate: [PreventLoginAccessGuard],
+            children: [
+                {
+                    path: 'Login', component: LoginFormComponent
+                },
+                {
+                    path: 'Register', component: RegisterFormComponent
+                },
+                {
+                    path: '', redirectTo: 'Login', pathMatch: "full"
+                }
+            ]
         },
+        { path: 'login', redirectTo: 'Auth/Login' },
+        { path: 'register', redirectTo: 'Auth/Register' },
         {
-            path: "Account/Profile/Personal", component: AccountPageComponent, canActivate: [AuthGuard], children:
-                [
-                    { path: '', pathMatch: 'full', component: PersonalComponent }
-                ]
+            path: 'admin', component: AdminPageComponent, canActivate: [AuthGuard],
+            children: [
+                {path:'',pathMatch:'full',redirectTo:'Dashboard'},
+                { path: 'Dashboard', component: DashboardComponent },
+                { path: 'Bootcamps', component: BootcampsComponent },
+                { path: 'Applications', component: ApplicationsComponent },
+                { path: 'Instructors', component: InstructorsComponent },
+                { path: 'Settings', component: SettingsComponent },
+                { path: 'Account', component: AccountComponent }
+            ]
         },
-        
-        { path: '**', redirectTo: '' }
+        // { path: '**', redirectTo: '' }
     ];
