@@ -7,6 +7,7 @@ import { BootcampListItemDto } from '../../../models/responses/bootcamps/bootcam
 import { SharedModule } from '../../../../shared/shared.module';
 import { PaginatorModule } from 'primeng/paginator';
 import { CommonModule } from '@angular/common';
+import { FormatService } from '../../../services/concretes/format.service';
 
 @Component({
   selector: 'app-bootcamp-list-finished',
@@ -29,7 +30,7 @@ export class BootcampListFinishedComponent implements OnInit {
   bootcampCount!: number;
   readonly PAGE_SIZE = 6;
 
-  constructor(private bootcampService: BootcampService, private router: Router) { }
+  constructor(private bootcampService: BootcampService, private router: Router, private formatService: FormatService) { }
 
   ngOnInit(): void {
     this.getAllFinishedBootcamps({ pageIndex: 0, pageSize: this.PAGE_SIZE });
@@ -42,9 +43,10 @@ export class BootcampListFinishedComponent implements OnInit {
     })
   }
 
-  navigateToBootcampDetail(bootcamp: GetBootcampResponse) {
-    console.log("Selected bootcamp : ", bootcamp.id, bootcamp.name, bootcamp.instructorUserName)
-    this.router.navigate(['/p', bootcamp.id])
+  navigateToBootcampDetailPage(bootcamp: GetBootcampResponse) {
+    const formattedName = this.formatService.formatBootcampDetailRoute(bootcamp.name);
+    this.router.navigate(['/bootcamp', formattedName]);
+
   }
 
   onPageChange(event: any) {

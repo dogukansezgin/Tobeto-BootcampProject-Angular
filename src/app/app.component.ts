@@ -1,14 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { SharedModule } from './shared/shared.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SharedModule],
+  imports: [RouterOutlet, SharedModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Tobeto-BootcampProject-Angular';
+
+  private hiddenRoutes: string[] = ['/admin', '/Auth'];
+
+  constructor(private router: Router) {}
+
+  isNotOnRestrictedRoutes(): boolean {
+    return !this.hiddenRoutes.some(route => this.router.url.includes(route));
+  }
 }

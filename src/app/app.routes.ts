@@ -29,7 +29,6 @@ export const routes: Routes =
     [
         { path: '', pathMatch: 'full', component: HomePageComponent },
         { path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard] },
-        { path: 'p/:bootcampId', component: BootcampDetailPageComponent },
         {
             path: 'dashboard',
             component: BaseDashboardPageComponent,
@@ -50,11 +49,12 @@ export const routes: Routes =
                 },
             ]
         },
+        
+        // Bootcamp
+        { path: "bootcamp", component: BootcampAllPageComponent },
+        { path: 'bootcamp/:bootcampName', component: BootcampDetailPageComponent, data: { id: [''] }},
 
-        { path: "bootcamps", component: BootcampAllPageComponent },
-
-        { path: "applications", component: AppliedBootcampListComponent },
-
+        // Account
         {
             path: "Account", component: AccountPageComponent, canActivate: [AuthGuard],
             children: [
@@ -79,6 +79,7 @@ export const routes: Routes =
             ]
         },
 
+        // Authorization
         {
             path: "Auth", component: AuthPageComponent,
             canActivate: [PreventLoginAccessGuard],
@@ -96,6 +97,8 @@ export const routes: Routes =
         },
         { path: 'login', redirectTo: 'Auth/Login' },
         { path: 'register', redirectTo: 'Auth/Register' },
+
+        // Admin
         {
             path: 'admin', component: AdminPageComponent, canActivate: [AuthGuard],
             children: [
@@ -108,5 +111,7 @@ export const routes: Routes =
                 { path: 'Account', component: AccountComponent }
             ]
         },
-        // { path: '**', redirectTo: '' }
+
+        // undefined
+        { path: '**', redirectTo: '' }
     ];

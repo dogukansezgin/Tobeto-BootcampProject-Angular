@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared.module';
 import { Router } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
+import { FormatService } from '../../../services/concretes/format.service';
 
 @Component({
   selector: 'app-bootcamp-showcase',
@@ -31,25 +32,26 @@ export class BootcampShowcaseComponent implements OnInit {
   };
   readonly PAGE_SIZE = 3;
 
-  constructor(private bootcampService: BootcampService, private router: Router) { }
+  constructor(private bootcampService: BootcampService, private router: Router, private formatService: FormatService) { }
 
   ngOnInit(): void {
-    this.getList({ pageIndex: 0, pageSize: this.PAGE_SIZE })
+    this.getBootcampShowcaseList({ pageIndex: 0, pageSize: this.PAGE_SIZE })
   }
 
-  getList(pageRequest: PageRequest) {
-    this.bootcampService.getList(pageRequest).subscribe((response) => {
+  getBootcampShowcaseList(pageRequest: PageRequest) {
+    this.bootcampService.getListUnfinished(pageRequest).subscribe((response) => {
       this.bootcampList = response;
     })
   }
 
-  navigateToBootcampDetail(bootcamp: GetBootcampResponse) {
-    console.log("Selected bootcamp : ", bootcamp.id, bootcamp.name, bootcamp.instructorUserName)
-    this.router.navigate(['/p', bootcamp.id])
+  navigateToBootcampDetailPage(bootcamp: GetBootcampResponse) {
+    const formattedName = this.formatService.formatBootcampDetailRoute(bootcamp.name);
+    this.router.navigate(['/bootcamp', formattedName]);
+
   }
 
   navigateToBootcampsPage() {
-    this.router.navigate(['/bootcamps']);
+    this.router.navigate(['/bootcamp']);
   }
 
 }

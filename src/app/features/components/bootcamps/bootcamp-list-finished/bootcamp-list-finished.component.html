@@ -6,7 +6,7 @@
         </div>
 
         <div *ngFor="let bootcamp of allFinishedBootcamps.items" class="bc-container-item-card card"
-            (click)="navigateToBootcampDetail(bootcamp)">
+            (click)="navigateToBootcampDetailPage(bootcamp)">
 
             <img src="https://process.fs.teachablecdn.com/ADNupMnWyR7kCWRvm76Laz/resize=width:705/https://www.filepicker.io/api/file/Zk7d1MdoSJ6cEShVbfd0"
                 class="card-img-top" alt="Course Image" style="object-fit: cover; height: 200px;">
@@ -31,7 +31,8 @@
         </div>
 
         <div class="bc-container-item-footer">
-            <p-paginator [rows]="PAGE_SIZE" [totalRecords]="bootcampCount" (onPageChange)="onPageChange($event)"></p-paginator>
+            <p-paginator [rows]="PAGE_SIZE" [totalRecords]="bootcampCount"
+                (onPageChange)="onPageChange($event)"></p-paginator>
         </div>
     </div>
 </div>

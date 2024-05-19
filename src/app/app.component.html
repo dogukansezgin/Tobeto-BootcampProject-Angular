@@ -1,7 +1,11 @@
-<div class="navbar">
+<div class="navbar" *ngIf="isNotOnRestrictedRoutes()">
     <app-navbar></app-navbar>
 </div>
 
 <div class="content">
     <router-outlet></router-outlet>
+</div>
+
+<div class="footer" *ngIf="isNotOnRestrictedRoutes()">
+    <app-footer></app-footer>
 </div>

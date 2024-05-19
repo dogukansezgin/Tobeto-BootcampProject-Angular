@@ -48,11 +48,11 @@
         .p-menubar .p-menubar-root-list>.p-menuitem:not(.p-highlight):not(.p-disabled)>.p-menuitem-content:hover {
             .p-menuitem-icon {
                 opacity: 1;
-                color: #1D1D1D;
+                color: #0ea5e9;
             }
 
             .p-menuitem-text {
-                color: #1D1D1D;
+                color: #0ea5e9;
             }
         }
 
@@ -90,6 +90,7 @@
         .navbar-logo {
             margin: 0px 2rem 0px 0px;
             padding-left: 8px;
+            user-select: none;
 
             .logo1 {
                 font-variant: petite-caps;
@@ -116,7 +117,7 @@
             position: absolute;
             padding: 0px 1px;
             left: 0;
-            transform: translateX(246.8px) translateY(44px);
+            transform: translateX(217px) translateY(44px);
 
             display: flex;
             justify-content: flex-start;
@@ -138,7 +139,7 @@
             width: 100%;
             max-height: 390px;
 
-            margin: 4px 0px 8px;
+            margin: 4px 0px 0px;
 
             display: flex;
             align-items: start;
@@ -148,6 +149,7 @@
 
         .search-result {
             width: 100%;
+            min-height: 48px;
             margin: 0px 0px 0px;
             padding: 6px 0px 12px 12px;
 
@@ -171,8 +173,26 @@
             cursor: pointer;
         }
 
+        .show-more-button {
+            position: sticky;
+            bottom: 0;
+            border-width: 0;
+            // color: #00C26D;
+            color: #0ea5e9;
+            justify-content: center;
+            height: 54px;
+            user-select: none;
+        }
+
+        .show-more-button:hover {
+            text-decoration: underline;
+            background-color: transparent;
+
+        }
+
         .no-results-message {
             opacity: 0.6;
+            user-select: none;
         }
 
         .no-results-message:hover {
@@ -217,11 +237,11 @@
 
                 .p-menuitem-icon {
                     opacity: 1;
-                    color: #00C26D;
+                    color: #0ea5e9;
                 }
 
                 .p-menuitem-text {
-                    color: #00C26D;
+                    color: #0ea5e9;
                 }
             }
 
@@ -250,6 +270,14 @@
 
                 .p-menuitem-link {
                     padding: 0px;
+                }
+            }
+
+            .p-menubar .p-menubar-root-list .p-submenu-list .p-menuitem .p-menuitem-content:hover {
+                background-color: transparent;
+                
+                .p-menuitem-text {
+                    color: #0ea5e9;
                 }
             }
 
