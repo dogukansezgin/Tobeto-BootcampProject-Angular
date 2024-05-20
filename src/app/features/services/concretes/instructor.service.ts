@@ -6,6 +6,7 @@ import { PageRequest } from "../../../core/models/pagination/page-request";
 import { InstructorGetListResponse } from "../../models/responses/users/instructors/instructor-get-list-response";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
+import { InstructorGetBasicInfoResponse } from "../../models/responses/users/instructors/instructor-get-basic-info-response";
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +14,7 @@ import { environment } from "../../../../environments/environment";
 export class InstructorService extends InstructorBaseService {
 
     private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.instructors.getList;
+    private readonly apiUrl_GetBasicInfoList: string = environment.apiUrl + environment.endpoints.instructors.getBasicInfo;
 
     constructor(private httpClient: HttpClient) { super(); }
 
@@ -25,6 +27,29 @@ export class InstructorService extends InstructorBaseService {
             .pipe(
                 map((response) => {
                     const newResponse: ListItemsDto<InstructorGetListResponse> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
+
+            )
+    }
+
+    override getInstructorsBasicInfoList(pageRequest: PageRequest): Observable<ListItemsDto<InstructorGetBasicInfoResponse>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize
+        }
+        return this.httpClient.get<ListItemsDto<InstructorGetBasicInfoResponse>>(this.apiUrl_GetBasicInfoList, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: ListItemsDto<InstructorGetBasicInfoResponse> = {
                         items: response.items,
                         index: response.index,
                         size: response.size,

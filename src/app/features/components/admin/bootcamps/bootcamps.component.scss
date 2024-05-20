@@ -14,15 +14,14 @@
             width: 100%;
         }
 
-        
         .mr-2 {
             margin-right: 0.5rem;
         }
-        
+
         .p-button {
             border-radius: 6px;
         }
-        
+
         .p-button-rounded {
             border-radius: 50%;
         }
@@ -30,5 +29,27 @@
         .content-container {
             padding: 30px 100px 50px 30px;
         }
+
+        // dialog içi css düzenlenecek
+        .p-fluid {
+            overflow: hidden;
+        }
+
+        .date-fields {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .date-fields .field {
+            flex: 1;
+        }
+
+        .p-calendar .p-datepicker {
+            position: absolute;
+            max-height: 550px;
+            overflow-y: auto;
+        }
+
     }
 }

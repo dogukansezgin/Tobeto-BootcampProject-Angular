@@ -7,6 +7,10 @@ import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
 import { GetBootcampResponse } from "../../models/responses/bootcamps/get-bootcamp-response";
 import { BootcampSearchItemResponse } from "../../models/responses/bootcamps/bootcamp-search-item-response";
+import { BootcampCreateRequest } from "../../models/requests/bootcamps/bootcamp-create-request";
+import { BootcampCreateResponse } from "../../models/responses/bootcamps/bootcamp-create-response";
+import { BootcampUpdateRequest } from "../../models/requests/bootcamps/bootcamp-update-request";
+import { BootcampUpdateResponse } from "../../models/responses/bootcamps/bootcamp-update-response";
 
 @Injectable({
     providedIn: 'root'
@@ -19,6 +23,8 @@ export class BootcampService extends BootcampBaseService {
     private readonly apiUrl_GetUnfinished = environment.apiUrl + environment.endpoints.bootcamps.getUnfinishedBootcamps;
     private readonly apiUrl_GetFinished = environment.apiUrl + environment.endpoints.bootcamps.getFinishedBootcamps;
     private readonly apiUrl_SearchAll = environment.apiUrl + environment.endpoints.bootcamps.searchAllBootcamps;
+    private readonly apiUrl_CreateBootcamp = environment.apiUrl + environment.endpoints.bootcamps.createBootcamp;
+    private readonly apiUrl_UpdateBootcamp = environment.apiUrl + environment.endpoints.bootcamps.updateBootcamp;
 
     selectedBootcampId!: string;
 
@@ -105,5 +111,13 @@ export class BootcampService extends BootcampBaseService {
         let urlParameters = '?PageIndex=0&PageSize=5';
         console.log(this.apiUrl_SearchAll + urlParameters)
         return this.httpClient.get<BootcampListItemDto<GetBootcampResponse>>(this.apiUrl_SearchAll + urlParameters);
+    }
+
+    override createBootcamp(bootcampCreateRequest: BootcampCreateRequest): Observable<BootcampCreateResponse> {
+        return this.httpClient.post<BootcampCreateResponse>(this.apiUrl_CreateBootcamp, bootcampCreateRequest)
+    }
+
+    override updateBootcamp(bootcampUpdateRequest: BootcampUpdateRequest): Observable<BootcampUpdateResponse> {
+        return this.httpClient.put<BootcampUpdateResponse>(this.apiUrl_UpdateBootcamp, bootcampUpdateRequest)
     }
 }

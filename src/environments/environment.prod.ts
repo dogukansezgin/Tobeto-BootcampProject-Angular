@@ -6,9 +6,14 @@ export const environment = {
       getBootcamps: '',
       getBootcampById: '',
       getBootcampByName: '',
-      getUnfinishedBootcamps:'',
-      getFinishedBootcamps:'',
-      searchAllBootcamps: ''
+      getUnfinishedBootcamps: '',
+      getFinishedBootcamps: '',
+      searchAllBootcamps: '',
+      createBootcamp: '',
+      updateBootcamp: ''
+    },
+    bootcampStates: {
+      getList: ''
     },
     auth: {
       register: {
@@ -32,6 +37,10 @@ export const environment = {
     },
     applicationStates: {
       getByName: ''
+    },
+    instructors: {
+      getList: '',
+      getBasicInfo: ''
     }
 
     // Diğer endpointler buraya eklenebilir
