@@ -3,14 +3,19 @@ export const environment = {
   apiUrl: 'http://localhost:5278',
   endpoints: {
     bootcamps: {
-      getBootcamps: '/api/Bootcamps/get',
+      getList: '/api/Bootcamps/get',
+      getListDeleted: '/api/Bootcamps/getDeleted',
       getBootcampById: '/api/Bootcamps/id/',
       getBootcampByName: '/api/Bootcamps/name/',
       getUnfinishedBootcamps: '/api/Bootcamps/getUnfinished',
       getFinishedBootcamps: '/api/Bootcamps/getFinished',
       searchAllBootcamps: '/api/Bootcamps/searchAll',
       createBootcamp: '/api/Bootcamps/create',
-      updateBootcamp: '/api/Bootcamps/update'
+      updateBootcamp: '/api/Bootcamps/update',
+      deleteBootcamp: '/api/Bootcamps/delete',
+      deleteRangeBootcamp: '/api/Bootcamps/deleteRange',
+      restoreBootcamp: '/api/Bootcamps/restore',
+      restoreRangeBootcamp: '/api/Bootcamps/restoreRange'
     },
     bootcampStates: {
       getList: '/api/BootcampStates'

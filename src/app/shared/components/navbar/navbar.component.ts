@@ -4,12 +4,11 @@ import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../features/services/concretes/auth.service';
 import { Router } from '@angular/router';
 import { TokenService } from '../../../features/services/concretes/token.service';
-import { UserService } from '../../../features/services/concretes/user.service';
 import { GetUserInfoResponse } from '../../../features/models/responses/users/user/get-user-info-response';
 import { BootcampService } from '../../../features/services/concretes/bootcamp.service';
-import { BootcampListItemDto } from '../../../features/models/responses/bootcamps/bootcamp-list-item-dto';
 import { BootcampSearchItemResponse } from '../../../features/models/responses/bootcamps/bootcamp-search-item-response';
 import { FormatService } from '../../../features/services/concretes/format.service';
+import { ListItemsDto } from '../../../core/models/pagination/list-items-dto';
 
 @Component({
   selector: 'app-navbar',
@@ -25,7 +24,7 @@ export class NavbarComponent implements OnInit {
   userLogged: boolean = false;
   applicantData!: GetUserInfoResponse;
 
-  bootcamps: BootcampListItemDto<BootcampSearchItemResponse> = {
+  bootcamps: ListItemsDto<BootcampSearchItemResponse> = {
     index: 0,
     size: 0,
     count: 0,

@@ -19,8 +19,7 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Router } from '@angular/router';
-import { BootcampListItemDto } from '../../../models/responses/bootcamps/bootcamp-list-item-dto';
-import { GetBootcampResponse } from '../../../models/responses/bootcamps/get-bootcamp-response';
+import { BootcampGetListResponse } from '../../../models/responses/bootcamps/bootcamp-get-list-response';
 import { BootcampService } from '../../../services/concretes/bootcamp.service';
 import { FormatService } from '../../../services/concretes/format.service';
 import { BootcampStateService } from '../../../services/concretes/bootcamp-state.service';
@@ -30,6 +29,12 @@ import { CalendarModule } from 'primeng/calendar';
 import { InstructorService } from '../../../services/concretes/instructor.service';
 import { InstructorGetBasicInfoResponse } from '../../../models/responses/users/instructors/instructor-get-basic-info-response';
 import { BootcampUpdateRequest } from '../../../models/requests/bootcamps/bootcamp-update-request';
+import { BootcampDeleteRequest } from '../../../models/requests/bootcamps/bootcamp-delete-request';
+import { ListItemsDto } from '../../../../core/models/pagination/list-items-dto';
+import { BootcampGetListDeletedResponse } from '../../../models/responses/bootcamps/bootcamp-get-list-deleted-response';
+import { BootcampRestoreRequest } from '../../../models/requests/bootcamps/bootcamp-restore-request';
+import { BootcampDeleteRangeRequest } from '../../../models/requests/bootcamps/bootcamp-delete-range-request';
+import { BootcampRestoreRangeRequest } from '../../../models/requests/bootcamps/bootcamp-restore-range-request';
 
 
 @Component({
@@ -45,7 +50,7 @@ export class BootcampsComponent implements OnInit {
   bootcampUpdateDialog: boolean = false;
 
   //
-  bootcamps: BootcampListItemDto<GetBootcampResponse> = {
+  bootcamps: ListItemsDto<BootcampGetListResponse> = {
     index: 0,
     size: 0,
     count: 0,
@@ -55,7 +60,18 @@ export class BootcampsComponent implements OnInit {
     items: []
   };
 
-  bootcamp!: GetBootcampResponse;
+  deletedBootcamps: ListItemsDto<BootcampGetListDeletedResponse> = {
+    index: 0,
+    size: 0,
+    count: 0,
+    hasNext: false,
+    hasPrevious: false,
+    pages: 0,
+    items: []
+  };
+
+  bootcamp!: BootcampGetListResponse;
+  deletedBootcamp!: BootcampGetListDeletedResponse;
 
   bootcampCreateRequest: BootcampCreateRequest = {
     name: '',
@@ -74,7 +90,26 @@ export class BootcampsComponent implements OnInit {
     endDate: new Date(),
   };
 
-  selectedBootcamp!: GetBootcampResponse[] | null;
+  bootcampDeleteRequest: BootcampDeleteRequest = {
+    id: '',
+    isPermament: false
+  };
+
+  bootcampDeleteRangeRequest: BootcampDeleteRangeRequest = {
+    ids: [],
+    isPermament: false
+  };
+
+  bootcampRestoreRequest: BootcampRestoreRequest = {
+    id: ''
+  };
+
+  bootcampRestoreRangeRequest: BootcampRestoreRangeRequest = {
+    ids: []
+  };
+
+  selectedBootcamps!: BootcampGetListResponse[] | null;
+  selectedDeletedBootcamps!: BootcampGetListDeletedResponse[] | null;
 
   //
   bootcampStates!: BootcampStateGetListResponse[];
@@ -119,6 +154,11 @@ export class BootcampsComponent implements OnInit {
       console.log(this.bootcamps)
     });
 
+    this.bootcampService.getListDeleted({ pageIndex: 0, pageSize: this.PAGE_SIZE }).subscribe(response => {
+      this.deletedBootcamps = response;
+      console.log(this.deletedBootcamps)
+    });
+
     this.bootcampStateService.getList({ pageIndex: 0, pageSize: 99 }).subscribe(response => {
       this.bootcampStates = response.items;
       console.log(this.bootcampStates)
@@ -130,7 +170,7 @@ export class BootcampsComponent implements OnInit {
     });
 
   }
-  
+
   openNew() {
     this.initializeFormDates();
 
@@ -155,24 +195,10 @@ export class BootcampsComponent implements OnInit {
     this.bootcampCreateDialog = true;
   }
 
-  deleteSelectedBootcamps() {
-    this.confirmationService.confirm({
-      message: 'Seçilen kursları silmek istediğine emin misin?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.bootcamps.items = this.bootcamps.items.filter((val) => !this.selectedBootcamp?.includes(val));
-        this.selectedBootcamp = null;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Deleted', life: 3000 });
-      }
-    });
-  }
-
-  openEdit(bootcamp: GetBootcampResponse) {
+  openEdit(bootcamp: BootcampGetListResponse) {
     this.bootcamp = { ...bootcamp };
+
     this.initializeFormDates();
-    console.log(bootcamp)
-    console.log(this.bootcamp)
 
     this.bootcampUpdateRequest = {
       id: this.bootcamp.id,
@@ -191,49 +217,330 @@ export class BootcampsComponent implements OnInit {
       userName: this.bootcamp.instructorUserName,
       companyName: this.bootcamp.instructorCompanyName
     }
-    
-    console.log(this.bootcampUpdateRequest)
-    console.log(this.minStartDate)
-    console.log(this.minEndDate)
+
     this.bootcampUpdateDialog = true;
-  }
-
-  deleteBootcamp(bootcamp: GetBootcampResponse) {
-    this.confirmationService.confirm({
-      message: '"' + bootcamp.name + '" Adlı kursu silmek istediğine emin misin?',
-      header: 'Onayla',
-      rejectLabel: 'İptal',
-      acceptLabel: 'Sil',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.bootcamps.items = this.bootcamps.items.filter((val) => val.id !== bootcamp.id);
-        this.bootcamp = {
-          id: '',
-          name: '',
-          startDate: new Date("0001-01-01T01:00:00"),
-          endDate: new Date("0001-01-01T01:00:00"),
-
-          instructorId: '',
-          instructorUserName: '',
-          instructorFirstName: '',
-          instructorLastName: '',
-          instructorCompanyName: '',
-
-          bootcampStateId: '',
-          bootcampStateName: '',
-
-          createdDate: new Date("0001-01-01T01:00:00")
-        };
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Deleted', life: 3000 });
-
-      }
-    });
   }
 
   hideDialog() {
     this.bootcampCreateDialog = false;
     this.bootcampUpdateDialog = false;
     this.submitted = false;
+  }
+
+  deleteSelectedBootcamps(isPermament: boolean) {
+    this.confirmationService.confirm({
+      message: 'Seçilen kursları silmek istediğine emin misin?',
+      header: 'Toplu Sil',
+      rejectLabel: 'İptal',
+      acceptLabel: 'Sil',
+      defaultFocus: 'reject',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        console.log(this.selectedBootcamps)
+
+        if (this.selectedBootcamps || this.selectedDeletedBootcamps) {
+          this.bootcampDeleteRangeRequest = {
+            ids: [],
+            isPermament: isPermament
+          };
+
+          if (isPermament) {
+            if (this.selectedDeletedBootcamps) {
+              this.selectedDeletedBootcamps.forEach(b => {
+                if (b.id) {
+                  this.bootcampDeleteRangeRequest.ids.push(b.id);
+                }
+              });
+            }
+          }
+          else {
+            if (this.selectedBootcamps) {
+              this.selectedBootcamps.forEach(b => {
+                if (b.id) {
+                  this.bootcampDeleteRangeRequest.ids.push(b.id);
+                }
+              });
+            }
+          }
+          
+          
+          this.bootcampService.deleteRangeBootcamp(this.bootcampDeleteRangeRequest).subscribe(response => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamps Deleted', life: 3000 });
+
+            if (!isPermament) {
+              this.selectedBootcamps?.forEach(b => {
+                this.deletedBootcamp = {
+                  id: b.id,
+                  name: b.name,
+                  startDate: b.startDate,
+                  endDate: b.endDate,
+
+                  instructorId: b.instructorId,
+                  instructorUserName: b.instructorUserName,
+                  instructorFirstName: b.instructorFirstName,
+                  instructorLastName: b.instructorLastName,
+                  instructorCompanyName: b.instructorCompanyName,
+
+                  bootcampStateId: b.bootcampStateId,
+                  bootcampStateName: b.bootcampStateName,
+
+                  createdDate: b.createdDate,
+                  deletedDate: response.deletedDate,
+                };
+                this.deletedBootcamps.items.push(this.deletedBootcamp);
+              });
+
+              this.bootcamps.items = this.bootcamps.items.filter((val) => !this.selectedBootcamps?.includes(val));
+            }
+            else {
+              this.deletedBootcamps.items = this.deletedBootcamps.items.filter((val) => !this.selectedDeletedBootcamps?.includes(val));
+            }
+            
+
+          }).add(() => {
+            this.selectedBootcamps = [];
+            this.selectedDeletedBootcamps = [];
+            this.deletedBootcamp = {
+              id: '',
+              name: '',
+              startDate: new Date("0001-01-01T01:00:00"),
+              endDate: new Date("0001-01-01T01:00:00"),
+
+              instructorId: '',
+              instructorUserName: '',
+              instructorFirstName: '',
+              instructorLastName: '',
+              instructorCompanyName: '',
+
+              bootcampStateId: '',
+              bootcampStateName: '',
+
+              createdDate: new Date("0001-01-01T01:00:00"),
+              deletedDate: new Date("0001-01-01T01:00:00")
+            };
+            this.bootcampDeleteRangeRequest = {
+              ids: [],
+              isPermament: false
+            }
+          });
+        }
+      }
+    });
+  }
+
+  restoreSelectedBootcamps() {
+    this.confirmationService.confirm({
+      message: 'Seçilen silinmiş kursları kurtarmak istediğine emin misin?',
+      header: 'Toplu Kurtar',
+      rejectLabel: 'İptal',
+      acceptLabel: 'Kurtar',
+      defaultFocus: 'reject',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+
+        if (this.selectedDeletedBootcamps) {
+          this.bootcampRestoreRangeRequest = {
+            ids: []
+          }
+
+          this.selectedDeletedBootcamps.forEach(b => {
+            if (b.id) {
+              this.bootcampRestoreRangeRequest.ids.push(b.id);
+            }
+          });
+
+          this.bootcampService.restoreRangeBootcamp(this.bootcampRestoreRangeRequest).subscribe(response => {
+            this.selectedDeletedBootcamps?.forEach(b => {
+              this.bootcamp = {
+                id: b.id,
+                name: b.name,
+                startDate: b.startDate,
+                endDate: b.endDate,
+
+                instructorId: b.instructorId,
+                instructorUserName: b.instructorUserName,
+                instructorFirstName: b.instructorFirstName,
+                instructorLastName: b.instructorLastName,
+                instructorCompanyName: b.instructorCompanyName,
+
+                bootcampStateId: b.bootcampStateId,
+                bootcampStateName: b.bootcampStateName,
+
+                createdDate: b.createdDate,
+              };
+              this.bootcamps.items.push(this.bootcamp);
+
+            });
+
+            this.deletedBootcamps.items = this.deletedBootcamps.items.filter((val) => !this.selectedDeletedBootcamps?.includes(val));
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamps Restored', life: 3000 });
+
+          }).add(() => {
+            this.selectedBootcamps = [];
+            this.selectedDeletedBootcamps = [];
+            this.bootcamp = {
+              id: '',
+              name: '',
+              startDate: new Date("0001-01-01T01:00:00"),
+              endDate: new Date("0001-01-01T01:00:00"),
+
+              instructorId: '',
+              instructorUserName: '',
+              instructorFirstName: '',
+              instructorLastName: '',
+              instructorCompanyName: '',
+
+              bootcampStateId: '',
+              bootcampStateName: '',
+
+              createdDate: new Date("0001-01-01T01:00:00")
+            };
+            this.bootcampRestoreRangeRequest = {
+              ids: []
+            }
+          });
+        }
+      }
+    });
+  }
+
+  deleteBootcamp(bootcamp: BootcampGetListResponse, isPermament: boolean) {
+    console.log(bootcamp)
+    this.confirmationService.confirm({
+      message: '"' + bootcamp.name + '" Adlı kursu silmek istediğine emin misin?',
+      header: 'Sil',
+      rejectLabel: 'İptal',
+      acceptLabel: 'Sil',
+      defaultFocus: 'reject',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.bootcampDeleteRequest = {
+          id: bootcamp.id,
+          isPermament: isPermament
+        }
+
+        this.bootcampService.deleteBootcamp(this.bootcampDeleteRequest).subscribe(response => {
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Deleted', life: 3000 });
+
+          if (!this.bootcampDeleteRequest.isPermament) {
+            this.deletedBootcamp = {
+              id: response.id,
+              name: bootcamp.name,
+              startDate: bootcamp.startDate,
+              endDate: bootcamp.endDate,
+
+              instructorId: bootcamp.instructorId,
+              instructorUserName: bootcamp.instructorUserName,
+              instructorFirstName: bootcamp.instructorFirstName,
+              instructorLastName: bootcamp.instructorLastName,
+              instructorCompanyName: bootcamp.instructorCompanyName,
+
+              bootcampStateId: bootcamp.bootcampStateId,
+              bootcampStateName: bootcamp.bootcampStateName,
+
+              createdDate: bootcamp.createdDate,
+              deletedDate: response.deletedDate,
+            };
+
+            this.bootcamps.items = this.bootcamps.items.filter((val) => val.id !== bootcamp.id);
+            this.deletedBootcamps.items.push(this.deletedBootcamp);
+
+          }
+          else {
+            this.deletedBootcamps.items = this.deletedBootcamps.items.filter((val) => val.id !== bootcamp.id);
+          }
+
+        }).add(() => {
+          this.deletedBootcamp = {
+            id: '',
+            name: '',
+            startDate: new Date("0001-01-01T01:00:00"),
+            endDate: new Date("0001-01-01T01:00:00"),
+
+            instructorId: '',
+            instructorUserName: '',
+            instructorFirstName: '',
+            instructorLastName: '',
+            instructorCompanyName: '',
+
+            bootcampStateId: '',
+            bootcampStateName: '',
+
+            createdDate: new Date("0001-01-01T01:00:00"),
+            deletedDate: new Date("0001-01-01T01:00:00")
+          };
+          this.bootcampDeleteRequest = {
+            id: '',
+            isPermament: false
+          }
+
+        });
+      }
+    });
+  }
+
+  restoreBootcamp(bootcamp: BootcampGetListDeletedResponse) {
+    console.log(bootcamp)
+    this.confirmationService.confirm({
+      message: '"' + bootcamp.name + '" Adlı silinen kursu kurtarmak istediğine emin misin?',
+      header: 'Kurtar',
+      rejectLabel: 'İptal',
+      acceptLabel: 'Kurtar',
+      defaultFocus: 'reject',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.bootcampRestoreRequest = {
+          id: bootcamp.id
+        }
+
+        this.bootcampService.restoreBootcamp(this.bootcampRestoreRequest).subscribe(response => {
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Restored', life: 3000 });
+
+          this.bootcamp = {
+            id: response.id,
+            name: response.name,
+            startDate: bootcamp.startDate,
+            endDate: bootcamp.endDate,
+
+            instructorId: bootcamp.instructorId,
+            instructorUserName: bootcamp.instructorUserName,
+            instructorFirstName: bootcamp.instructorFirstName,
+            instructorLastName: bootcamp.instructorLastName,
+            instructorCompanyName: bootcamp.instructorCompanyName,
+
+            bootcampStateId: bootcamp.bootcampStateId,
+            bootcampStateName: bootcamp.bootcampStateName,
+
+            createdDate: bootcamp.createdDate
+          };
+
+          this.deletedBootcamps.items = this.deletedBootcamps.items.filter((val) => val.id !== bootcamp.id);
+          this.bootcamps.items.push(this.bootcamp);
+
+        }).add(() => {
+          this.bootcamp = {
+            id: '',
+            name: '',
+            startDate: new Date("0001-01-01T01:00:00"),
+            endDate: new Date("0001-01-01T01:00:00"),
+
+            instructorId: '',
+            instructorUserName: '',
+            instructorFirstName: '',
+            instructorLastName: '',
+            instructorCompanyName: '',
+
+            bootcampStateId: '',
+            bootcampStateName: '',
+
+            createdDate: new Date("0001-01-01T01:00:00")
+          };
+          this.bootcampRestoreRequest = {
+            id: ''
+          };
+        });
+      }
+    });
   }
 
   createBootcamp() {
@@ -264,8 +571,7 @@ export class BootcampsComponent implements OnInit {
 
           createdDate: response.createdDate,
         };
-        console.log(this.bootcamp)
-        console.log(this.bootcampCreateRequest)
+
         this.bootcamps.items.push(this.bootcamp);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Created', life: 3000 });
 
@@ -312,7 +618,7 @@ export class BootcampsComponent implements OnInit {
 
   updateBootcamp() {
     this.submitted = true;
-    console.log(this.bootcamp)
+
     if (this.bootcamp.name?.trim()) {
       if (!this.selectedInstructor.id || !this.selectedBootcampState.id) {
         return console.error("Instructor ve BootcampState seçilmeli!")
@@ -339,8 +645,7 @@ export class BootcampsComponent implements OnInit {
 
           createdDate: this.bootcamp.createdDate,
         };
-        console.log(this.bootcamp)
-        console.log(this.bootcampUpdateRequest)
+
         this.bootcamps.items[this.findIndexById(this.bootcamp.id)] = this.bootcamp;
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Updated', life: 3000 });
       }).add(() => {
@@ -359,17 +664,17 @@ export class BootcampsComponent implements OnInit {
           name: '',
           startDate: new Date("0001-01-01T01:00:00"),
           endDate: new Date("0001-01-01T01:00:00"),
-  
+
           instructorId: '',
           instructorUserName: '',
           instructorFirstName: '',
           instructorLastName: '',
           instructorCompanyName: '',
-  
+
           bootcampStateId: '',
           bootcampStateName: '',
-  
-          createdDate: new Date("0001-01-01T01:00:00"),
+
+          createdDate: new Date("0001-01-01T01:00:00")
         };
         this.selectedBootcampState = {
           id: '',
@@ -426,7 +731,14 @@ export class BootcampsComponent implements OnInit {
     }
   }
 
-  navigateToBootcampDetailPage(bootcamp: GetBootcampResponse) {
+  filterDeletedTable(event: Event, dt: any): void {
+    if (event.target instanceof HTMLInputElement) {
+      this.filterValue = event.target.value;
+      dt.filterGlobal(this.filterValue, 'contains');
+    }
+  }
+
+  navigateToBootcampDetailPage(bootcamp: BootcampGetListResponse) {
     const formattedName = this.formatService.formatBootcampDetailRoute(bootcamp.name);
     this.router.navigate(['/bootcamp', formattedName]);
   }

@@ -1,27 +1,28 @@
+<!-- Bootcamps Table -->
 <div class="content-container">
     <div class="card">
         <p-toast />
-        <p-toolbar styleClass="mb-4 gap-2">
-            <ng-template pTemplate="left">
-                <p-button pRipple severity="success" label="Ekle" icon="pi pi-plus" class="mr-2" (click)="openNew()" />
-                <p-button pRipple severity="danger" label="Sil" icon="pi pi-trash" (click)="deleteSelectedBootcamps()"
-                    [disabled]="!selectedBootcamp || !selectedBootcamp.length" />
-            </ng-template>
-        </p-toolbar>
 
-        <p-table #dt [value]="bootcamps.items" [rows]="10" [paginator]="true"
+        <p-table #dt1 [value]="bootcamps.items" [rows]="20" [paginator]="true"
             [globalFilterFields]="['name', 'instructorUserName', 'instructorCompanyName', 'createdDate', 'bootcampStateName']"
-            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedBootcamp" [rowHover]="true" dataKey="id"
+            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedBootcamps" [rowHover]="true" dataKey="id"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="500px">
+            [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="600px">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
-                    <h5 class="m-0">Manage Bootcamps</h5>
+                    <h5 class="m-0">Bootcamps</h5>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
-                        <input pInputText type="text" (input)="filterTable($event, dt)" placeholder="Filtrele..." />
+                        <input pInputText type="text" (input)="filterTable($event, dt1)" placeholder="Filtrele..." />
                     </span>
                 </div>
+                <p-toolbar styleClass="mb-2 mt-3 gap-2">
+                    <ng-template pTemplate="left">
+                        <p-button pRipple severity="success" label="Ekle" icon="pi pi-plus" class="mr-2" (click)="openNew()" />
+                        <p-button pRipple severity="danger" label="Sil" icon="pi pi-trash" (click)="deleteSelectedBootcamps(false)"
+                            [disabled]="!selectedBootcamps || !selectedBootcamps.length" />
+                    </ng-template>
+                </p-toolbar>
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
@@ -73,7 +74,7 @@
                         <p-button pRipple icon="pi pi-pencil" class="m-1" [rounded]="true" [outlined]="true"
                             severity="success" (click)="openEdit(bootcamp)" />
                         <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                            (click)="deleteBootcamp(bootcamp)" />
+                            (click)="deleteBootcamp(bootcamp, false)" />
                     </td>
                 </tr>
             </ng-template>
@@ -194,6 +195,100 @@
             </ng-template>
         </p-dialog>
 
-        <p-confirmDialog [style]="{ width: '850px' }" />
+    </div>
+</div>
+
+<!--  -->
+<!--  -->
+<p-confirmDialog [style]="{ width: '850px' }" />
+<!--  -->
+<!--  -->
+
+<!-- Deleted Bootcamps Table -->
+<div class="content-container">
+    <div class="card">
+        <p-toast />
+
+        <p-table #dt2 [value]="deletedBootcamps.items" [rows]="20" [paginator]="true"
+            [globalFilterFields]="['name', 'instructorUserName', 'instructorCompanyName', 'deletedDate', 'bootcampStateName']"
+            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedDeletedBootcamps" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="500px">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <h5 class="m-0">Deleted Bootcamps</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="filterDeletedTable($event, dt2)" placeholder="Filtrele..." />
+                    </span>
+                </div>
+                <p-toolbar styleClass="mb-2 mt-3 gap-2">
+                    <ng-template pTemplate="left">
+                        <p-button pRipple severity="success" label="Kurtar" icon="pi pi-replay" class="mr-2" (click)="restoreSelectedBootcamps()"
+                            [disabled]="!selectedDeletedBootcamps || !selectedDeletedBootcamps.length" />
+                        <p-button pRipple severity="danger" label="Kalıcı Sil" icon="pi pi-trash" (click)="deleteSelectedBootcamps(true)"
+                            [disabled]="!selectedDeletedBootcamps || !selectedDeletedBootcamps.length" />
+                    </ng-template>
+                </p-toolbar>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox />
+                    </th>
+                    <th pSortableColumn="name" style="min-width:12rem">
+                        Ad <p-sortIcon field="name" />
+                    </th>
+                    <th pSortableColumn="instructorUserName" style="min-width:12rem">
+                        Eğitmen <p-sortIcon field="instructorUserName" />
+                    </th>
+                    <th pSortableColumn="instructorCompanyName" style="min-width:8rem">
+                        Şirket <p-sortIcon field="instructorCompanyName" />
+                    </th>
+                    <th pSortableColumn="deletedDate" style="min-width:12rem">
+                        Silinme Tarihi <p-sortIcon field="deletedDate" />
+                    </th>
+                    <th pSortableColumn="bootcampStateName" style="min-width:6rem">
+                        Durumu <p-sortIcon field="bootcampStateName" />
+                    </th>
+                    <th style="min-width:12rem;"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-bootcamp>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="bootcamp" />
+                    </td>
+                    <td>
+                        {{ bootcamp.name }}
+                    </td>
+                    <td>
+                        {{ bootcamp.instructorUserName }}
+                    </td>
+                    <td>
+                        {{ bootcamp.instructorCompanyName }}
+                    </td>
+                    <td>
+                        {{ bootcamp.deletedDate.toString().substring(0,10) }}
+                    </td>
+                    <td>
+                        <p-tag [value]="bootcamp.bootcampStateName"
+                            [severity]="getSeverity(bootcamp.bootcampStateName.toUpperCase())" />
+                    </td>
+                    <td>
+                        <p-button pRipple icon="pi pi-replay" class="m-1" [rounded]="true" [outlined]="true"
+                            severity="success" (click)="restoreBootcamp(bootcamp)" />
+                        <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                            (click)="deleteBootcamp(bootcamp, true)" />
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                    Toplam {{ deletedBootcamps.items ? deletedBootcamps.items.length : 0 }} adet Silinmiş Bootcamp var.
+                </div>
+            </ng-template>
+        </p-table>
+
     </div>
 </div>

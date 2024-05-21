@@ -1,4 +1,4 @@
-export interface GetBootcampResponse {
+export interface BootcampGetListDeletedResponse {
     id: string,
     name: string,
     startDate: Date,
@@ -14,4 +14,5 @@ export interface GetBootcampResponse {
     bootcampStateName: string
 
     createdDate: Date,
+    deletedDate: Date
 }

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { BootcampService } from '../../../services/concretes/bootcamp.service';
 import { PageRequest } from '../../../../core/models/pagination/page-request';
-import { BootcampListItemDto } from '../../../models/responses/bootcamps/bootcamp-list-item-dto';
 import { CommonModule } from '@angular/common';
-import { GetBootcampResponse } from '../../../models/responses/bootcamps/get-bootcamp-response';
+import { BootcampGetListResponse } from '../../../models/responses/bootcamps/bootcamp-get-list-response';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared.module';
 import { Router } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
 import { FormatService } from '../../../services/concretes/format.service';
+import { ListItemsDto } from '../../../../core/models/pagination/list-items-dto';
 
 @Component({
   selector: 'app-bootcamp-showcase',
@@ -21,7 +21,7 @@ export class BootcampShowcaseComponent implements OnInit {
 
   filterText!: string;
 
-  bootcampList: BootcampListItemDto<GetBootcampResponse> = {
+  bootcampList: ListItemsDto<BootcampGetListResponse> = {
     index: 0,
     size: 0,
     count: 0,
@@ -44,7 +44,7 @@ export class BootcampShowcaseComponent implements OnInit {
     })
   }
 
-  navigateToBootcampDetailPage(bootcamp: GetBootcampResponse) {
+  navigateToBootcampDetailPage(bootcamp: BootcampGetListResponse) {
     const formattedName = this.formatService.formatBootcampDetailRoute(bootcamp.name);
     this.router.navigate(['/bootcamp', formattedName]);
 

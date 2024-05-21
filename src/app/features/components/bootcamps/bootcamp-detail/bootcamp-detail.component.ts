@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BootcampService } from '../../../services/concretes/bootcamp.service';
-import { GetBootcampResponse } from '../../../models/responses/bootcamps/get-bootcamp-response';
+import { BootcampGetListResponse } from '../../../models/responses/bootcamps/bootcamp-get-list-response';
 import { ApplicationService } from '../../../services/concretes/application.service';
 import { ApplicationPostRequest } from '../../../models/requests/applications/application-post-request';
 import { CommonModule } from '@angular/common';
@@ -22,7 +22,7 @@ export class BootcampDetailComponent implements OnInit {
 
   routeBootcampName!: string;
   bootcampId!: string;
-  bootcamp: GetBootcampResponse = {
+  bootcamp: BootcampGetListResponse = {
     id: '',
     name: '',
     startDate: new Date("0001-01-01T01:00:00"),

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { GetBootcampResponse } from '../../../models/responses/bootcamps/get-bootcamp-response';
+import { BootcampGetListResponse } from '../../../models/responses/bootcamps/bootcamp-get-list-response';
 import { BootcampService } from '../../../services/concretes/bootcamp.service';
 import { Router } from '@angular/router';
 import { PageRequest } from '../../../../core/models/pagination/page-request';
-import { BootcampListItemDto } from '../../../models/responses/bootcamps/bootcamp-list-item-dto';
 import { SharedModule } from '../../../../shared/shared.module';
 import { PaginatorModule } from 'primeng/paginator';
 import { CommonModule } from '@angular/common';
 import { FormatService } from '../../../services/concretes/format.service';
+import { ListItemsDto } from '../../../../core/models/pagination/list-items-dto';
 
 @Component({
   selector: 'app-bootcamp-list-finished',
@@ -18,7 +18,7 @@ import { FormatService } from '../../../services/concretes/format.service';
 })
 export class BootcampListFinishedComponent implements OnInit {
 
-  allFinishedBootcamps: BootcampListItemDto<GetBootcampResponse> = {
+  allFinishedBootcamps: ListItemsDto<BootcampGetListResponse> = {
     index: 0,
     size: 0,
     count: 0,
@@ -43,7 +43,7 @@ export class BootcampListFinishedComponent implements OnInit {
     })
   }
 
-  navigateToBootcampDetailPage(bootcamp: GetBootcampResponse) {
+  navigateToBootcampDetailPage(bootcamp: BootcampGetListResponse) {
     const formattedName = this.formatService.formatBootcampDetailRoute(bootcamp.name);
     this.router.navigate(['/bootcamp', formattedName]);
 

@@ -10,7 +10,11 @@ export const environment = {
       getFinishedBootcamps: '',
       searchAllBootcamps: '',
       createBootcamp: '',
-      updateBootcamp: ''
+      updateBootcamp: '',
+      deleteBootcamp: '',
+      deleteRangeBootcamp: '',
+      restoreBootcamp: '',
+      restoreRangeBootcamp: ''
     },
     bootcampStates: {
       getList: ''
