@@ -81,11 +81,14 @@ export class NavbarComponent implements OnInit {
     if (item.label === 'Çıkış Yap') {
       this.logOut();
     }
-    else if(item.label=='Profilim'){
+    else if (item.label == 'Profilim') {
       this.router.navigate(['Account/Profile/'])
-    } 
-    else if(item.label=='Başvurularım'){
+    }
+    else if (item.label == 'Başvurularım') {
       this.router.navigate(['Account/Applications/'])
+    }
+    else if (item.label == 'Yönetim Paneli') {
+      this.router.navigate(['admin'])
     }
 
   }
@@ -166,12 +169,36 @@ export class NavbarComponent implements OnInit {
 
   setRoleItems() {
     if (this.authService.hasRole(['Admin'])) {
-      this.menuItems.push(
+      this.authItems = [
         {
-          label: "Yönetim Paneli",
-          icon: "pi pi-wrench",
-          routerLink: 'admin',
-        })
+          label: 'Hesabım',
+          icon: 'pi pi-user',
+          items: [
+            {
+              label: 'Merhaba',
+              styleClass: 'header-text',
+              disabled: true
+            },
+            {
+              label: this.tokenService.getCurrentEmailAddress(),
+              styleClass: 'subtext',
+              disabled: true
+            },
+            {
+              separator: true
+            },
+            {
+              label: 'Yönetim Paneli',
+            },
+            {
+              separator: true
+            },
+            {
+              label: 'Çıkış Yap',
+            },
+          ]
+        }
+      ]
     }
 
   }
