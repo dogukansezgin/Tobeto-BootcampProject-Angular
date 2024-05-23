@@ -1,3 +1,3 @@
 export interface BootcampRestoreRangeResponse{
-    id: string[]
+    ids: string[]
 }

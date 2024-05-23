@@ -27,7 +27,7 @@ import { BootcampStateGetListResponse } from '../../../models/responses/bootcamp
 import { BootcampCreateRequest } from '../../../models/requests/bootcamps/bootcamp-create-request';
 import { CalendarModule } from 'primeng/calendar';
 import { InstructorService } from '../../../services/concretes/instructor.service';
-import { InstructorGetBasicInfoResponse } from '../../../models/responses/users/instructors/instructor-get-basic-info-response';
+import { InstructorGetBasicInfoResponse } from '../../../models/responses/instructors/instructor-get-basic-info-response';
 import { BootcampUpdateRequest } from '../../../models/requests/bootcamps/bootcamp-update-request';
 import { BootcampDeleteRequest } from '../../../models/requests/bootcamps/bootcamp-delete-request';
 import { ListItemsDto } from '../../../../core/models/pagination/list-items-dto';
@@ -40,7 +40,7 @@ import { BootcampRestoreRangeRequest } from '../../../models/requests/bootcamps/
 @Component({
   selector: 'app-bootcamps',
   standalone: true,
-  imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule, ButtonModule],
+  imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
   providers: [BootcampService, MessageService, ConfirmationService],
   templateUrl: './bootcamps.component.html',
   styleUrl: './bootcamps.component.scss'
@@ -131,7 +131,7 @@ export class BootcampsComponent implements OnInit {
   //
   submitted: boolean = false;
 
-  filterValue: string = '';
+  filterValues: string[] = ['', ''];
 
   readonly PAGE_SIZE = 30;
 
@@ -191,8 +191,8 @@ export class BootcampsComponent implements OnInit {
       companyName: ''
     }
 
-    this.submitted = false;
     this.bootcampCreateDialog = true;
+    this.submitted = false;
   }
 
   openEdit(bootcamp: BootcampGetListResponse) {
@@ -219,6 +219,7 @@ export class BootcampsComponent implements OnInit {
     }
 
     this.bootcampUpdateDialog = true;
+    this.submitted = false;
   }
 
   hideDialog() {
@@ -554,6 +555,9 @@ export class BootcampsComponent implements OnInit {
       this.bootcampCreateRequest.bootcampStateId = this.selectedBootcampState.id;
 
       this.bootcampService.createBootcamp(this.bootcampCreateRequest).subscribe(response => {
+        this.bootcampCreateDialog = false;
+        this.submitted = false;
+
         this.bootcamp = {
           id: response.id,
           name: response.name,
@@ -628,6 +632,9 @@ export class BootcampsComponent implements OnInit {
       this.bootcampUpdateRequest.bootcampStateId = this.selectedBootcampState.id;
 
       this.bootcampService.updateBootcamp(this.bootcampUpdateRequest).subscribe(response => {
+        this.bootcampUpdateDialog = false;
+        this.submitted = false;
+
         this.bootcamp = {
           id: response.id,
           name: response.name,
@@ -702,15 +709,6 @@ export class BootcampsComponent implements OnInit {
     return index;
   }
 
-  createId(): string {
-    let id = '';
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
-
   getSeverity(status: string) {
     switch (status) {
       case 'ACTIVE':
@@ -724,18 +722,16 @@ export class BootcampsComponent implements OnInit {
     }
   }
 
-  filterTable(event: Event, dt: any): void {
+  filterTable(event: Event, dt: any, index: number): void {
     if (event.target instanceof HTMLInputElement) {
-      this.filterValue = event.target.value;
-      dt.filterGlobal(this.filterValue, 'contains');
+      this.filterValues[index] = event.target.value;
+      dt.filterGlobal(this.filterValues[index], 'contains');
     }
   }
 
-  filterDeletedTable(event: Event, dt: any): void {
-    if (event.target instanceof HTMLInputElement) {
-      this.filterValue = event.target.value;
-      dt.filterGlobal(this.filterValue, 'contains');
-    }
+  clearFilter(dt: any, index: number) {
+    dt.clear();
+    this.filterValues[index] = ''
   }
 
   navigateToBootcampDetailPage(bootcamp: BootcampGetListResponse) {

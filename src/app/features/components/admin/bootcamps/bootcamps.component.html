@@ -15,7 +15,8 @@
                     </div>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
-                        <input pInputText type="text" (input)="filterTable($event, dt1)" placeholder="Filtrele..." />
+                        <input pInputText type="text" [(ngModel)]="filterValues[0]" (input)="filterTable($event, dt1, 0)" placeholder="Filtrele..." />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt1, 0)" *ngIf="filterValues[0]" />
                     </span>
                 </div>
                 <p-toolbar styleClass="mb-2 mt-3 gap-2">
@@ -138,7 +139,7 @@
         
             <ng-template pTemplate="footer">
                 <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
-                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createBootcamp()" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createBootcamp()" [disabled]="submitted" />
             </ng-template>
         </p-dialog>
         
@@ -193,7 +194,7 @@
 
             <ng-template pTemplate="footer">
                 <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
-                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="updateBootcamp()" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="updateBootcamp()" [disabled]="submitted" />
             </ng-template>
         </p-dialog>
 
@@ -221,7 +222,8 @@
                     <h5 class="m-0">Deleted Bootcamps</h5>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
-                        <input pInputText type="text" (input)="filterDeletedTable($event, dt2)" placeholder="Filtrele..." />
+                        <input pInputText type="text" [(ngModel)]="filterValues[1]" (input)="filterTable($event, dt2, 1)" placeholder="Filtrele..." />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt2, 1)" *ngIf="filterValues[1]" />
                     </span>
                 </div>
                 <p-toolbar styleClass="mb-2 mt-3 gap-2">

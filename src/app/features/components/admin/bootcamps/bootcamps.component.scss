@@ -90,5 +90,28 @@
         .p-toolbar {
             background-color: white;
         }
+        
+        .clear-filter-button {
+            position: absolute;
+            right: 0rem;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            padding: 0;
+
+            .p-button:hover {
+                background-color: #dc3545;
+                border-color: #dc3545;
+                color: white;
+            }
+            .p-button:focus {
+                box-shadow: none;
+            }
+        }
+        
+        .p-input-icon-left {
+            padding-right: 3.5rem;
+        }
     }
 }
