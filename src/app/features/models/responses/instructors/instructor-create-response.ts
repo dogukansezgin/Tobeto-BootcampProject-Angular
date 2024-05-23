@@ -1,4 +1,4 @@
-export interface InstructorGetListResponse {
+export interface InstructorCreateResponse{
     id: string,
     email: string,
     userName: string,
@@ -6,5 +6,7 @@ export interface InstructorGetListResponse {
     lastName: string,
     dateOfBirth: Date,
     nationalIdentity: string,
-    companyName: string
+    companyName: string,
+
+    createdDate: Date
 }

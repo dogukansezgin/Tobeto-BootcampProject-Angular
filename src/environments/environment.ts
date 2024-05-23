@@ -44,8 +44,15 @@ export const environment = {
       getByName: '/api/ApplicationStates/getByName/'
     },
     instructors: {
-      getList: '/api/Instructors',
-      getBasicInfo: '/api/Instructors/getBasicInfo'
+      getList: '/api/Instructors/get',
+      getListDeleted: '/api/Instructors/getDeleted',
+      getBasicInfo: '/api/Instructors/getBasicInfo',
+      createInstructors: '/api/Instructors/create',
+      updateInstructors: '/api/Instructors/update',
+      deleteInstructors: '/api/Instructors/delete',
+      deleteRangeInstructors: '/api/Instructors/deleteRange',
+      restoreInstructors: '/api/Instructors/restore',
+      restoreRangeInstructors: '/api/Instructors/restoreRange'
     }
 
     // Diğer endpointler buraya eklenebilir

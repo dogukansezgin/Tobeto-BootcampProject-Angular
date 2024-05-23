@@ -1,129 +1,287 @@
+<!-- Instructors Table -->
 <div class="content-container">
     <div class="card">
         <p-toast />
 
-        <p-table #dt [value]="instructors.items" [rows]="10" [paginator]="true"
-            [globalFilterFields]="['firstName', 'lastName', 'email', 'companyName']"
-            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedInstructor" [rowHover]="true" dataKey="id"
+        <p-table #dt1 [value]="instructors.items" [rows]="20" [paginator]="true"
+            [globalFilterFields]="['userName', 'email', 'companyName', 'createdDate']"
+            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedInstructors" [rowHover]="true" dataKey="id"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="500px">
+            [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="600px">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
-                    <h5 class="m-0">Manage Instructors</h5>
+                    <div class="p-toolbar table-header">    
+                        <h5 class=" m-0">Instructors</h5>
+                    </div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" [(ngModel)]="filterValues[0]" (input)="filterTable($event, dt1, 0)" placeholder="Filtrele..." />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt1, 0)" *ngIf="filterValues[0]" />
+                    </span>
                 </div>
-                <br>
-                <div class="seperator">
-                    <p-toolbar styleClass="mb-4 gap-2">
-                        <ng-template pTemplate="left">
-                            <p-button pRipple severity="success" label="Ekle" icon="pi pi-plus" class="mr-2"
-                                (click)="openNew()" />
-                            <p-button pRipple severity="danger" label="Sil" icon="pi pi-trash"
-                                (click)="deleteSelectedInstructors()"
-                                [disabled]="!selectedInstructor || !selectedInstructor.length" />
-                        </ng-template>
-
-                        <ng-template pTemplate="right">
-                            <span class="p-input-icon-left">
-                                <i class="pi pi-search"></i>
-                                <input pInputText type="text" (input)="filterTable($event, dt)"
-                                    placeholder="Filtrele..." />
-                            </span>
-                        </ng-template>
-                    </p-toolbar>
-                </div>
+                <p-toolbar styleClass="mb-2 mt-3 gap-2">
+                    <ng-template pTemplate="left">
+                        <p-button pRipple severity="success" label="Ekle" icon="pi pi-plus" class="mr-2" (click)="openNew()" />
+                        <p-button pRipple severity="danger" label="Sil" icon="pi pi-trash" (click)="deleteSelectedInstructors(false)"
+                            [disabled]="!selectedInstructors || !selectedInstructors.length" />
+                    </ng-template>
+                </p-toolbar>
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 4rem">
                         <p-tableHeaderCheckbox />
                     </th>
-                    <th pSortableColumn="firstName" style="min-width:8rem">
-                        Ad <p-sortIcon field="firstName" />
+                    <th pSortableColumn="userName" style="min-width:12rem">
+                        Ad Soyad <p-sortIcon field="userName" />
                     </th>
-                    <th pSortableColumn="lastName" style="min-width:8rem">
-                        Soyad <p-sortIcon field="lastName" />
-                    </th>
-                    <th pSortableColumn="email" style="min-width:8rem">
+                    <th pSortableColumn="email" style="min-width:12rem">
                         Email <p-sortIcon field="email" />
                     </th>
                     <th pSortableColumn="companyName" style="min-width:8rem">
                         Şirket <p-sortIcon field="companyName" />
                     </th>
+                    <th pSortableColumn="createdDate" style="min-width:12rem">
+                        Oluşturulma Tarihi <p-sortIcon field="createdDate" />
+                    </th>
                     <th style="min-width:12rem;"></th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-intructor>
+            <ng-template pTemplate="body" let-instructor>
                 <tr>
                     <td>
-                        <p-tableCheckbox [value]="intructor" />
+                        <p-tableCheckbox [value]="instructor" />
                     </td>
                     <td>
-                        {{ intructor.firstName }}
+                        {{ instructor.userName }}
                     </td>
                     <td>
-                        {{ intructor.lastName }}
+                        {{ instructor.email }}
                     </td>
                     <td>
-                        {{ intructor.email }}
+                        {{ instructor.companyName }}
                     </td>
                     <td>
-                        {{ intructor.companyName }}
+                        {{ instructor.createdDate.toString().substring(0,10) }}
                     </td>
                     <td>
                         <p-button pRipple icon="pi pi-pencil" class="m-1" [rounded]="true" [outlined]="true"
-                            severity="success" (click)="editInstructor(intructor)" />
+                            severity="success" (click)="openEdit(instructor)" />
                         <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                            (click)="deleteInstructor(intructor)" />
+                            (click)="deleteInstructor(instructor, false)" />
                     </td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="summary">
                 <div class="flex align-items-center justify-content-between">
-                    Toplam {{ instructors.items ? instructors.count : 0 }} adet Eğitmen var.
+                    Toplam {{ instructors.items ? instructors.items.length : 0 }} adet Instructor var.
                 </div>
             </ng-template>
         </p-table>
 
-        <p-dialog [(visible)]="instructorDialog" [style]="{ width: '450px' }" header="Instructor Details" [modal]="true"
-            styleClass="p-fluid">
+        <!-- Create Dialog -->
+        <p-dialog [(visible)]="instructorCreateDialog" [style]="{ width: '450px', height: '800px' }" header="Create Instructor" [modal]="true" styleClass="p-fluid">
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="firstName">Ad</label>
-                    <input type="text" pInputText id="firstName" [(ngModel)]="instructor.firstName" required autofocus />
-                    <small class="p-error" *ngIf="submitted && !instructor.firstName">
+                    <input type="text" pInputText id="firstName" [(ngModel)]="instructorCreateRequest.firstName" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !instructorCreateRequest.firstName">
                         Ad alanı boş olamaz.
                     </small>
                 </div>
                 <div class="field">
                     <label for="lastName">Soyad</label>
-                    <input type="text" pInputText id="lastName" [(ngModel)]="instructor.lastName" required autofocus />
-                    <small class="p-error" *ngIf="submitted && !instructor.lastName">
+                    <input type="text" pInputText id="lastName" [(ngModel)]="instructorCreateRequest.lastName" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !instructorCreateRequest.lastName">
                         Soyad alanı boş olamaz.
                     </small>
                 </div>
                 <div class="field">
                     <label for="email">Email</label>
-                    <input type="text" pInputText id="email" [(ngModel)]="instructor.email" required autofocus />
-                    <small class="p-error" *ngIf="submitted && !instructor.email">
+                    <input type="email" pInputText id="email" [(ngModel)]="instructorCreateRequest.email" required />
+                    <small class="p-error" *ngIf="submitted && !instructorCreateRequest.email">
                         Email alanı boş olamaz.
                     </small>
                 </div>
                 <div class="field">
-                    <label for="companyName">Şirket</label>
-                    <input type="text" pInputText id="companyName" [(ngModel)]="instructor.companyName" required autofocus />
-                    <small class="p-error" *ngIf="submitted && !instructor.companyName">
-                        Şirket alanı boş olamaz.
+                    <label for="password">Şifre</label>
+                    <input type="password" pInputText id="password" [(ngModel)]="instructorCreateRequest.password" required />
+                    <small class="p-error" *ngIf="submitted && !instructorCreateRequest.password">
+                        Şifre alanı boş olamaz.
                     </small>
                 </div>
-                
+                <div class="field">
+                    <label for="dateOfBirth">Doğum Tarihi</label>
+                    <p-calendar id="dateOfBirth" [(ngModel)]="instructorCreateRequest.dateOfBirth" dateFormat="dd-mm-yy" [minDate]="minDate" [maxDate]="maxDate" showIcon="true"></p-calendar>
+                    <small class="p-error" *ngIf="submitted && !instructorCreateRequest.dateOfBirth">
+                        Doğum Tarihi alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="nationalIdentity">Kimlik Numarası</label>
+                    <input type="text" pInputText id="nationalIdentity" [(ngModel)]="instructorCreateRequest.nationalIdentity" required />
+                    <small class="p-error" *ngIf="submitted && !instructorCreateRequest.nationalIdentity">
+                        Kimlik Numarası alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="companyName">Şirket Adı</label>
+                    <input type="text" pInputText id="companyName" [(ngModel)]="instructorCreateRequest.companyName" required />
+                    <small class="p-error" *ngIf="submitted && !instructorCreateRequest.companyName">
+                        Şirket Adı alanı boş olamaz.
+                    </small>
+                </div>
+
+            </ng-template>
+        
+            <ng-template pTemplate="footer">
+                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createInstructor()" [disabled]="submitted" />
+            </ng-template>
+        </p-dialog>
+        
+        <!-- Update Dialog -->
+        <p-dialog [(visible)]="instructorUpdateDialog" [style]="{ width: '450px', height: '800px' }" header="Instructor Details" [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="firstName">Ad</label>
+                    <input type="text" pInputText id="firstName" [(ngModel)]="instructorUpdateRequest.firstName" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.firstName">
+                        Ad alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="lastName">Soyad</label>
+                    <input type="text" pInputText id="lastName" [(ngModel)]="instructorUpdateRequest.lastName" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.lastName">
+                        Soyad alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" pInputText id="email" [(ngModel)]="instructorUpdateRequest.email" required />
+                    <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.email">
+                        Email alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="dateOfBirth">Doğum Tarihi</label>
+                    <p-calendar id="dateOfBirth" [(ngModel)]="instructorUpdateRequest.dateOfBirth" dateFormat="dd-mm-yy" [minDate]="minDate" [maxDate]="maxDate" showIcon="true"></p-calendar>
+                    <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.dateOfBirth">
+                        Doğum Tarihi alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="nationalIdentity">Kimlik Numarası</label>
+                    <input type="text" pInputText id="nationalIdentity" [(ngModel)]="instructorUpdateRequest.nationalIdentity" required />
+                    <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.nationalIdentity">
+                        Kimlik Numarası alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="companyName">Şirket Adı</label>
+                    <input type="text" pInputText id="companyName" [(ngModel)]="instructorUpdateRequest.companyName" required />
+                    <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.companyName">
+                        Şirket Adı alanı boş olamaz.
+                    </small>
+                </div>
+        
             </ng-template>
 
             <ng-template pTemplate="footer">
                 <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
-                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="saveInstructor()" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="updateInstructor()" [disabled]="submitted" />
             </ng-template>
         </p-dialog>
 
-        <p-confirmDialog [style]="{ width: '550px' }" />
+    </div>
+</div>
+
+<!--  -->
+<!--  -->
+<p-confirmDialog [style]="{ width: '850px' }" />
+<!--  -->
+<!--  -->
+
+<!-- Deleted Instructors Table -->
+<div class="content-container">
+    <div class="card">
+        <p-toast />
+
+        <p-table #dt2 [value]="deletedInstructors.items" [rows]="20" [paginator]="true"
+            [globalFilterFields]="['userName', 'email', 'companyName', 'deletedDate']"
+            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedDeletedInstructors" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="500px">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <h5 class="m-0">Deleted Instructors</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" [(ngModel)]="filterValues[1]" (input)="filterTable($event, dt2, 1)" placeholder="Filtrele..." />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt2, 1)" *ngIf="filterValues[1]" />
+                    </span>
+                </div>
+                <p-toolbar styleClass="mb-2 mt-3 gap-2">
+                    <ng-template pTemplate="left">
+                        <p-button pRipple severity="success" label="Kurtar" icon="pi pi-replay" class="mr-2" (click)="restoreSelectedInstructors()"
+                            [disabled]="!selectedDeletedInstructors || !selectedDeletedInstructors.length" />
+                        <p-button pRipple severity="danger" label="Kalıcı Sil" icon="pi pi-trash" (click)="deleteSelectedInstructors(true)"
+                            [disabled]="!selectedDeletedInstructors || !selectedDeletedInstructors.length" />
+                    </ng-template>
+                </p-toolbar>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox />
+                    </th>
+                    <th pSortableColumn="userName" style="min-width:12rem">
+                        Ad Soyad <p-sortIcon field="userName" />
+                    </th>
+                    <th pSortableColumn="email" style="min-width:12rem">
+                        Email <p-sortIcon field="email" />
+                    </th>
+                    <th pSortableColumn="companyName" style="min-width:8rem">
+                        Şirket <p-sortIcon field="companyName" />
+                    </th>
+                    <th pSortableColumn="deletedDate" style="min-width:12rem">
+                        Silinme Tarihi <p-sortIcon field="deletedDate" />
+                    </th>
+                    <th style="min-width:12rem;"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-instructor>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="instructor" />
+                    </td>
+                    <td>
+                        {{ instructor.userName }}
+                    </td>
+                    <td>
+                        {{ instructor.email }}
+                    </td>
+                    <td>
+                        {{ instructor.companyName }}
+                    </td>
+                    <td>
+                        {{ instructor.deletedDate.toString().substring(0,10) }}
+                    </td>
+                    <td>
+                        <p-button pRipple icon="pi pi-replay" class="m-1" [rounded]="true" [outlined]="true"
+                            severity="success" (click)="restoreInstructor(instructor)" />
+                        <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                            (click)="deleteInstructor(instructor, true)" />
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                    Toplam {{ deletedInstructors.items ? deletedInstructors.items.length : 0 }} adet Silinmiş Instructor var.
+                </div>
+            </ng-template>
+        </p-table>
+
     </div>
 </div>
