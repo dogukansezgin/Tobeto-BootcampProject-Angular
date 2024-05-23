@@ -5,12 +5,16 @@ import { ApplicantInfoUpdateRequest } from "../../models/requests/users/applican
 import { GetApplicantResponse } from "../../models/responses/users/applicant/get-applicant-response";
 import { ApplicantUpdateRequest } from "../../models/requests/users/applicants/applicant-update-request";
 import { ApplicantAboutUpdateRequest } from "../../models/requests/users/applicants/applicant-about-model";
+import { PageRequest } from "../../../core/models/pagination/page-request";
+import { GetListResponse } from "../../models/responses/applicants/get-list-response";
+import { GetListApplicantListItemDto } from "../../models/responses/applicants/get-list-applicant-list-item-dto";
 
 @Injectable()
 export abstract class ApplicantBaseService {
 
-    abstract getApplicant(applicantId:string):Observable<GetApplicantResponse>
-    abstract updateApplicant(request: ApplicantUpdateRequest) : Observable<GetApplicantResponse>
+    abstract getApplicant(applicantId: string): Observable<GetApplicantResponse>
+    abstract updateApplicant(request: ApplicantUpdateRequest): Observable<GetApplicantResponse>
 
-    abstract updateAboutApplicant(request:ApplicantAboutUpdateRequest):Observable<GetApplicantResponse>
+    abstract updateAboutApplicant(request: ApplicantAboutUpdateRequest): Observable<GetApplicantResponse>
+    abstract getList(pageRequest: PageRequest): Observable<GetListResponse<GetListApplicantListItemDto>>
 }

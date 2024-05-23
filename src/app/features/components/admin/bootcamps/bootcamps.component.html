@@ -100,11 +100,11 @@
                     <label for="instructor">Eğitmen</label>
                     <p-dropdown [(ngModel)]="selectedInstructor" inputId="instructor" [options]="instructors" placeholder="*Eğitmen Seçin">
                         <ng-template pTemplate="selectedItem">
-                            <p-tag [value]="selectedInstructor.userName" severity="" class="mr-2" /> <br>
+                            <p-tag [value]="selectedInstructor.userName" class="mr-2" /> <br>
                             <p-tag [value]="selectedInstructor.companyName" severity="warning" />
                         </ng-template>
                         <ng-template let-option pTemplate="item">
-                            <p-tag [value]="option.userName" severity="" class="mr-2"/>
+                            <p-tag [value]="option.userName" class="mr-2"/>
                             <p-tag [value]="option.companyName" severity="warning" />
                         </ng-template>
                     </p-dropdown>
@@ -155,11 +155,11 @@
                     <label for="instructor">Eğitmen</label>
                     <p-dropdown [(ngModel)]="selectedInstructor" inputId="instructor" [options]="instructors" placeholder="*Eğitmen Seçin">
                         <ng-template pTemplate="selectedItem">
-                            <p-tag [value]="selectedInstructor.userName" severity="" class="mr-2" /> <br>
+                            <p-tag [value]="selectedInstructor.userName"  class="mr-2" /> <br>
                             <p-tag [value]="selectedInstructor.companyName" severity="warning" />
                         </ng-template>
                         <ng-template let-option pTemplate="item">
-                            <p-tag [value]="option.userName" severity="" class="mr-2"/>
+                            <p-tag [value]="option.userName"  class="mr-2"/>
                             <p-tag [value]="option.companyName" severity="warning" />
                         </ng-template>
                     </p-dropdown>

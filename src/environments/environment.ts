@@ -33,12 +33,18 @@ export const environment = {
     },
     applicants: {
       getApplicantById: '/api/Applicants/',
-      updateApplicantInfo: '/api/Applicants/UpdateFromAuth'
+      updateApplicantInfo: '/api/Applicants/UpdateFromAuth',
+      getList:'/api/Applicants'
     },
     applications: {
       post: '/api/Applications/post',
       checkApplication: '/api/Applications/checkApplication',
-      appliedBootcamps: '/api/Applications/appliedBootcamps'
+      appliedBootcamps: '/api/Applications/appliedBootcamps',
+      getApplications:'/api/Applications',
+      deleteApplication:'/api/Applications/delete/',
+      updateApplication:'/api/Applications/update',
+      deleteSelected:'/api/Applications/deleteSelected',
+      getByState:'/api/Applications/getByState'
     },
     applicationStates: {
       getByName: '/api/ApplicationStates/getByName/'

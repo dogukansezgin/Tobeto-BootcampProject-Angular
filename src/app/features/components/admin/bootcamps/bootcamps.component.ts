@@ -720,7 +720,7 @@ export class BootcampsComponent implements OnInit {
       case 'CANCELLED':
         return 'danger';
       default:
-        return '';
+        return 'info';
     }
   }
 

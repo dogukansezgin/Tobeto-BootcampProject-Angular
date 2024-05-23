@@ -10,6 +10,9 @@ import { LocalStorageService } from "./local-storage.service";
 import { ApplicantUpdateRequest } from "../../models/requests/users/applicants/applicant-update-request";
 import { GetApplicantResponse } from "../../models/responses/users/applicant/get-applicant-response";
 import { ApplicantAboutUpdateRequest } from "../../models/requests/users/applicants/applicant-about-model";
+import { PageRequest } from "../../../core/models/pagination/page-request";
+import { GetListResponse } from "../../models/responses/applicants/get-list-response";
+import { GetListApplicantListItemDto } from "../../models/responses/applicants/get-list-applicant-list-item-dto";
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +21,7 @@ export class ApplicantService extends ApplicantBaseService {
 
     private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.applicants.getApplicantById;
     private readonly apiUrl_UpdateInfo: string = environment.apiUrl + environment.endpoints.applicants.updateApplicantInfo;
+    private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.applicants.getList;
 
     constructor(private httpClient: HttpClient, private localStorageService: LocalStorageService) { super(); }
 
@@ -50,5 +54,27 @@ export class ApplicantService extends ApplicantBaseService {
                 throw responseError;
             })
             ));
+    }
+    override getList(pageRequest: PageRequest): Observable<GetListResponse<GetListApplicantListItemDto>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize
+        }
+        return this.httpClient.get<GetListResponse<GetListApplicantListItemDto>>(this.apiUrl_GetList, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: GetListResponse<GetListApplicantListItemDto> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
+
+            );
     }
 }

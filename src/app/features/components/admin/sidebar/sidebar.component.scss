@@ -2,6 +2,10 @@ body {
     background: #eaeef6;
     font-family: 'Open Sans', sans-serif;
 }
+.font{
+    width: 2.0rem; 
+    height: 3rem;
+}
 
 .navbar {
     margin-top: 40px;
@@ -20,7 +24,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 3.5rem;
+    height: 4.0rem;
     width: 5.5rem;
     color: #5c626c;
     transition: 250ms ease all;

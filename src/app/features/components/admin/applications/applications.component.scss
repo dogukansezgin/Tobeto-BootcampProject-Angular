@@ -1,0 +1,42 @@
+:host {
+    ::ng-deep {
+        .p-dialog .product-image {
+            width: 150px;
+            margin: 0 auto 2rem auto;
+            display: block;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .card {
+            width: 100%;
+        }
+
+        .mr-2 {
+            margin-right: 0.5rem;
+        }
+
+        .p-button {
+            border-radius: 6px;
+        }
+
+        .p-button-rounded {
+            border-radius: 50%;
+        }
+
+        .content-container {
+            padding: 30px 100px 50px 0px;
+        }
+
+        .p-dialog {
+            border-radius: 50px;
+            background-color: #ffffff;
+        }
+        
+        .p-dialog-footer button{
+           margin: 0 0.5rem 0 0;
+        }
+    }
+}
