@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ApplicantAboutUpdateRequest } from '../../../models/requests/users/applicants/applicant-about-model';
-import { GetApplicantResponse } from '../../../models/responses/users/applicant/get-applicant-response';
+import { GetApplicantResponse } from '../../../models/responses/applicant/get-applicant-response';
 import { ApplicantService } from '../../../services/concretes/applicant.service';
 import { TokenService } from '../../../services/concretes/token.service';
+import { ApplicantAboutUpdateRequest } from '../../../models/requests/applicants/applicant-about-model';
 
 
 @Component({

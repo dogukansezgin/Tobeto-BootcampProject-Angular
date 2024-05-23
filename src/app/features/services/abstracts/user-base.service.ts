@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { GetUserInfoResponse } from "../../models/responses/users/user/get-user-info-response";
+import { GetUserInfoResponse } from "../../models/responses/users/get-user-info-response";
 
 
 @Injectable()

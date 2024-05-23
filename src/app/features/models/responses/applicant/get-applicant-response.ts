@@ -1,13 +1,11 @@
-import { AccessTokenModel } from "../access-token-model"
+import { AccessTokenModel } from "../users/access-token-model";
 
-export interface GetApplicantInfoResponse {
+export interface GetApplicantResponse{
     id: string,
     email: string,
-    userName: string,
     firstName: string,
     lastName: string,
     dateOfBirth: Date,
-    nationalIdentity: string,
     about?: string,
     accessToken: AccessTokenModel
 }

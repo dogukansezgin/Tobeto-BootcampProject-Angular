@@ -3,7 +3,8 @@ export const environment = {
   apiUrl: 'http://localhost:5278',
   endpoints: {
     bootcamps: {
-      getBootcamps: '',
+      getList: '',
+      getListDeleted: '',
       getBootcampById: '',
       getBootcampByName: '',
       getUnfinishedBootcamps: '',
@@ -44,7 +45,14 @@ export const environment = {
     },
     instructors: {
       getList: '',
-      getBasicInfo: ''
+      getListDeleted: '',
+      getBasicInfo: '',
+      createInstructors: '',
+      updateInstructors: '',
+      deleteInstructors: '',
+      deleteRangeInstructors: '',
+      restoreInstructors: '',
+      restoreRangeInstructors: ''
     }
 
     // Diğer endpointler buraya eklenebilir

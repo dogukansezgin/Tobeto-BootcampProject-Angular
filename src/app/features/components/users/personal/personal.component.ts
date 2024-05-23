@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ApplicantUpdateRequest } from '../../../models/requests/users/applicants/applicant-update-request';
-import { GetApplicantResponse } from '../../../models/responses/users/applicant/get-applicant-response';
+import { GetApplicantResponse } from '../../../models/responses/applicant/get-applicant-response';
 import { ApplicantService } from '../../../services/concretes/applicant.service';
 import { TokenService } from '../../../services/concretes/token.service';
+import { ApplicantUpdateRequest } from '../../../models/requests/applicants/applicant-update-request';
 
 @Component({
   selector: 'app-personal',

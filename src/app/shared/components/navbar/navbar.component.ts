@@ -4,7 +4,7 @@ import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../features/services/concretes/auth.service';
 import { Router } from '@angular/router';
 import { TokenService } from '../../../features/services/concretes/token.service';
-import { GetUserInfoResponse } from '../../../features/models/responses/users/user/get-user-info-response';
+import { GetUserInfoResponse } from '../../../features/models/responses/users/get-user-info-response';
 import { BootcampService } from '../../../features/services/concretes/bootcamp.service';
 import { BootcampSearchItemResponse } from '../../../features/models/responses/bootcamps/bootcamp-search-item-response';
 import { FormatService } from '../../../features/services/concretes/format.service';

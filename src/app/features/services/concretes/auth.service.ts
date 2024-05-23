@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AuthBaseService } from "../abstracts/auth-base.service";
 import { Observable, catchError, map } from "rxjs";
-import { ApplicantForRegisterRequest } from "../../models/requests/users/applicants/applicant-for-register-request";
 import { AccessTokenModel } from "../../models/responses/users/access-token-model";
 import { environment } from "../../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
@@ -10,6 +9,7 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { UserForLoginRequest } from "../../models/requests/users/user-for-login-request";
 import { AccessTokenDto } from "../../models/responses/users/access-token-dto";
 import { TokenService } from "./token.service";
+import { ApplicantForRegisterRequest } from "../../models/requests/applicants/applicant-for-register-request";
 
 @Injectable({
     providedIn: 'root'

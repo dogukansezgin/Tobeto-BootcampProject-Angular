@@ -1,15 +1,12 @@
 import { Injectable } from "@angular/core";
 import { ApplicantBaseService } from "../abstracts/applicant-base.service";
 import { Observable, catchError, map } from "rxjs";
-import { GetApplicantInfoResponse } from "../../models/responses/users/applicant/get-applicant-info-response";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
-import { ApplicantInfoUpdateRequest } from "../../models/requests/users/applicants/applicant-info-update-request";
-import { AccessTokenModel } from "../../models/responses/users/access-token-model";
 import { LocalStorageService } from "./local-storage.service";
-import { ApplicantUpdateRequest } from "../../models/requests/users/applicants/applicant-update-request";
-import { GetApplicantResponse } from "../../models/responses/users/applicant/get-applicant-response";
-import { ApplicantAboutUpdateRequest } from "../../models/requests/users/applicants/applicant-about-model";
+import { GetApplicantResponse } from "../../models/responses/applicant/get-applicant-response";
+import { ApplicantAboutUpdateRequest } from "../../models/requests/applicants/applicant-about-model";
+import { ApplicantUpdateRequest } from "../../models/requests/applicants/applicant-update-request";
 
 @Injectable({
     providedIn: 'root'
