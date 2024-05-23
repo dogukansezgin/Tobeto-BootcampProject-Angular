@@ -32,8 +32,16 @@ export const environment = {
       getUserById: '/api/Users/'
     },
     applicants: {
+      getList: '/api/Applicants/get',
+      getListDeleted: '/api/Applicants/getDeleted',
       getApplicantById: '/api/Applicants/',
-      updateApplicantInfo: '/api/Applicants/UpdateFromAuth'
+      updateApplicantInfo: '/api/Applicants/UpdateFromAuth',
+      createApplicants: '/api/Applicants/create',
+      updateApplicants: '/api/Applicants/update',
+      deleteApplicants: '/api/Applicants/delete',
+      deleteRangeApplicants: '/api/Applicants/deleteRange',
+      restoreApplicants: '/api/Applicants/restore',
+      restoreRangeApplicants: '/api/Applicants/restoreRange'
     },
     applications: {
       post: '/api/Applications/post',

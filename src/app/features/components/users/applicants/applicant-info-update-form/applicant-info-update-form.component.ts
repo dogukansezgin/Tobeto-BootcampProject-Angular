@@ -69,15 +69,15 @@ export class ApplicantInfoUpdateFormComponent implements OnInit {
       this.updatedData.userName = `${this.updatedData.firstName} ${this.updatedData.lastName}`
 
       setTimeout(() => {
-        this.applicantService.updateApplicant(this.updatedData).subscribe(response =>{
-          this.formSubmitted = false;
-          alert("Güncelleme işlemi başarılı.");
+        // this.applicantService.updateApplicant(this.updatedData).subscribe(response =>{
+        //   this.formSubmitted = false;
+        //   alert("Güncelleme işlemi başarılı.");
 
-        }, error => {
-          console.error("Güncelleme işlemi sırasında bir hata oluştu:", error);
-          this.formSubmitted = false;
+        // }, error => {
+        //   console.error("Güncelleme işlemi sırasında bir hata oluştu:", error);
+        //   this.formSubmitted = false;
 
-        });
+        // });
         
       }, 2000);
 

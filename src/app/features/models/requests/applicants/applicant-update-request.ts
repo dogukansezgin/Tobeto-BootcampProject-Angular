@@ -1,7 +1,9 @@
 export interface ApplicantUpdateRequest{
     id: string,
-    firstName?: string,
-    lastName?: string,
+    email: string,
+    firstName: string,
+    lastName: string,
     dateOfBirth?: Date,
-    about?: string
+    nationalIdentity?: string,
+    about?: string,
 }
