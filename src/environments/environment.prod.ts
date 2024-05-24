@@ -32,8 +32,16 @@ export const environment = {
       getUserById: ''
     },
     applicants: {
+      getList: '',
+      getListDeleted: '',
       getApplicantById: '',
-      updateApplicantInfo: ''
+      updateApplicantInfo: '',
+      createApplicants: '',
+      updateApplicants: '',
+      deleteApplicants: '',
+      deleteRangeApplicants: '',
+      restoreApplicants: '',
+      restoreRangeApplicants: ''
     },
     applications: {
       post: '',
@@ -53,6 +61,16 @@ export const environment = {
       deleteRangeInstructors: '',
       restoreInstructors: '',
       restoreRangeInstructors: ''
+    },
+    employees: {
+      getList: '',
+      getListDeleted: '',
+      createEmployees: '',
+      updateEmployees: '',
+      deleteEmployees: '',
+      deleteRangeEmployees: '',
+      restoreEmployees: '',
+      restoreRangeEmployees: ''
     }
 
     // Diğer endpointler buraya eklenebilir

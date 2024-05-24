@@ -25,6 +25,7 @@ import { InstructorsComponent } from './features/components/admin/instructors/in
 import { SettingsComponent } from './features/components/admin/settings/settings.component';
 import { AccountComponent } from './features/components/admin/account/account.component';
 import { ApplicantsComponent } from './features/components/admin/applicants/applicants.component';
+import { EmployeesComponent } from './features/components/admin/employees/employees.component';
 
 export const routes: Routes =
     [
@@ -109,6 +110,7 @@ export const routes: Routes =
                 { path: 'Applications', component: ApplicationsComponent },
                 { path: 'Applicants', component: ApplicantsComponent },
                 { path: 'Instructors', component: InstructorsComponent },
+                { path: 'Employees', component: EmployeesComponent },
                 { path: 'Settings', component: SettingsComponent },
                 { path: 'Account', component: AccountComponent }
             ]

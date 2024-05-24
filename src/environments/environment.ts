@@ -61,6 +61,16 @@ export const environment = {
       deleteRangeInstructors: '/api/Instructors/deleteRange',
       restoreInstructors: '/api/Instructors/restore',
       restoreRangeInstructors: '/api/Instructors/restoreRange'
+    },
+    employees: {
+      getList: '/api/Employees/get',
+      getListDeleted: '/api/Employees/getDeleted',
+      createEmployees: '/api/Employees/create',
+      updateEmployees: '/api/Employees/update',
+      deleteEmployees: '/api/Employees/delete',
+      deleteRangeEmployees: '/api/Employees/deleteRange',
+      restoreEmployees: '/api/Employees/restore',
+      restoreRangeEmployees: '/api/Employees/restoreRange'
     }
 
     // Diğer endpointler buraya eklenebilir
