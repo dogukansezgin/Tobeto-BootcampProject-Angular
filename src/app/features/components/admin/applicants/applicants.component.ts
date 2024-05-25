@@ -28,13 +28,12 @@ import { ApplicantUpdateRequest } from '../../../models/requests/applicants/appl
 import { CalendarModule } from 'primeng/calendar';
 import { ApplicantGetListDeletedResponse } from '../../../models/responses/applicant/applicant-get-list-deleted-response';
 import { ApplicantGetListResponse } from '../../../models/responses/applicant/applicant-get-list-response';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-applicants',
   standalone: true,
   imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
-  providers: [ApplicantService, MessageService, ConfirmationService, RouterOutlet],
+  providers: [ApplicantService, MessageService, ConfirmationService],
   templateUrl: './applicants.component.html',
   styleUrl: './applicants.component.scss'
 })

@@ -1,4 +1,4 @@
-<p>applicants-first works!</p>
+
 <div class="card">
     <p-table
     [value]="applicantsWithBootcamps"
@@ -47,7 +47,7 @@
                 {{applicant.bootcampName}}
             </td>
             <td>
-                <p-tag [value]="applicant.applicationStateName" [severity]="getSeverity(applicant.applicationStateName)"/>
+                <p-tag [value]="applicant.applicationStateName" [severity]="getSeverity(applicant.applicationStateName.toUpperCase())"/>
             </td>
             <td>
                 {{applicant.createdDate | shortDate}}

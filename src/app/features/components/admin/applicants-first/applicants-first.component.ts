@@ -72,18 +72,18 @@ export class ApplicantsFirstComponent implements OnInit {
     }
     return total;
   }
-  getSeverity(state: string) {
-    switch (state) {
-      case 'Degerlendirme':
-        return 'info';
-
-      case 'Onaylandı':
+  
+  getSeverity(status: string) {
+    switch (status) {
+      case 'DEĞERLENDIRME':
+        return 'warning';
+      case 'ONAYLANDI':
         return 'success';
-
-      case 'Red':
+      case 'RED EDILDI':
         return 'danger';
       default:
-        return 'info';
+        return '';
     }
   }
+
 }

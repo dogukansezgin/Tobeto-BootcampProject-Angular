@@ -161,16 +161,17 @@ export class ApplicantService extends ApplicantBaseService {
     }
     override restoreRangeApplicant(applicantRestoreRangeRequest: ApplicantRestoreRangeRequest): Observable<ApplicantRestoreRangeResponse> {
         return this.httpClient.post<ApplicantRestoreRangeResponse>(this.apiUrl_RestoreRangeApplicant, applicantRestoreRangeRequest)
+    }
 
-    override getListByJoin(pageRequest: PageRequest): Observable<GetListResponse<GetListByJoinApplicantListItemDto>> {
+    override getListByJoin(pageRequest: PageRequest): Observable<ListItemsDto<GetListByJoinApplicantListItemDto>> {
         const newRequest: { [key: string]: string | number } = {
             pageIndex: pageRequest.pageIndex,
             pageSize: pageRequest.pageSize
         }
-        return this.httpClient.get<GetListResponse<GetListByJoinApplicantListItemDto>>(this.apiUrl_GetListByJoin, { params: newRequest })
+        return this.httpClient.get<ListItemsDto<GetListByJoinApplicantListItemDto>>(this.apiUrl_GetListByJoin, { params: newRequest })
             .pipe(
                 map((response) => {
-                    const newResponse: GetListResponse<GetListByJoinApplicantListItemDto> = {
+                    const newResponse: ListItemsDto<GetListByJoinApplicantListItemDto> = {
                         items: response.items,
                         index: response.index,
                         size: response.size,

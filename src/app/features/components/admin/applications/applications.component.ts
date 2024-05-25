@@ -4,8 +4,6 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
-import { GetListResponse } from '../../../models/responses/applications/get-list-response';
-import { GetListApplicationListItemDto } from '../../../models/responses/applications/get-list-application-list-item-dto';
 import { ApplicationService } from '../../../services/concretes/application.service';
 import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
@@ -14,6 +12,10 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { UpdateApplicationRequest } from '../../../models/requests/applications/update-application-request';
 import { DeleteApplicationsRequest } from '../../../models/requests/applications/delete-applicantions-request';
 import { ApplicationStateService } from '../../../services/concretes/application-state.service';
+import { ListItemsDto } from '../../../../core/models/pagination/list-items-dto';
+import { ApplicationGetListResponse } from '../../../models/responses/applications/application-get-list-response';
+import { ApplicationDeleteRangeRequest } from '../../../models/requests/applications/application-delete-range-request';
+import { ApplicationDeleteRequest } from '../../../models/requests/applications/application-delete-request';
 
 @Component({
   selector: 'app-applications',
@@ -27,7 +29,7 @@ export class ApplicationsComponent implements OnInit {
 
   applicationDialog: boolean = false;
 
-  applications: GetListResponse<GetListApplicationListItemDto> = {
+  applications: ListItemsDto<ApplicationGetListResponse> = {
     index: 0,
     size: 0,
     count: 0,
@@ -37,12 +39,22 @@ export class ApplicationsComponent implements OnInit {
     items: []
   };
 
-  application!: GetListApplicationListItemDto;
+  applicationDeleteRequest: ApplicationDeleteRequest = {
+    id: '',
+    isPermament: true
+  };
+
+  applicationDeleteRangeRequest: ApplicationDeleteRangeRequest = {
+    ids: [],
+    isPermament: true
+  };
+
+  application!: ApplicationGetListResponse;
   applicationRequest!: UpdateApplicationRequest;
 
   // selectedAcceptApplications!: GetListApplicationListItemDto[] | null;
   // selectedRejectApplications!: GetListApplicationListItemDto[] | null;
-  selectedApplications !: GetListApplicationListItemDto[] | null;
+  selectedApplications !: ApplicationGetListResponse[] | null;
 
   selectedAppCount: number | undefined = 0;
 
@@ -77,8 +89,15 @@ export class ApplicationsComponent implements OnInit {
           this.selectedApplications.forEach(a => {
             this.deleteApplicationsRequest.ids.push(a.id);
           });
+
+          this.selectedApplications.forEach(b => {
+            if (b.id) {
+              this.applicationDeleteRangeRequest.ids.push(b.id);
+            }
+          });
+
           if (this.deleteApplicationsRequest.ids) {
-            this.applicationService.deleteSelectedApplications(this.deleteApplicationsRequest).subscribe(response => {
+            this.applicationService.deleteRangeApplication(this.applicationDeleteRangeRequest).subscribe(response => {
               this.applications.items = this.applications.items.filter((val) => !this.selectedApplications?.includes(val));
               this.selectedAppCount = this.selectedApplications?.length;
               this.selectedApplications = null;
@@ -87,7 +106,7 @@ export class ApplicationsComponent implements OnInit {
           }
         }
       }
-    })
+    });
   }
   acceptSelectedApplications() {
     this.confirmationService.confirm({
@@ -103,16 +122,18 @@ export class ApplicationsComponent implements OnInit {
 
   getSeverity(status: string) {
     switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'İSTANBUL':
+      case 'DEĞERLENDIRME':
         return 'warning';
-      case 'OUTOFSTOCK':
+      case 'ONAYLANDI':
+        return 'success';
+      case 'RED EDILDI':
         return 'danger';
+      default:
+        return '';
     }
-    return "info";
   }
-  rejectApplication(application: GetListApplicationListItemDto) {
+  
+  rejectApplication(application: ApplicationGetListResponse) {
     this.confirmationService.confirm({
       message: 'Başvuruyu reddetmek istediğinine emin misin?',
       header: 'Onay',
@@ -120,14 +141,17 @@ export class ApplicationsComponent implements OnInit {
       acceptLabel: 'Evet',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.applicationService.deleteApplication(application.id).subscribe(response => {
+
+        this.applicationDeleteRequest.id = application.id
+
+        this.applicationService.deleteApplication(this.applicationDeleteRequest).subscribe(response => {
           this.applications.items = this.applications.items.filter((val) => val.id !== application.id);
           this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Başvuru Silindi', life: 3000 });
         })
       }
     });
   }
-  acceptApplication(application: GetListApplicationListItemDto) {
+  acceptApplication(application: ApplicationGetListResponse) {
     this.confirmationService.confirm({
       message: 'Başvuruyu onaylamak istediğine emin misin?',
       header: 'Onay',

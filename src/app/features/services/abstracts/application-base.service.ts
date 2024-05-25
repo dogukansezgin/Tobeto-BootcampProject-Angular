@@ -27,6 +27,7 @@ export abstract class ApplicationBaseService {
 
     abstract getList(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListResponse>>
     abstract getListDeleted(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListDeletedResponse>>
+    abstract getByState(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListResponse>>
     abstract createApplication(applicationCreateRequest: ApplicationCreateRequest): Observable<ApplicationCreateResponse>
     abstract updateApplication(applicationUpdateRequest: ApplicationUpdateRequest): Observable<ApplicationUpdateResponse>
     abstract deleteApplication(applicationDeleteRequest: ApplicationDeleteRequest): Observable<ApplicationDeleteResponse>
