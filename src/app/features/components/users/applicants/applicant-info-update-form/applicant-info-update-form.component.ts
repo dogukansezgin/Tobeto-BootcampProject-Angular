@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GetApplicantInfoResponse } from '../../../../models/responses/users/applicant/get-applicant-info-response';
-import { ApplicantInfoUpdateRequest } from '../../../../models/requests/users/applicants/applicant-info-update-request';
 import { ApplicantService } from '../../../../services/concretes/applicant.service';
 import { TokenService } from '../../../../services/concretes/token.service';
-import { GetApplicantResponse } from '../../../../models/responses/users/applicant/get-applicant-response';
+import { GetApplicantResponse } from '../../../../models/responses/applicant/get-applicant-response';
+import { ApplicantInfoUpdateRequest } from '../../../../models/requests/applicants/applicant-info-update-request';
 
 
 @Component({
@@ -70,15 +69,15 @@ export class ApplicantInfoUpdateFormComponent implements OnInit {
       this.updatedData.userName = `${this.updatedData.firstName} ${this.updatedData.lastName}`
 
       setTimeout(() => {
-        this.applicantService.updateApplicant(this.updatedData).subscribe(response =>{
-          this.formSubmitted = false;
-          alert("Güncelleme işlemi başarılı.");
+        // this.applicantService.updateApplicant(this.updatedData).subscribe(response =>{
+        //   this.formSubmitted = false;
+        //   alert("Güncelleme işlemi başarılı.");
 
-        }, error => {
-          console.error("Güncelleme işlemi sırasında bir hata oluştu:", error);
-          this.formSubmitted = false;
+        // }, error => {
+        //   console.error("Güncelleme işlemi sırasında bir hata oluştu:", error);
+        //   this.formSubmitted = false;
 
-        });
+        // });
         
       }, 2000);
 

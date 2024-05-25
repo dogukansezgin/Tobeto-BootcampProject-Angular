@@ -1,4 +1,5 @@
 export interface BootcampStateGetListResponse {
     id: string,
-    name: string
+    name: string,
+    createdDate: Date
 }

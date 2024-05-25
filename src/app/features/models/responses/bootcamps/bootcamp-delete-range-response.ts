@@ -1,5 +1,5 @@
 export interface BootcampDeleteRangeResponse{
-    id: string[],
+    ids: string[],
     deletedDate: Date,
     isPermament: boolean
 }

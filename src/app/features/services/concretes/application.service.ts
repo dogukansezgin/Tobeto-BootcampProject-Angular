@@ -1,39 +1,112 @@
 import { Injectable } from "@angular/core";
 import { ApplicationBaseService } from "../abstracts/application-base.service";
 import { Observable, map } from "rxjs";
-import { ApplicationPostRequest } from "../../models/requests/applications/application-post-request";
-import { ApplicationPostResponse } from "../../models/responses/applications/application-post-response";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
-import { CheckApplicationResponse } from "../../models/responses/applications/check-application-response";
+import { ListItemsDto } from "../../../core/models/pagination/list-items-dto";
 import { PageRequest } from "../../../core/models/pagination/page-request";
-import { ApplicationListItemDto } from "../../models/responses/applications/application-list-item-dto";
-import { GetListApplicationListItemDto } from "../../models/responses/applications/get-list-application-list-item-dto";
-import { GetListResponse } from "../../models/responses/applications/get-list-response";
-import { DeletedApplicationResponse } from "../../models/responses/applications/deleted-application-response";
-import { UpdatedApplicationResponse } from "../../models/responses/applications/updated-application-response";
-import { UpdateApplicationRequest } from "../../models/requests/applications/update-application-request";
-import { DeleteApplicationsRequest } from "../../models/requests/applications/delete-applicantions-request";
-import { DeleteApplicationsResponse } from "../../models/responses/applications/delete-applications-response";
+import { ApplicationCreateRequest } from "../../models/requests/applications/application-create-request";
+import { ApplicationDeleteRangeRequest } from "../../models/requests/applications/application-delete-range-request";
+import { ApplicationDeleteRequest } from "../../models/requests/applications/application-delete-request";
+import { ApplicationRestoreRangeRequest } from "../../models/requests/applications/application-restore-range-request";
+import { ApplicationRestoreRequest } from "../../models/requests/applications/application-restore-request";
+import { ApplicationUpdateRequest } from "../../models/requests/applications/application-update-request";
+import { ApplicationCreateResponse } from "../../models/responses/applications/application-create-response";
+import { ApplicationDeleteRangeResponse } from "../../models/responses/applications/application-delete-range-response";
+import { ApplicationDeleteResponse } from "../../models/responses/applications/application-delete-response";
+import { ApplicationGetListDeletedResponse } from "../../models/responses/applications/application-get-list-deleted-response";
+import { ApplicationGetListResponse } from "../../models/responses/applications/application-get-list-response";
+import { ApplicationRestoreRangeResponse } from "../../models/responses/applications/application-restore-range-response";
+import { ApplicationRestoreResponse } from "../../models/responses/applications/application-restore-response";
+import { ApplicationUpdateResponse } from "../../models/responses/applications/application-update-response";
+import { AppliedBootcampResponse } from "../../models/responses/applications/applied-bootcamp-response";
+import { CheckApplicationResponse } from "../../models/responses/applications/check-application-response";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ApplicationService extends ApplicationBaseService {
-
-    private readonly apiUrl_GetBy: string = environment.apiUrl + environment.endpoints.applications.getApplications;
-    private readonly apiUrl_Post: string = environment.apiUrl + environment.endpoints.applications.post
+    
     private readonly apiUrl_CheckApplication: string = environment.apiUrl + environment.endpoints.applications.checkApplication
     private readonly apiUrl_AppliedBootcamps: string = environment.apiUrl + environment.endpoints.applications.appliedBootcamps
-    private readonly apiUrl_Delete: string = environment.apiUrl + environment.endpoints.applications.deleteApplication;
-    private readonly apiUrl_Put: string = environment.apiUrl + environment.endpoints.applications.updateApplication;
-    private readonly apiUrl_DeleteSelected: string = environment.apiUrl + environment.endpoints.applications.deleteSelected;
+    private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.applications.getList;
+    private readonly apiUrl_GetListDeleted: string = environment.apiUrl + environment.endpoints.applications.getListDeleted;
     private readonly apiUrl_GetByState: string = environment.apiUrl + environment.endpoints.applications.getByState;
-
+  
+    private readonly apiUrl_CreateApplication = environment.apiUrl + environment.endpoints.applications.createApplication;
+    private readonly apiUrl_UpdateApplication = environment.apiUrl + environment.endpoints.applications.updateApplication;
+    private readonly apiUrl_DeleteApplication = environment.apiUrl + environment.endpoints.applications.deleteApplication;
+    private readonly apiUrl_DeleteRangeApplication = environment.apiUrl + environment.endpoints.applications.deleteRangeApplication;
+    private readonly apiUrl_RestoreApplication = environment.apiUrl + environment.endpoints.applications.restoreApplication;
+    private readonly apiUrl_RestoreRangeApplication = environment.apiUrl + environment.endpoints.applications.restoreRangeApplication;
+    
     constructor(private httpClient: HttpClient) { super(); }
+    
+    override getList(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListResponse>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize
+        }
+        return this.httpClient.get<ListItemsDto<ApplicationGetListResponse>>(this.apiUrl_GetList, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: ListItemsDto<ApplicationGetListResponse> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
 
-    override postApplication(request: ApplicationPostRequest): Observable<ApplicationPostResponse> {
-        return this.httpClient.post<ApplicationPostResponse>(this.apiUrl_Post, request)
+            )
+    }
+    override getListDeleted(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListDeletedResponse>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize
+        }
+        return this.httpClient.get<ListItemsDto<ApplicationGetListDeletedResponse>>(this.apiUrl_GetListDeleted, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: ListItemsDto<ApplicationGetListDeletedResponse> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
+
+            )
+    }
+    override getByState(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListResponse>> {
+      const newRequest: { [key: string]: string | number } = {
+          pageIndex: pageRequest.pageIndex,
+          pageSize: pageRequest.pageSize
+      }
+      return this.httpClient.get<ListItemsDto<ApplicationGetListResponse>>(this.apiUrl_GetByState, { params: newRequest })
+          .pipe(
+              map((response) => {
+                  const newResponse: ListItemsDto<ApplicationGetListResponse> = {
+                      items: response.items,
+                      index: response.index,
+                      size: response.size,
+                      count: response.count,
+                      pages: response.pages,
+                      hasNext: response.hasNext,
+                      hasPrevious: response.hasPrevious
+                  };
+                  return newResponse;
+              })
+
+          );
     }
 
     override checkApplication(applicantId: string, bootcampId: string): Observable<CheckApplicationResponse> {
@@ -41,17 +114,17 @@ export class ApplicationService extends ApplicationBaseService {
         return this.httpClient.get<CheckApplicationResponse>(url)
     }
 
-    override appliedBootcamps(applicantIdRequest: string, pageRequest: PageRequest): Observable<ApplicationListItemDto> {
-        const newRequest: { [key: string]: string | number } = {
+    override appliedBootcamps(applicantIdRequest: string, pageRequest: PageRequest): Observable<ListItemsDto<AppliedBootcampResponse>> {
+        const newRequest: {[key: string]: string | number} = {
             page: pageRequest.pageIndex,
             pageSize: pageRequest.pageSize,
             applicantId: applicantIdRequest
         }
 
-        return this.httpClient.get<ApplicationListItemDto>(this.apiUrl_AppliedBootcamps, { params: newRequest })
+        return this.httpClient.get<ListItemsDto<AppliedBootcampResponse>>(this.apiUrl_AppliedBootcamps, {params: newRequest} )
             .pipe(
-                map((response) => {
-                    const newResponse: ApplicationListItemDto = {
+                map((response) =>{
+                    const newResponse: ListItemsDto<AppliedBootcampResponse> ={
                         items: response.items,
                         index: response.index,
                         size: response.size,
@@ -64,37 +137,24 @@ export class ApplicationService extends ApplicationBaseService {
                 })
             )
     }
-    override getList(pageRequest: PageRequest): Observable<GetListResponse<GetListApplicationListItemDto>> {
-        const newRequest: { [key: string]: string | number } = {
-            pageIndex: pageRequest.pageIndex,
-            pageSize: pageRequest.pageSize
-        }
-        return this.httpClient.get<GetListResponse<GetListApplicationListItemDto>>(this.apiUrl_GetByState, { params: newRequest })
-            .pipe(
-                map((response) => {
-                    const newResponse: GetListResponse<GetListApplicationListItemDto> = {
-                        items: response.items,
-                        index: response.index,
-                        size: response.size,
-                        count: response.count,
-                        pages: response.pages,
-                        hasNext: response.hasNext,
-                        hasPrevious: response.hasPrevious
-                    };
-                    return newResponse;
-                })
 
-            );
+    override createApplication(applicationCreateRequest: ApplicationCreateRequest): Observable<ApplicationCreateResponse> {
+        return this.httpClient.post<ApplicationCreateResponse>(this.apiUrl_CreateApplication, applicationCreateRequest)
     }
-    override deleteApplication(applicationId: string): Observable<DeletedApplicationResponse> {
-        const newUrl = this.apiUrl_Delete + applicationId;
-        return this.httpClient.delete<DeletedApplicationResponse>(newUrl);
+    override updateApplication(applicationUpdateRequest: ApplicationUpdateRequest): Observable<ApplicationUpdateResponse> {
+        return this.httpClient.put<ApplicationUpdateResponse>(this.apiUrl_UpdateApplication, applicationUpdateRequest)
     }
-    override updateApplication(request: UpdateApplicationRequest): Observable<UpdatedApplicationResponse> {
-        return this.httpClient.put<UpdatedApplicationResponse>(this.apiUrl_Put, request);
+    override deleteApplication(applicationDeleteRequest: ApplicationDeleteRequest): Observable<ApplicationDeleteResponse> {
+        return this.httpClient.post<ApplicationDeleteResponse>(this.apiUrl_DeleteApplication, applicationDeleteRequest)
     }
-    override deleteSelectedApplications(request: DeleteApplicationsRequest): Observable<DeleteApplicationsResponse> {
-        return this.httpClient.post<DeleteApplicationsResponse>(this.apiUrl_DeleteSelected, request);
+    override deleteRangeApplication(applicationDeleteRangeRequest: ApplicationDeleteRangeRequest): Observable<ApplicationDeleteRangeResponse> {
+        return this.httpClient.post<ApplicationDeleteRangeResponse>(this.apiUrl_DeleteRangeApplication, applicationDeleteRangeRequest)
+    }
+    override restoreApplication(applicationRestoreRequest: ApplicationRestoreRequest): Observable<ApplicationRestoreResponse> {
+        return this.httpClient.post<ApplicationRestoreResponse>(this.apiUrl_RestoreApplication, applicationRestoreRequest)
+    }
+    override restoreRangeApplication(applicationRestoreRangeRequest: ApplicationRestoreRangeRequest): Observable<ApplicationRestoreRangeResponse> {
+        return this.httpClient.post<ApplicationRestoreRangeResponse>(this.apiUrl_RestoreRangeApplication, applicationRestoreRangeRequest)
     }
 
 }

@@ -1,1 +1,281 @@
+<!-- Applicants Table -->
+<div class="content-container">
+    <div class="card">
+        <p-toast />
+
+        <p-table #dt1 [value]="applicants.items" [rows]="20" [paginator]="true"
+            [globalFilterFields]="['userName', 'email', 'about', 'createdDate']"
+            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedApplicants" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="600px">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <div class="p-toolbar table-header">    
+                        <h5 class=" m-0">Applicants</h5>
+                    </div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" [(ngModel)]="filterValues[0]" (input)="filterTable($event, dt1, 0)" placeholder="Filtrele..." />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt1, 0)" *ngIf="filterValues[0]" />
+                    </span>
+                </div>
+                <p-toolbar styleClass="mb-2 mt-3 gap-2">
+                    <ng-template pTemplate="left">
+                        <p-button pRipple severity="success" label="Ekle" icon="pi pi-plus" class="mr-2" (click)="openNew()" />
+                        <p-button pRipple severity="danger" label="Sil" icon="pi pi-trash" (click)="deleteSelectedApplicants(false)"
+                            [disabled]="!selectedApplicants || !selectedApplicants.length" />
+                    </ng-template>
+                </p-toolbar>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox />
+                    </th>
+                    <th pSortableColumn="userName" style="min-width:12rem">
+                        Ad Soyad <p-sortIcon field="userName" />
+                    </th>
+                    <th pSortableColumn="email" style="min-width:12rem">
+                        Email <p-sortIcon field="email" />
+                    </th>
+                    <th pSortableColumn="about" style="min-width:8rem">
+                        Ön Yazı <p-sortIcon field="about" />
+                    </th>
+                    <th pSortableColumn="createdDate" style="min-width:12rem">
+                        Oluşturulma Tarihi <p-sortIcon field="createdDate" />
+                    </th>
+                    <th style="min-width:12rem;"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-applicant>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="applicant" />
+                    </td>
+                    <td>
+                        {{ applicant.userName }}
+                    </td>
+                    <td>
+                        {{ applicant.email }}
+                    </td>
+                    <td>
+                        {{ applicant.about }}
+                    </td>
+                    <td>
+                        {{ applicant.createdDate.toString().substring(0,10) }}
+                    </td>
+                    <td>
+                        <p-button pRipple icon="pi pi-pencil" class="m-1" [rounded]="true" [outlined]="true"
+                            severity="success" (click)="openEdit(applicant)" />
+                        <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                            (click)="deleteApplicant(applicant, false)" />
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                    Toplam {{ applicants.items ? applicants.items.length : 0 }} adet Applicant var.
+                </div>
+            </ng-template>
+        </p-table>
+
+        <!-- Create Dialog -->
+        <p-dialog [(visible)]="applicantCreateDialog" [style]="{ width: '450px', height: '800px' }" header="Create Applicant" [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="firstName">Ad</label>
+                    <small class="p-error" *ngIf="!applicantCreateRequest.firstName">*  Zorunlu alan.</small>
+                    <input type="text" pInputText id="firstName" [(ngModel)]="applicantCreateRequest.firstName" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !applicantCreateRequest.firstName">
+                        Ad alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="lastName">Soyad</label>
+                    <small class="p-error" *ngIf="!applicantCreateRequest.lastName">*  Zorunlu alan.</small>
+                    <input type="text" pInputText id="lastName" [(ngModel)]="applicantCreateRequest.lastName" required />
+                    <small class="p-error" *ngIf="submitted && !applicantCreateRequest.lastName">
+                        Soyad alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <small class="p-error" *ngIf="!applicantCreateRequest.email">*  Zorunlu alan.</small>
+                    <input type="email" pInputText id="email" [(ngModel)]="applicantCreateRequest.email" required />
+                    <small class="p-error" *ngIf="submitted && !applicantCreateRequest.email">
+                        Email alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="password">Şifre</label>
+                    <small class="p-error" *ngIf="!applicantCreateRequest.password">*  Zorunlu alan.</small>
+                    <input type="password" pInputText id="password" [(ngModel)]="applicantCreateRequest.password" required />
+                    <small class="p-error" *ngIf="submitted && !applicantCreateRequest.password">
+                        Şifre alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="dateOfBirth">Doğum Tarihi</label>
+                    <p-calendar id="dateOfBirth" [(ngModel)]="applicantCreateRequest.dateOfBirth" dateFormat="dd-mm-yy" [minDate]="minDate" [maxDate]="maxDate" showIcon="true"></p-calendar>
+                </div>
+                <div class="field">
+                    <label for="nationalIdentity">Kimlik Numarası</label>
+                    <input type="text" pInputText id="nationalIdentity" [(ngModel)]="applicantCreateRequest.nationalIdentity" />
+                </div>
+                <div class="field">
+                    <label for="about">Ön Yazı</label>
+                    <input type="text" pInputText id="about" [(ngModel)]="applicantCreateRequest.about" />
+                </div>
+
+            </ng-template>
+        
+            <ng-template pTemplate="footer">
+                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createApplicant()" [disabled]="submitButton" />
+            </ng-template>
+        </p-dialog>
+        
+        <!-- Update Dialog -->
+        <p-dialog [(visible)]="applicantUpdateDialog" [style]="{ width: '450px', height: '800px' }" header="Applicant Details" [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="firstName">Ad</label>
+                    <small class="p-error" *ngIf="!applicantUpdateRequest.firstName">*  Zorunlu alan.</small>
+                    <input type="text" pInputText id="firstName" [(ngModel)]="applicantUpdateRequest.firstName" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !applicantUpdateRequest.firstName">
+                        Ad alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="lastName">Soyad</label>
+                    <small class="p-error" *ngIf="!applicantUpdateRequest.lastName">*  Zorunlu alan.</small>
+                    <input type="text" pInputText id="lastName" [(ngModel)]="applicantUpdateRequest.lastName" required />
+                    <small class="p-error" *ngIf="submitted && !applicantUpdateRequest.lastName">
+                        Soyad alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <small class="p-error" *ngIf="!applicantUpdateRequest.email">*  Zorunlu alan.</small>
+                    <input type="email" pInputText id="email" [(ngModel)]="applicantUpdateRequest.email" required />
+                    <small class="p-error" *ngIf="submitted && !applicantUpdateRequest.email">
+                        Email alanı boş olamaz.
+                    </small>
+                </div>
+                <div class="field">
+                    <label for="dateOfBirth">Doğum Tarihi</label>
+                    <p-calendar id="dateOfBirth" [(ngModel)]="applicantUpdateRequest.dateOfBirth" dateFormat="dd-mm-yy" [minDate]="minDate" [maxDate]="maxDate" showIcon="true"></p-calendar>
+                </div>
+                <div class="field">
+                    <label for="nationalIdentity">Kimlik Numarası</label>
+                    <input type="text" pInputText id="nationalIdentity" [(ngModel)]="applicantUpdateRequest.nationalIdentity" />
+                </div>
+                <div class="field">
+                    <label for="about">Ön Yazı</label>
+                    <input type="text" pInputText id="about" [(ngModel)]="applicantUpdateRequest.about" />
+                </div>
+        
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="updateApplicant()" [disabled]="submitButton" />
+            </ng-template>
+        </p-dialog>
+
+    </div>
+</div>
+
+<!--  -->
+<!--  -->
+<p-confirmDialog [style]="{ width: '850px' }" />
+<!--  -->
+<!--  -->
+
+<!-- Deleted Applicants Table -->
+<div class="content-container">
+    <div class="card">
+        <p-toast />
+
+        <p-table #dt2 [value]="deletedApplicants.items" [rows]="20" [paginator]="true"
+            [globalFilterFields]="['userName', 'email', 'about', 'deletedDate']"
+            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedDeletedApplicants" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="500px">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <div class="p-toolbar table-header">
+                        <h5 class="m-0">Deleted Applicants</h5>
+                    </div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" [(ngModel)]="filterValues[1]" (input)="filterTable($event, dt2, 1)" placeholder="Filtrele..." />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt2, 1)" *ngIf="filterValues[1]" />
+                    </span>
+                </div>
+                <p-toolbar styleClass="mb-2 mt-3 gap-2">
+                    <ng-template pTemplate="left">
+                        <p-button pRipple severity="success" label="Kurtar" icon="pi pi-replay" class="mr-2" (click)="restoreSelectedApplicants()"
+                            [disabled]="!selectedDeletedApplicants || !selectedDeletedApplicants.length" />
+                        <p-button pRipple severity="danger" label="Kalıcı Sil" icon="pi pi-trash" (click)="deleteSelectedApplicants(true)"
+                            [disabled]="!selectedDeletedApplicants || !selectedDeletedApplicants.length" />
+                    </ng-template>
+                </p-toolbar>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox />
+                    </th>
+                    <th pSortableColumn="userName" style="min-width:12rem">
+                        Ad Soyad <p-sortIcon field="userName" />
+                    </th>
+                    <th pSortableColumn="email" style="min-width:12rem">
+                        Email <p-sortIcon field="email" />
+                    </th>
+                    <th pSortableColumn="about" style="min-width:8rem">
+                        Ön Yazı <p-sortIcon field="about" />
+                    </th>
+                    <th pSortableColumn="deletedDate" style="min-width:12rem">
+                        Silinme Tarihi <p-sortIcon field="deletedDate" />
+                    </th>
+                    <th style="min-width:12rem;"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-applicant>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="applicant" />
+                    </td>
+                    <td>
+                        {{ applicant.userName }}
+                    </td>
+                    <td>
+                        {{ applicant.email }}
+                    </td>
+                    <td>
+                        {{ applicant.about }}
+                    </td>
+                    <td>
+                        {{ applicant.deletedDate.toString().substring(0,10) }}
+                    </td>
+                    <td>
+                        <p-button pRipple icon="pi pi-replay" class="m-1" [rounded]="true" [outlined]="true"
+                            severity="success" (click)="restoreApplicant(applicant)" />
+                        <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                            (click)="deleteApplicant(applicant, true)" />
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                    Toplam {{ deletedApplicants.items ? deletedApplicants.items.length : 0 }} adet Silinmiş Applicant var.
+                </div>
+            </ng-template>
+        </p-table>
+
+    </div>
+</div>
+
 <router-outlet></router-outlet>
+

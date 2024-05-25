@@ -5,6 +5,7 @@ export const environment = {
     bootcamps: {
       getList: '/api/Bootcamps/get',
       getListDeleted: '/api/Bootcamps/getDeleted',
+      getBasicInfo: '/api/Bootcamps/getBasicInfo',
       getBootcampById: '/api/Bootcamps/id/',
       getBootcampByName: '/api/Bootcamps/name/',
       getUnfinishedBootcamps: '/api/Bootcamps/getUnfinished',
@@ -18,7 +19,14 @@ export const environment = {
       restoreRangeBootcamp: '/api/Bootcamps/restoreRange'
     },
     bootcampStates: {
-      getList: '/api/BootcampStates'
+      getList: '/api/BootcampStates/get',
+      getListDeleted: '/api/BootcampStates/getDeleted',
+      createBootcampState: '/api/BootcampStates/create',
+      updateBootcampState: '/api/BootcampStates/update',
+      deleteBootcampState: '/api/BootcampStates/delete',
+      deleteRangeBootcampState: '/api/BootcampStates/deleteRange',
+      restoreBootcampState: '/api/BootcampStates/restore',
+      restoreRangeBootcampState: '/api/BootcampStates/restoreRange'
     },
     auth: {
       register: {
@@ -32,27 +40,64 @@ export const environment = {
       getUserById: '/api/Users/'
     },
     applicants: {
+      getList: '/api/Applicants/get',
+      getListDeleted: '/api/Applicants/getDeleted',
+      getBasicInfo: '/api/Applicants/getBasicInfo',
       getApplicantById: '/api/Applicants/',
       updateApplicantInfo: '/api/Applicants/UpdateFromAuth',
-      getListByJoin:'/api/Applications/getByJoin',
-      getList:'/api/Applicants'
+      createApplicants: '/api/Applicants/create',
+      updateApplicants: '/api/Applicants/update',
+      deleteApplicants: '/api/Applicants/delete',
+      deleteRangeApplicants: '/api/Applicants/deleteRange',
+      restoreApplicants: '/api/Applicants/restore',
+      restoreRangeApplicants: '/api/Applicants/restoreRange',
+      getListByJoin:'/api/Applications/getByJoin'
     },
     applications: {
-      post: '/api/Applications/post',
       checkApplication: '/api/Applications/checkApplication',
       appliedBootcamps: '/api/Applications/appliedBootcamps',
-      getApplications:'/api/Applications',
-      deleteApplication:'/api/Applications/delete/',
-      updateApplication:'/api/Applications/update',
-      deleteSelected:'/api/Applications/deleteSelected',
+      getList: '/api/Applications/get',
+      getListDeleted: '/api/Applications/getDeleted',
+      createApplication: '/api/Applications/create',
+      updateApplication: '/api/Applications/update',
+      deleteApplication: '/api/Applications/delete',
+      deleteRangeApplication: '/api/Applications/deleteRange',
+      restoreApplication: '/api/Applications/restore',
+      restoreRangeApplication: '/api/Applications/restoreRange',
       getByState:'/api/Applications/getByState'
+
     },
     applicationStates: {
-      getByName: '/api/ApplicationStates/getByName/'
+      getByName: '/api/ApplicationStates/getByName/',
+      getList: '/api/ApplicationStates/get',
+      getListDeleted: '/api/ApplicationStates/getDeleted',
+      createApplicationState: '/api/ApplicationStates/create',
+      updateApplicationState: '/api/ApplicationStates/update',
+      deleteApplicationState: '/api/ApplicationStates/delete',
+      deleteRangeApplicationState: '/api/ApplicationStates/deleteRange',
+      restoreApplicationState: '/api/ApplicationStates/restore',
+      restoreRangeApplicationState: '/api/ApplicationStates/restoreRange'
     },
     instructors: {
-      getList: '/api/Instructors',
-      getBasicInfo: '/api/Instructors/getBasicInfo'
+      getList: '/api/Instructors/get',
+      getListDeleted: '/api/Instructors/getDeleted',
+      getBasicInfo: '/api/Instructors/getBasicInfo',
+      createInstructors: '/api/Instructors/create',
+      updateInstructors: '/api/Instructors/update',
+      deleteInstructors: '/api/Instructors/delete',
+      deleteRangeInstructors: '/api/Instructors/deleteRange',
+      restoreInstructors: '/api/Instructors/restore',
+      restoreRangeInstructors: '/api/Instructors/restoreRange'
+    },
+    employees: {
+      getList: '/api/Employees/get',
+      getListDeleted: '/api/Employees/getDeleted',
+      createEmployees: '/api/Employees/create',
+      updateEmployees: '/api/Employees/update',
+      deleteEmployees: '/api/Employees/delete',
+      deleteRangeEmployees: '/api/Employees/deleteRange',
+      restoreEmployees: '/api/Employees/restore',
+      restoreRangeEmployees: '/api/Employees/restoreRange'
     }
 
     // Diğer endpointler buraya eklenebilir

@@ -10,10 +10,13 @@
             [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="600px">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
-                    <h5 class="m-0">Bootcamps</h5>
+                    <div class="p-toolbar table-header">    
+                        <h5 class=" m-0">Bootcamps</h5>
+                    </div>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
-                        <input pInputText type="text" (input)="filterTable($event, dt1)" placeholder="Filtrele..." />
+                        <input pInputText type="text" [(ngModel)]="filterValues[0]" (input)="filterTable($event, dt1, 0)" placeholder="Filtrele..." />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt1, 0)" *ngIf="filterValues[0]" />
                     </span>
                 </div>
                 <p-toolbar styleClass="mb-2 mt-3 gap-2">
@@ -90,6 +93,7 @@
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="name">Ad</label>
+                    <small class="p-error" *ngIf="!bootcampCreateRequest.name">*  Zorunlu alan.</small>
                     <input type="text" pInputText id="name" [(ngModel)]="bootcampCreateRequest.name" required autofocus />
                     <small class="p-error" *ngIf="submitted && !bootcampCreateRequest.name">
                         Ad alanı boş olamaz.
@@ -98,7 +102,8 @@
         
                 <div class="field">
                     <label for="instructor">Eğitmen</label>
-                    <p-dropdown [(ngModel)]="selectedInstructor" inputId="instructor" [options]="instructors" placeholder="*Eğitmen Seçin">
+                    <small class="p-error" *ngIf="!selectedInstructor.id">*  Zorunlu alan.</small>
+                    <p-dropdown [(ngModel)]="selectedInstructor" inputId="instructor" [options]="instructors" placeholder="Eğitmen Seçin" required>
                         <ng-template pTemplate="selectedItem">
                             <p-tag [value]="selectedInstructor.userName" class="mr-2" /> <br>
                             <p-tag [value]="selectedInstructor.companyName" severity="warning" />
@@ -108,11 +113,15 @@
                             <p-tag [value]="option.companyName" severity="warning" />
                         </ng-template>
                     </p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !selectedInstructor.id">
+                        Eğitmen alanı boş olamaz.
+                    </small>
                 </div>
 
                 <div class="field">
                     <label for="bootcampState">Bootcamp State</label>
-                    <p-dropdown [(ngModel)]="selectedBootcampState" inputId="bootcampStatus" [options]="bootcampStates" placeholder="*Bootcamp Durumu Seçin">
+                    <small class="p-error" *ngIf="!selectedBootcampState.id">*  Zorunlu alan.</small>
+                    <p-dropdown [(ngModel)]="selectedBootcampState" inputId="bootcampState" [options]="bootcampStates" placeholder="Bootcamp Durumu Seçin" required>
                         <ng-template pTemplate="selectedItem">
                             <p-tag [value]="selectedBootcampState.name" [severity]="getSeverity(selectedBootcampState.name.toUpperCase())" />
                         </ng-template>
@@ -120,23 +129,31 @@
                             <p-tag [value]="option.name" [severity]="getSeverity(option.name.toUpperCase())" />
                         </ng-template>
                     </p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !selectedBootcampState.id">
+                        Bootcamp State alanı boş olamaz.
+                    </small>
                 </div>
 
                 <div class="date-fields">
                     <div class="field">
                         <label for="startDate">Başlangıç Tarihi</label>
                         <p-calendar id="startDate" [(ngModel)]="bootcampCreateRequest.startDate" dateFormat="dd-mm-yy" [minDate]="minStartDate" showIcon="true" (onSelect)="onStartDateSelectCreate()" required></p-calendar>
+                        <small class="p-error" *ngIf="!bootcampCreateRequest.startDate">*  Zorunlu alan.</small>
                     </div>
                     <div class="field">
                         <label for="endDate">Bitiş Tarihi</label>
                         <p-calendar id="endDate" [(ngModel)]="bootcampCreateRequest.endDate" dateFormat="dd-mm-yy" [minDate]="minEndDate" showIcon="true" required></p-calendar>
+                        <small class="p-error" *ngIf="!bootcampCreateRequest.endDate">*  Zorunlu alan.</small>
+                        <small class="p-error" *ngIf="submitted && (!bootcampCreateRequest.startDate || !bootcampCreateRequest.endDate)">
+                            <br>Tarih alanları boş olamaz.
+                        </small>
                     </div>
                 </div>
             </ng-template>
         
             <ng-template pTemplate="footer">
                 <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
-                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createBootcamp()" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createBootcamp()" [disabled]="submitButton" />
             </ng-template>
         </p-dialog>
         
@@ -145,6 +162,7 @@
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="name">Ad</label>
+                    <small class="p-error" *ngIf="!bootcampUpdateRequest.name">*  Zorunlu alan.</small>
                     <input type="text" pInputText id="name" [(ngModel)]="bootcampUpdateRequest.name" required autofocus />
                     <small class="p-error" *ngIf="submitted && !bootcampUpdateRequest.name">
                         Ad alanı boş olamaz.
@@ -153,7 +171,8 @@
         
                 <div class="field">
                     <label for="instructor">Eğitmen</label>
-                    <p-dropdown [(ngModel)]="selectedInstructor" inputId="instructor" [options]="instructors" placeholder="*Eğitmen Seçin">
+                    <small class="p-error" *ngIf="!selectedInstructor.id">*  Zorunlu alan.</small>
+                    <p-dropdown [(ngModel)]="selectedInstructor" inputId="instructor" [options]="instructors" placeholder="Eğitmen Seçin" required>
                         <ng-template pTemplate="selectedItem">
                             <p-tag [value]="selectedInstructor.userName"  class="mr-2" /> <br>
                             <p-tag [value]="selectedInstructor.companyName" severity="warning" />
@@ -163,11 +182,15 @@
                             <p-tag [value]="option.companyName" severity="warning" />
                         </ng-template>
                     </p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !selectedInstructor.id">
+                        Eğitmen alanı boş olamaz.
+                    </small>
                 </div>
 
                 <div class="field">
                     <label for="bootcampState">Bootcamp State</label>
-                    <p-dropdown [(ngModel)]="selectedBootcampState" inputId="bootcampStatus" [options]="bootcampStates" placeholder="*Bootcamp Durumu Seçin">
+                    <small class="p-error" *ngIf="!selectedBootcampState.id">*  Zorunlu alan.</small>
+                    <p-dropdown [(ngModel)]="selectedBootcampState" inputId="bootcampState" [options]="bootcampStates" [placeholder]="selectedBootcampState.name" required>
                         <ng-template pTemplate="selectedItem">
                             <p-tag [value]="selectedBootcampState.name" [severity]="getSeverity(selectedBootcampState.name.toUpperCase())" />
                         </ng-template>
@@ -175,23 +198,31 @@
                             <p-tag [value]="option.name" [severity]="getSeverity(option.name.toUpperCase())" />
                         </ng-template>
                     </p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !selectedBootcampState.id">
+                        Bootcamp State alanı boş olamaz.
+                    </small>
                 </div>
 
                 <div class="date-fields">
                     <div class="field">
                         <label for="startDate">Başlangıç Tarihi</label>
                         <p-calendar id="startDate" [(ngModel)]="bootcampUpdateRequest.startDate" dateFormat="dd-mm-yy" [minDate]="minStartDate" showIcon="true" (onSelect)="onStartDateSelectUpdate()" required></p-calendar>
+                        <small class="p-error" *ngIf="!bootcampUpdateRequest.startDate">*  Zorunlu alan.</small>
                     </div>
                     <div class="field">
                         <label for="endDate">Bitiş Tarihi</label>
                         <p-calendar id="endDate" [(ngModel)]="bootcampUpdateRequest.endDate" dateFormat="dd-mm-yy" [minDate]="minEndDate" showIcon="true" required></p-calendar>
+                        <small class="p-error" *ngIf="!bootcampCreateRequest.endDate">*  Zorunlu alan.</small>
+                        <small class="p-error" *ngIf="submitted && (!bootcampCreateRequest.startDate || !bootcampCreateRequest.endDate)">
+                            <br>Tarih alanları boş olamaz.
+                        </small>
                     </div>
                 </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
                 <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
-                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="updateBootcamp()" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="updateBootcamp()" [disabled]="submitButton" />
             </ng-template>
         </p-dialog>
 
@@ -216,10 +247,13 @@
             [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="500px">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
-                    <h5 class="m-0">Deleted Bootcamps</h5>
+                    <div class="p-toolbar table-header">
+                        <h5 class="m-0">Deleted Bootcamps</h5>
+                    </div>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
-                        <input pInputText type="text" (input)="filterDeletedTable($event, dt2)" placeholder="Filtrele..." />
+                        <input pInputText type="text" [(ngModel)]="filterValues[1]" (input)="filterTable($event, dt2, 1)" placeholder="Filtrele..." />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt2, 1)" *ngIf="filterValues[1]" />
                     </span>
                 </div>
                 <p-toolbar styleClass="mb-2 mt-3 gap-2">

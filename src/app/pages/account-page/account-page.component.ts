@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
-import { GetApplicantResponse } from '../../features/models/responses/users/applicant/get-applicant-response';
+import { GetApplicantResponse } from '../../features/models/responses/applicant/get-applicant-response';
 import { ApplicantService } from '../../features/services/concretes/applicant.service';
 import { TokenService } from '../../features/services/concretes/token.service';
 import { filter } from 'rxjs';

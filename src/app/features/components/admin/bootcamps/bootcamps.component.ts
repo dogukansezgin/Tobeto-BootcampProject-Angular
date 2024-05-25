@@ -27,7 +27,7 @@ import { BootcampStateGetListResponse } from '../../../models/responses/bootcamp
 import { BootcampCreateRequest } from '../../../models/requests/bootcamps/bootcamp-create-request';
 import { CalendarModule } from 'primeng/calendar';
 import { InstructorService } from '../../../services/concretes/instructor.service';
-import { InstructorGetBasicInfoResponse } from '../../../models/responses/users/instructors/instructor-get-basic-info-response';
+import { InstructorGetBasicInfoResponse } from '../../../models/responses/instructors/instructor-get-basic-info-response';
 import { BootcampUpdateRequest } from '../../../models/requests/bootcamps/bootcamp-update-request';
 import { BootcampDeleteRequest } from '../../../models/requests/bootcamps/bootcamp-delete-request';
 import { ListItemsDto } from '../../../../core/models/pagination/list-items-dto';
@@ -40,7 +40,7 @@ import { BootcampRestoreRangeRequest } from '../../../models/requests/bootcamps/
 @Component({
   selector: 'app-bootcamps',
   standalone: true,
-  imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule, ButtonModule],
+  imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
   providers: [BootcampService, MessageService, ConfirmationService],
   templateUrl: './bootcamps.component.html',
   styleUrl: './bootcamps.component.scss'
@@ -116,7 +116,8 @@ export class BootcampsComponent implements OnInit {
 
   selectedBootcampState: BootcampStateGetListResponse = {
     id: '',
-    name: ''
+    name: '',
+    createdDate: new Date("0001-01-01T01:00:00")
   };
 
   //
@@ -130,8 +131,9 @@ export class BootcampsComponent implements OnInit {
 
   //
   submitted: boolean = false;
+  submitButton: boolean = false;
 
-  filterValue: string = '';
+  filterValues: string[] = ['', ''];
 
   readonly PAGE_SIZE = 30;
 
@@ -183,7 +185,8 @@ export class BootcampsComponent implements OnInit {
     };
     this.selectedBootcampState = {
       id: '',
-      name: ''
+      name: '',
+      createdDate: new Date("0001-01-01T01:00:00")
     };
     this.selectedInstructor = {
       id: '',
@@ -191,8 +194,8 @@ export class BootcampsComponent implements OnInit {
       companyName: ''
     }
 
-    this.submitted = false;
     this.bootcampCreateDialog = true;
+    this.submitted = false;
   }
 
   openEdit(bootcamp: BootcampGetListResponse) {
@@ -210,7 +213,8 @@ export class BootcampsComponent implements OnInit {
     };
     this.selectedBootcampState = {
       id: this.bootcamp.bootcampStateId,
-      name: this.bootcamp.bootcampStateName
+      name: this.bootcamp.bootcampStateName,
+      createdDate: new Date("0001-01-01T01:00:00")
     };
     this.selectedInstructor = {
       id: this.bootcamp.instructorId,
@@ -219,6 +223,7 @@ export class BootcampsComponent implements OnInit {
     }
 
     this.bootcampUpdateDialog = true;
+    this.submitted = false;
   }
 
   hideDialog() {
@@ -262,8 +267,8 @@ export class BootcampsComponent implements OnInit {
               });
             }
           }
-          
-          
+
+
           this.bootcampService.deleteRangeBootcamp(this.bootcampDeleteRangeRequest).subscribe(response => {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamps Deleted', life: 3000 });
 
@@ -295,7 +300,7 @@ export class BootcampsComponent implements OnInit {
             else {
               this.deletedBootcamps.items = this.deletedBootcamps.items.filter((val) => !this.selectedDeletedBootcamps?.includes(val));
             }
-            
+
 
           }).add(() => {
             this.selectedBootcamps = [];
@@ -545,15 +550,23 @@ export class BootcampsComponent implements OnInit {
 
   createBootcamp() {
     this.submitted = true;
-    if (this.bootcampCreateRequest.name?.trim()) {
-      if (!this.selectedInstructor.id || !this.selectedBootcampState.id) {
-        return console.error("Instructor ve BootcampState seçilmeli!")
-      }
+    this.submitButton = true;
 
-      this.bootcampCreateRequest.instructorId = this.selectedInstructor.id;
-      this.bootcampCreateRequest.bootcampStateId = this.selectedBootcampState.id;
+    if (!this.selectedInstructor.id || !this.selectedBootcampState.id) {
+      this.submitButton = false;
+      return
+    }
+
+    this.bootcampCreateRequest.instructorId = this.selectedInstructor.id;
+    this.bootcampCreateRequest.bootcampStateId = this.selectedBootcampState.id;
+
+    if (this.validationControl("create")) {
 
       this.bootcampService.createBootcamp(this.bootcampCreateRequest).subscribe(response => {
+        this.bootcampCreateDialog = false;
+        this.submitted = false;
+        this.submitButton = false;
+
         this.bootcamp = {
           id: response.id,
           name: response.name,
@@ -604,7 +617,8 @@ export class BootcampsComponent implements OnInit {
         };
         this.selectedBootcampState = {
           id: '',
-          name: ''
+          name: '',
+          createdDate: new Date("0001-01-01T01:00:00")
         }
         this.selectedInstructor = {
           id: '',
@@ -614,20 +628,30 @@ export class BootcampsComponent implements OnInit {
 
       });
     }
+    else {
+      this.submitButton = false;
+    }
   }
 
   updateBootcamp() {
     this.submitted = true;
+    this.submitButton = true;
 
-    if (this.bootcamp.name?.trim()) {
-      if (!this.selectedInstructor.id || !this.selectedBootcampState.id) {
-        return console.error("Instructor ve BootcampState seçilmeli!")
-      }
+    if (!this.selectedInstructor.id || !this.selectedBootcampState.id) {
+      this.submitButton = false;
+      return
+    }
 
-      this.bootcampUpdateRequest.instructorId = this.selectedInstructor.id;
-      this.bootcampUpdateRequest.bootcampStateId = this.selectedBootcampState.id;
+    this.bootcampUpdateRequest.instructorId = this.selectedInstructor.id;
+    this.bootcampUpdateRequest.bootcampStateId = this.selectedBootcampState.id;
+
+    if (this.validationControl("update")) {
 
       this.bootcampService.updateBootcamp(this.bootcampUpdateRequest).subscribe(response => {
+        this.bootcampUpdateDialog = false;
+        this.submitted = false;
+        this.submitButton = false;
+
         this.bootcamp = {
           id: response.id,
           name: response.name,
@@ -678,7 +702,8 @@ export class BootcampsComponent implements OnInit {
         };
         this.selectedBootcampState = {
           id: '',
-          name: ''
+          name: '',
+          createdDate: new Date("0001-01-01T01:00:00")
         }
         this.selectedInstructor = {
           id: '',
@@ -687,6 +712,9 @@ export class BootcampsComponent implements OnInit {
         }
 
       });
+    }
+    else {
+      this.submitButton = false;
     }
   }
 
@@ -702,40 +730,31 @@ export class BootcampsComponent implements OnInit {
     return index;
   }
 
-  createId(): string {
-    let id = '';
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  }
-
   getSeverity(status: string) {
     switch (status) {
-      case 'ACTIVE':
-        return 'success';
-      case 'INACTIVE':
+      case 'PLANLANDI':
+        return 'info';
+      case 'DEVAM EDIYOR':
         return 'warning';
-      case 'CANCELLED':
+      case 'TAMAMLANDI':
+        return 'success';
+      case 'İPTAL EDILDI':
         return 'danger';
       default:
         return 'info';
     }
   }
 
-  filterTable(event: Event, dt: any): void {
+  filterTable(event: Event, dt: any, index: number): void {
     if (event.target instanceof HTMLInputElement) {
-      this.filterValue = event.target.value;
-      dt.filterGlobal(this.filterValue, 'contains');
+      this.filterValues[index] = event.target.value;
+      dt.filterGlobal(this.filterValues[index], 'contains');
     }
   }
 
-  filterDeletedTable(event: Event, dt: any): void {
-    if (event.target instanceof HTMLInputElement) {
-      this.filterValue = event.target.value;
-      dt.filterGlobal(this.filterValue, 'contains');
-    }
+  clearFilter(dt: any, index: number) {
+    dt.clear();
+    this.filterValues[index] = ''
   }
 
   navigateToBootcampDetailPage(bootcamp: BootcampGetListResponse) {
@@ -758,6 +777,29 @@ export class BootcampsComponent implements OnInit {
   initializeFormDates() {
     this.minStartDate = new Date();
     this.minEndDate = new Date(this.minStartDate.getFullYear(), this.minStartDate.getMonth(), this.minStartDate.getDate() + 7);
+  }
+
+  validationControl(requestName: string): boolean {
+    switch (requestName) {
+      case "create":
+        if (
+          this.bootcampCreateRequest.name.trim() && this.bootcampCreateRequest.instructorId &&
+          this.bootcampCreateRequest.bootcampStateId && this.bootcampCreateRequest.startDate &&
+          this.bootcampCreateRequest.endDate) {
+          return true;
+        }
+        return false
+      case "update":
+        if (
+          this.bootcampUpdateRequest.name.trim() && this.bootcampUpdateRequest.instructorId &&
+          this.bootcampUpdateRequest.bootcampStateId && this.bootcampUpdateRequest.startDate &&
+          this.bootcampUpdateRequest.endDate) {
+          return true;
+        }
+        return false
+      default:
+        return false;
+    }
   }
 
 }
