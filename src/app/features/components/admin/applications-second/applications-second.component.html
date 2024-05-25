@@ -1,0 +1,308 @@
+<!-- Applications Table -->
+<div class="content-container">
+    <div class="card">
+        <p-toast />
+
+        <p-table #dt1 [value]="applications.items" [rows]="20" [paginator]="true"
+            [globalFilterFields]="['applicantUserName', 'applicantEmail', 'bootcampName', 'createdDate', 'applicationStateName']"
+            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedApplications" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="600px">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <div class="p-toolbar table-header">    
+                        <h5 class=" m-0">Applications</h5>
+                    </div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" [(ngModel)]="filterValues[0]" (input)="filterTable($event, dt1, 0)" placeholder="Filtrele..." />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt1, 0)" *ngIf="filterValues[0]" />
+                    </span>
+                </div>
+                <p-toolbar styleClass="mb-2 mt-3 gap-2">
+                    <ng-template pTemplate="left">
+                        <p-button pRipple severity="success" label="Ekle" icon="pi pi-plus" class="mr-2" (click)="openNew()" />
+                        <p-button pRipple severity="danger" label="Sil" icon="pi pi-trash" (click)="deleteSelectedApplications(false)"
+                            [disabled]="!selectedApplications || !selectedApplications.length" />
+                    </ng-template>
+                </p-toolbar>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox />
+                    </th>
+                    <th pSortableColumn="applicantUserName" style="min-width:12rem">
+                        Öğrenci Ad Soyad <p-sortIcon field="applicantUserName" />
+                    </th>
+                    <th pSortableColumn="applicantEmail" style="min-width:12rem">
+                        Email <p-sortIcon field="applicantEmail" />
+                    </th>
+                    <th pSortableColumn="bootcampName" style="min-width:8rem">
+                        Kurs Adı <p-sortIcon field="bootcampName" />
+                    </th>
+                    <th pSortableColumn="createdDate" style="min-width:12rem">
+                        Oluşturulma Tarihi <p-sortIcon field="createdDate" />
+                    </th>
+                    <th pSortableColumn="applicationStateName" style="min-width:6rem">
+                        Durumu <p-sortIcon field="applicationStateName" />
+                    </th>
+                    <th style="min-width:12rem;"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-application>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="application" />
+                    </td>
+                    <td>
+                        {{ application.applicantUserName }}
+                    </td>
+                    <td>
+                        {{ application.applicantEmail }}
+                    </td>
+                    <td>
+                        {{ application.bootcampName }}
+                    </td>
+                    <td>
+                        {{ application.createdDate.toString().substring(0,10) }}
+                    </td>
+                    <td>
+                        <p-tag [value]="application.applicationStateName"
+                            [severity]="getSeverity(application.applicationStateName.toUpperCase())" />
+                    </td>
+                    <td>
+                        <p-button pRipple icon="pi pi-pencil" class="m-1" [rounded]="true" [outlined]="true"
+                            severity="success" (click)="openEdit(application)" />
+                        <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                            (click)="deleteApplication(application, false)" />
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                    Toplam {{ applications.items ? applications.items.length : 0 }} adet Application var.
+                </div>
+            </ng-template>
+        </p-table>
+
+        <!-- Create Dialog -->
+        <p-dialog [(visible)]="applicationCreateDialog" [style]="{ width: '775px', height: '600px' }" header="Create Application" [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="applicant">Öğrenci</label>
+                    <small class="p-error" *ngIf="!selectedApplicant.id">*  Zorunlu alan.</small>
+                    <p-dropdown [(ngModel)]="selectedApplicant" inputId="applicant" [options]="applicants" placeholder="Öğrenci Seçin" required>
+                        <ng-template pTemplate="selectedItem">
+                            <p-tag [value]="selectedApplicant.userName" severity="" class="mr-2" />
+                            <p-tag [value]="selectedApplicant.email" severity="warning" />
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <p-tag [value]="option.userName" severity="" class="mr-2"/>
+                            <p-tag [value]="option.email" severity="warning" />
+                        </ng-template>
+                    </p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !selectedApplicant.id">
+                        Öğrenci alanı boş olamaz.
+                    </small>
+                </div>
+
+                <div class="field">
+                    <label for="bootcamp">Bootcamp</label>
+                    <small class="p-error" *ngIf="!selectedBootcamp.id">*  Zorunlu alan.</small>
+                    <p-dropdown [(ngModel)]="selectedBootcamp" inputId="bootcamp" [options]="bootcamps" placeholder="Bootcamp Seçin" required>
+                        <ng-template pTemplate="selectedItem">
+                            <p-tag [value]="selectedBootcamp.name" severity="" class="mr-2" />
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <p-tag [value]="option.name" severity="info" class="mr-2"/>
+                        </ng-template>
+                    </p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !selectedBootcamp.id">
+                        Bootcamp alanı boş olamaz.
+                    </small>
+                </div>
+
+                <div class="field">
+                    <label for="applicationState">Application State</label>
+                    <small class="p-error" *ngIf="!selectedApplicationState.id">*  Zorunlu alan.</small>
+                    <p-dropdown [(ngModel)]="selectedApplicationState" inputId="applicationState" [options]="applicationStates" placeholder="Application Durumu Seçin" required>
+                        <ng-template pTemplate="selectedItem">
+                            <p-tag [value]="selectedApplicationState.name" [severity]="getSeverity(selectedApplicationState.name.toUpperCase())" />
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <p-tag [value]="option.name" [severity]="getSeverity(option.name.toUpperCase())" />
+                        </ng-template>
+                    </p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !selectedApplicationState.id">
+                        Application State alanı boş olamaz.
+                    </small>
+                </div>
+            </ng-template>
+        
+            <ng-template pTemplate="footer">
+                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createApplication()" [disabled]="submitButton" />
+            </ng-template>
+        </p-dialog>
+        
+        <!-- Update Dialog -->
+        <p-dialog [(visible)]="applicationUpdateDialog" [style]="{ width: '775px', height: '600px' }" header="Application Details" [modal]="true" styleClass="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="applicant">Öğrenci</label>
+                    <small class="p-error" *ngIf="!selectedApplicant.id">*  Zorunlu alan.</small>
+                    <p-dropdown [(ngModel)]="selectedApplicant" inputId="applicant" [options]="applicants" placeholder="Öğrenci Seçin" required>
+                        <ng-template pTemplate="selectedItem">
+                            <p-tag [value]="selectedApplicant.userName" severity="" class="mr-2" />
+                            <p-tag [value]="selectedApplicant.email" severity="warning" />
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <p-tag [value]="option.userName" severity="" class="mr-2"/>
+                            <p-tag [value]="option.email" severity="warning" />
+                        </ng-template>
+                    </p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !selectedApplicant.id">
+                        Öğrenci alanı boş olamaz.
+                    </small>
+                </div>
+
+                <div class="field">
+                    <label for="bootcamp">Bootcamp</label>
+                    <small class="p-error" *ngIf="!selectedBootcamp.id">*  Zorunlu alan.</small>
+                    <p-dropdown [(ngModel)]="selectedBootcamp" inputId="bootcamp" [options]="bootcamps" placeholder="Bootcamp Seçin" required>
+                        <ng-template pTemplate="selectedItem">
+                            <p-tag [value]="selectedBootcamp.name" severity="" class="mr-2" />
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <p-tag [value]="option.name" severity="info" class="mr-2"/>
+                        </ng-template>
+                    </p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !selectedBootcamp.id">
+                        Bootcamp alanı boş olamaz.
+                    </small>
+                </div>
+
+                <div class="field">
+                    <label for="applicationState">Application State</label>
+                    <small class="p-error" *ngIf="!selectedApplicationState.id">*  Zorunlu alan.</small>
+                    <p-dropdown [(ngModel)]="selectedApplicationState" inputId="applicationState" [options]="applicationStates" [placeholder]="selectedApplicationState.name" required>
+                        <ng-template pTemplate="selectedItem">
+                            <p-tag [value]="selectedApplicationState.name" [severity]="getSeverity(selectedApplicationState.name.toUpperCase())" />
+                        </ng-template>
+                        <ng-template let-option pTemplate="item">
+                            <p-tag [value]="option.name" [severity]="getSeverity(option.name.toUpperCase())" />
+                        </ng-template>
+                    </p-dropdown>
+                    <small class="p-error" *ngIf="submitted && !selectedApplicationState.id">
+                        Application State alanı boş olamaz.
+                    </small>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="updateApplication()" [disabled]="submitButton" />
+            </ng-template>
+        </p-dialog>
+
+    </div>
+</div>
+
+<!--  -->
+<!--  -->
+<p-confirmDialog [style]="{ width: '850px' }" />
+<!--  -->
+<!--  -->
+
+<!-- Deleted Applications Table -->
+<div class="content-container">
+    <div class="card">
+        <p-toast />
+
+        <p-table #dt2 [value]="deletedApplications.items" [rows]="20" [paginator]="true"
+            [globalFilterFields]="['applicantUserName', 'applicantEmail', 'bootcampName', 'createdDate', 'applicationStateName']"
+            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedDeletedApplications" [rowHover]="true" dataKey="id"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="500px">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <div class="p-toolbar table-header">
+                        <h5 class="m-0">Deleted Applications</h5>
+                    </div>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" [(ngModel)]="filterValues[1]" (input)="filterTable($event, dt2, 1)" placeholder="Filtrele..." />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt2, 1)" *ngIf="filterValues[1]" />
+                    </span>
+                </div>
+                <p-toolbar styleClass="mb-2 mt-3 gap-2">
+                    <ng-template pTemplate="left">
+                        <p-button pRipple severity="success" label="Kurtar" icon="pi pi-replay" class="mr-2" (click)="restoreSelectedApplications()"
+                            [disabled]="!selectedDeletedApplications || !selectedDeletedApplications.length" />
+                        <p-button pRipple severity="danger" label="Kalıcı Sil" icon="pi pi-trash" (click)="deleteSelectedApplications(true)"
+                            [disabled]="!selectedDeletedApplications || !selectedDeletedApplications.length" />
+                    </ng-template>
+                </p-toolbar>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox />
+                    </th>
+                    <th pSortableColumn="applicantUserName" style="min-width:12rem">
+                        Öğrenci Ad Soyad <p-sortIcon field="applicantUserName" />
+                    </th>
+                    <th pSortableColumn="applicantEmail" style="min-width:12rem">
+                        Email <p-sortIcon field="applicantEmail" />
+                    </th>
+                    <th pSortableColumn="bootcampName" style="min-width:8rem">
+                        Kurs Adı <p-sortIcon field="bootcampName" />
+                    </th>
+                    <th pSortableColumn="deletedDate" style="min-width:12rem">
+                        Silinme Tarihi <p-sortIcon field="deletedDate" />
+                    </th>
+                    <th pSortableColumn="applicationStateName" style="min-width:6rem">
+                        Durumu <p-sortIcon field="applicationStateName" />
+                    </th>
+                    <th style="min-width:12rem;"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-application>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="application" />
+                    </td>
+                    <td>
+                        {{ application.applicantUserName }}
+                    </td>
+                    <td>
+                        {{ application.applicantEmail }}
+                    </td>
+                    <td>
+                        {{ application.bootcampName }}
+                    </td>
+                    <td>
+                        {{ application.deletedDate.toString().substring(0,10) }}
+                    </td>
+                    <td>
+                        <p-tag [value]="application.applicationStateName"
+                            [severity]="getSeverity(application.applicationStateName.toUpperCase())" />
+                    </td>
+                    <td>
+                        <p-button pRipple icon="pi pi-replay" class="m-1" [rounded]="true" [outlined]="true"
+                            severity="success" (click)="restoreApplication(application)" />
+                        <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                            (click)="deleteApplication(application, true)" />
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                    Toplam {{ deletedApplications.items ? deletedApplications.items.length : 0 }} adet Silinmiş Application var.
+                </div>
+            </ng-template>
+        </p-table>
+
+    </div>
+</div>
