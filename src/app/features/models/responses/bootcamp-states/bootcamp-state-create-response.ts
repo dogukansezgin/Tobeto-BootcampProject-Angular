@@ -1,4 +1,4 @@
-export interface BootcampStateGetListResponse {
+export interface BootcampStateCreateResponse{
     id: string,
     name: string,
     createdDate: Date
