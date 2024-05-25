@@ -50,7 +50,8 @@ export const environment = {
       deleteApplicants: '/api/Applicants/delete',
       deleteRangeApplicants: '/api/Applicants/deleteRange',
       restoreApplicants: '/api/Applicants/restore',
-      restoreRangeApplicants: '/api/Applicants/restoreRange'
+      restoreRangeApplicants: '/api/Applicants/restoreRange',
+      getListByJoin:'/api/Applications/getByJoin'
     },
     applications: {
       checkApplication: '/api/Applications/checkApplication',
@@ -62,7 +63,9 @@ export const environment = {
       deleteApplication: '/api/Applications/delete',
       deleteRangeApplication: '/api/Applications/deleteRange',
       restoreApplication: '/api/Applications/restore',
-      restoreRangeApplication: '/api/Applications/restoreRange'
+      restoreRangeApplication: '/api/Applications/restoreRange',
+      getByState:'/api/Applications/getByState'
+
     },
     applicationStates: {
       getByName: '/api/ApplicationStates/getByName/',

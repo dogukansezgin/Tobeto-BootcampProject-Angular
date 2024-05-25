@@ -23,6 +23,8 @@ import { PageRequest } from "../../../core/models/pagination/page-request";
 import { ApplicantGetListDeletedResponse } from "../../models/responses/applicant/applicant-get-list-deleted-response";
 import { ApplicantGetListResponse } from "../../models/responses/applicant/applicant-get-list-response";
 import { ApplicantGetBasicInfoResponse } from "../../models/responses/applicant/applicant-get-basic-info-response";
+import { GetListByJoinApplicantListItemDto } from "../../models/responses/applicants/get-list-by-join-applicant-list-item-dto";
+
 
 @Injectable({
     providedIn: 'root'
@@ -40,6 +42,7 @@ export class ApplicantService extends ApplicantBaseService {
     private readonly apiUrl_DeleteRangeApplicant = environment.apiUrl + environment.endpoints.applicants.deleteRangeApplicants;
     private readonly apiUrl_RestoreApplicant = environment.apiUrl + environment.endpoints.applicants.restoreApplicants;
     private readonly apiUrl_RestoreRangeApplicant = environment.apiUrl + environment.endpoints.applicants.restoreRangeApplicants;
+    private readonly apiUrl_GetListByJoin: string = environment.apiUrl + environment.endpoints.applicants.getListByJoin;
 
     constructor(private httpClient: HttpClient, private localStorageService: LocalStorageService) { super(); }
 
@@ -158,5 +161,28 @@ export class ApplicantService extends ApplicantBaseService {
     }
     override restoreRangeApplicant(applicantRestoreRangeRequest: ApplicantRestoreRangeRequest): Observable<ApplicantRestoreRangeResponse> {
         return this.httpClient.post<ApplicantRestoreRangeResponse>(this.apiUrl_RestoreRangeApplicant, applicantRestoreRangeRequest)
+
+    override getListByJoin(pageRequest: PageRequest): Observable<GetListResponse<GetListByJoinApplicantListItemDto>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize
+        }
+        return this.httpClient.get<GetListResponse<GetListByJoinApplicantListItemDto>>(this.apiUrl_GetListByJoin, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: GetListResponse<GetListByJoinApplicantListItemDto> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
+
+            );
     }
+    
 }

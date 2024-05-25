@@ -22,7 +22,6 @@ import { ApplicationUpdateResponse } from "../../models/responses/applications/a
 import { AppliedBootcampResponse } from "../../models/responses/applications/applied-bootcamp-response";
 import { CheckApplicationResponse } from "../../models/responses/applications/check-application-response";
 
-
 @Injectable({
     providedIn: 'root'
 })
@@ -32,6 +31,8 @@ export class ApplicationService extends ApplicationBaseService {
     private readonly apiUrl_AppliedBootcamps: string = environment.apiUrl + environment.endpoints.applications.appliedBootcamps
     private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.applications.getList;
     private readonly apiUrl_GetListDeleted: string = environment.apiUrl + environment.endpoints.applications.getListDeleted;
+    private readonly apiUrl_GetByState: string = environment.apiUrl + environment.endpoints.applications.getByState;
+  
     private readonly apiUrl_CreateApplication = environment.apiUrl + environment.endpoints.applications.createApplication;
     private readonly apiUrl_UpdateApplication = environment.apiUrl + environment.endpoints.applications.updateApplication;
     private readonly apiUrl_DeleteApplication = environment.apiUrl + environment.endpoints.applications.deleteApplication;
@@ -85,7 +86,29 @@ export class ApplicationService extends ApplicationBaseService {
 
             )
     }
-    
+    override getByState(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListResponse>> {
+      const newRequest: { [key: string]: string | number } = {
+          pageIndex: pageRequest.pageIndex,
+          pageSize: pageRequest.pageSize
+      }
+      return this.httpClient.get<ListItemsDto<ApplicationGetListResponse>>(this.apiUrl_GetByState, { params: newRequest })
+          .pipe(
+              map((response) => {
+                  const newResponse: ListItemsDto<ApplicationGetListResponse> = {
+                      items: response.items,
+                      index: response.index,
+                      size: response.size,
+                      count: response.count,
+                      pages: response.pages,
+                      hasNext: response.hasNext,
+                      hasPrevious: response.hasPrevious
+                  };
+                  return newResponse;
+              })
+
+          );
+    }
+
     override checkApplication(applicantId: string, bootcampId: string): Observable<CheckApplicationResponse> {
         const url = `${this.apiUrl_CheckApplication}?applicantId=${applicantId}&bootcampId=${bootcampId}`
         return this.httpClient.get<CheckApplicationResponse>(url)

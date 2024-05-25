@@ -741,7 +741,7 @@ export class BootcampsComponent implements OnInit {
       case 'İPTAL EDILDI':
         return 'danger';
       default:
-        return '';
+        return 'info';
     }
   }
 

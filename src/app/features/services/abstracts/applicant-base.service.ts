@@ -19,6 +19,8 @@ import { PageRequest } from "../../../core/models/pagination/page-request";
 import { ApplicantGetListDeletedResponse } from "../../models/responses/applicant/applicant-get-list-deleted-response";
 import { ApplicantGetListResponse } from "../../models/responses/applicant/applicant-get-list-response";
 import { ApplicantGetBasicInfoResponse } from "../../models/responses/applicant/applicant-get-basic-info-response";
+import { GetListByJoinApplicantListItemDto } from "../../models/responses/applicants/get-list-by-join-applicant-list-item-dto";
+
 
 @Injectable()
 export abstract class ApplicantBaseService {
@@ -26,6 +28,7 @@ export abstract class ApplicantBaseService {
     abstract getApplicantsList(pageRequest: PageRequest): Observable<ListItemsDto<ApplicantGetListResponse>>
     abstract getApplicantsListDeleted(pageRequest: PageRequest): Observable<ListItemsDto<ApplicantGetListDeletedResponse>>
     abstract getApplicantsBasicInfoList(pageRequest: PageRequest): Observable<ListItemsDto<ApplicantGetBasicInfoResponse>>
+    abstract getListByJoin(pageRequest: PageRequest): Observable<ListItemsDto<GetListByJoinApplicantListItemDto>>
     abstract getApplicant(applicantId:string):Observable<GetApplicantResponse>
     // abstract updateApplicant(request: ApplicantUpdateRequest) : Observable<GetApplicantResponse>
 
@@ -37,4 +40,5 @@ export abstract class ApplicantBaseService {
     abstract deleteRangeApplicant(applicantDeleteRangeRequest: ApplicantDeleteRangeRequest): Observable<ApplicantDeleteRangeResponse>
     abstract restoreApplicant(applicantRestoreRequest: ApplicantRestoreRequest): Observable<ApplicantRestoreResponse>
     abstract restoreRangeApplicant(applicantRestoreRangeRequest: ApplicantRestoreRangeRequest): Observable<ApplicantRestoreRangeResponse>
+
 }

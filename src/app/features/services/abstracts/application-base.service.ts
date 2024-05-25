@@ -19,7 +19,6 @@ import { ApplicationRestoreResponse } from "../../models/responses/applications/
 import { ApplicationUpdateResponse } from "../../models/responses/applications/application-update-response";
 import { CheckApplicationResponse } from "../../models/responses/applications/check-application-response";
 
-
 @Injectable()
 export abstract class ApplicationBaseService {
 
@@ -34,5 +33,5 @@ export abstract class ApplicationBaseService {
     abstract deleteRangeApplication(applicationDeleteRangeRequest: ApplicationDeleteRangeRequest): Observable<ApplicationDeleteRangeResponse>
     abstract restoreApplication(applicationRestoreRequest: ApplicationRestoreRequest): Observable<ApplicationRestoreResponse>
     abstract restoreRangeApplication(applicationRestoreRangeRequest: ApplicationRestoreRangeRequest): Observable<ApplicationRestoreRangeResponse>
-    
+
 }

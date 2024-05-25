@@ -29,6 +29,7 @@ import { EmployeesComponent } from './features/components/admin/employees/employ
 import { BootcampStatesComponent } from './features/components/admin/bootcamp-states/bootcamp-states.component';
 import { ApplicationStatesComponent } from './features/components/admin/application-states/application-states.component';
 import { ApplicationsSecondComponent } from './features/components/admin/applications-second/applications-second.component';
+import { ApplicantsFirstComponent } from './features/components/admin/applicants-first/applicants-first.component';
 
 export const routes: Routes =
     [
@@ -117,8 +118,10 @@ export const routes: Routes =
                 { path: 'Applicants', component: ApplicantsComponent },
                 { path: 'Instructors', component: InstructorsComponent },
                 { path: 'Employees', component: EmployeesComponent },
+                { path: 'Applicants', component:ApplicantsComponent},
                 { path: 'Settings', component: SettingsComponent },
-                { path: 'Account', component: AccountComponent }
+                { path: 'Account', component: AccountComponent },
+                { path: 'ApplicantsFirst', component:ApplicantsFirstComponent}
             ]
         },
 
