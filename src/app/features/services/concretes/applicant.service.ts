@@ -22,6 +22,7 @@ import { ListItemsDto } from "../../../core/models/pagination/list-items-dto";
 import { PageRequest } from "../../../core/models/pagination/page-request";
 import { ApplicantGetListDeletedResponse } from "../../models/responses/applicant/applicant-get-list-deleted-response";
 import { ApplicantGetListResponse } from "../../models/responses/applicant/applicant-get-list-response";
+import { ApplicantGetBasicInfoResponse } from "../../models/responses/applicant/applicant-get-basic-info-response";
 
 @Injectable({
     providedIn: 'root'
@@ -30,6 +31,7 @@ export class ApplicantService extends ApplicantBaseService {
 
     private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.applicants.getList;
     private readonly apiUrl_GetListDeleted: string = environment.apiUrl + environment.endpoints.applicants.getListDeleted;
+    private readonly apiUrl_GetBasicInfoList: string = environment.apiUrl + environment.endpoints.applicants.getBasicInfo;
     private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.applicants.getApplicantById;
     private readonly apiUrl_UpdateInfo: string = environment.apiUrl + environment.endpoints.applicants.updateApplicantInfo;
     private readonly apiUrl_CreateApplicant = environment.apiUrl + environment.endpoints.applicants.createApplicants;
@@ -72,6 +74,28 @@ export class ApplicantService extends ApplicantBaseService {
             .pipe(
                 map((response) => {
                     const newResponse: ListItemsDto<ApplicantGetListDeletedResponse> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
+
+            )
+    }
+    override getApplicantsBasicInfoList(pageRequest: PageRequest): Observable<ListItemsDto<ApplicantGetBasicInfoResponse>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize
+        }
+        return this.httpClient.get<ListItemsDto<ApplicantGetBasicInfoResponse>>(this.apiUrl_GetBasicInfoList, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: ListItemsDto<ApplicantGetBasicInfoResponse> = {
                         items: response.items,
                         index: response.index,
                         size: response.size,

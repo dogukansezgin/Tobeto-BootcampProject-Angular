@@ -5,5 +5,5 @@ export interface EmployeeUpdateRequest{
     lastName: string,
     dateOfBirth?: Date,
     nationalIdentity?: string,
-    position?: string,
+    position: string,
 }

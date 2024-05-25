@@ -18,12 +18,14 @@ import { ListItemsDto } from "../../../core/models/pagination/list-items-dto";
 import { PageRequest } from "../../../core/models/pagination/page-request";
 import { ApplicantGetListDeletedResponse } from "../../models/responses/applicant/applicant-get-list-deleted-response";
 import { ApplicantGetListResponse } from "../../models/responses/applicant/applicant-get-list-response";
+import { ApplicantGetBasicInfoResponse } from "../../models/responses/applicant/applicant-get-basic-info-response";
 
 @Injectable()
 export abstract class ApplicantBaseService {
 
     abstract getApplicantsList(pageRequest: PageRequest): Observable<ListItemsDto<ApplicantGetListResponse>>
     abstract getApplicantsListDeleted(pageRequest: PageRequest): Observable<ListItemsDto<ApplicantGetListDeletedResponse>>
+    abstract getApplicantsBasicInfoList(pageRequest: PageRequest): Observable<ListItemsDto<ApplicantGetBasicInfoResponse>>
     abstract getApplicant(applicantId:string):Observable<GetApplicantResponse>
     // abstract updateApplicant(request: ApplicantUpdateRequest) : Observable<GetApplicantResponse>
 

@@ -3,13 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BootcampService } from '../../../services/concretes/bootcamp.service';
 import { BootcampGetListResponse } from '../../../models/responses/bootcamps/bootcamp-get-list-response';
 import { ApplicationService } from '../../../services/concretes/application.service';
-import { ApplicationPostRequest } from '../../../models/requests/applications/application-post-request';
 import { CommonModule } from '@angular/common';
 import { CheckApplicationResponse } from '../../../models/responses/applications/check-application-response';
 import { TokenService } from '../../../services/concretes/token.service';
 import { AuthService } from '../../../services/concretes/auth.service';
 import { ApplicationStateService } from '../../../services/concretes/application-state.service';
 import { FormatService } from '../../../services/concretes/format.service';
+import { ApplicationCreateRequest } from '../../../models/requests/applications/application-create-request';
 
 @Component({
   selector: 'app-bootcamp-detail',
@@ -47,7 +47,7 @@ export class BootcampDetailComponent implements OnInit {
   userId!: string;
 
   isInitialStateIdValid: boolean = false;
-  applicationRequest!: ApplicationPostRequest;
+  applicationRequest!: ApplicationCreateRequest;
 
   applicationInfo: CheckApplicationResponse = {
     id: '',
@@ -195,7 +195,7 @@ export class BootcampDetailComponent implements OnInit {
 
       console.log(this.applicationRequest)
 
-      this.applicationService.postApplication(this.applicationRequest).subscribe(response => {
+      this.applicationService.createApplication(this.applicationRequest).subscribe(response => {
         alert("Başvuru başarıyla yapıldı.");
         console.log(response);
 

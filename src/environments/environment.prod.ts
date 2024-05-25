@@ -5,6 +5,7 @@ export const environment = {
     bootcamps: {
       getList: '',
       getListDeleted: '',
+      getBasicInfo: '',
       getBootcampById: '',
       getBootcampByName: '',
       getUnfinishedBootcamps: '',
@@ -18,7 +19,14 @@ export const environment = {
       restoreRangeBootcamp: ''
     },
     bootcampStates: {
-      getList: ''
+      getList: '',
+      getListDeleted: '',
+      createBootcampState: '',
+      updateBootcampState: '',
+      deleteBootcampState: '',
+      deleteRangeBootcampState: '',
+      restoreBootcampState: '',
+      restoreRangeBootcampState: ''
     },
     auth: {
       register: {
@@ -34,6 +42,7 @@ export const environment = {
     applicants: {
       getList: '',
       getListDeleted: '',
+      getBasicInfo: '',
       getApplicantById: '',
       updateApplicantInfo: '',
       createApplicants: '',
@@ -44,12 +53,27 @@ export const environment = {
       restoreRangeApplicants: ''
     },
     applications: {
-      post: '',
       checkApplication: '',
-      appliedBootcamps: ''
+      appliedBootcamps: '',
+      getList: '',
+      getListDeleted: '',
+      createApplication: '',
+      updateApplication: '',
+      deleteApplication: '',
+      deleteRangeApplication: '',
+      restoreApplication: '',
+      restoreRangeApplication: ''
     },
     applicationStates: {
-      getByName: ''
+      getByName: '',
+      getList: '',
+      getListDeleted: '',
+      createApplicationState: '',
+      updateApplicationState: '',
+      deleteApplicationState: '',
+      deleteRangeApplicationState: '',
+      restoreApplicationState: '',
+      restoreRangeApplicationState: ''
     },
     instructors: {
       getList: '',

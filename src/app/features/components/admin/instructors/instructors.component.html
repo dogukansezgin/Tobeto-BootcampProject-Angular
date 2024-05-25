@@ -84,6 +84,7 @@
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="firstName">Ad</label>
+                    <small class="p-error" *ngIf="!instructorCreateRequest.firstName">*  Zorunlu alan.</small>
                     <input type="text" pInputText id="firstName" [(ngModel)]="instructorCreateRequest.firstName" required autofocus />
                     <small class="p-error" *ngIf="submitted && !instructorCreateRequest.firstName">
                         Ad alanı boş olamaz.
@@ -91,6 +92,7 @@
                 </div>
                 <div class="field">
                     <label for="lastName">Soyad</label>
+                    <small class="p-error" *ngIf="!instructorCreateRequest.lastName">*  Zorunlu alan.</small>
                     <input type="text" pInputText id="lastName" [(ngModel)]="instructorCreateRequest.lastName" required autofocus />
                     <small class="p-error" *ngIf="submitted && !instructorCreateRequest.lastName">
                         Soyad alanı boş olamaz.
@@ -98,6 +100,7 @@
                 </div>
                 <div class="field">
                     <label for="email">Email</label>
+                    <small class="p-error" *ngIf="!instructorCreateRequest.email">*  Zorunlu alan.</small>
                     <input type="email" pInputText id="email" [(ngModel)]="instructorCreateRequest.email" required />
                     <small class="p-error" *ngIf="submitted && !instructorCreateRequest.email">
                         Email alanı boş olamaz.
@@ -105,6 +108,7 @@
                 </div>
                 <div class="field">
                     <label for="password">Şifre</label>
+                    <small class="p-error" *ngIf="!instructorCreateRequest.password">*  Zorunlu alan.</small>
                     <input type="password" pInputText id="password" [(ngModel)]="instructorCreateRequest.password" required />
                     <small class="p-error" *ngIf="submitted && !instructorCreateRequest.password">
                         Şifre alanı boş olamaz.
@@ -113,19 +117,14 @@
                 <div class="field">
                     <label for="dateOfBirth">Doğum Tarihi</label>
                     <p-calendar id="dateOfBirth" [(ngModel)]="instructorCreateRequest.dateOfBirth" dateFormat="dd-mm-yy" [minDate]="minDate" [maxDate]="maxDate" showIcon="true"></p-calendar>
-                    <small class="p-error" *ngIf="submitted && !instructorCreateRequest.dateOfBirth">
-                        Doğum Tarihi alanı boş olamaz.
-                    </small>
                 </div>
                 <div class="field">
                     <label for="nationalIdentity">Kimlik Numarası</label>
-                    <input type="text" pInputText id="nationalIdentity" [(ngModel)]="instructorCreateRequest.nationalIdentity" required />
-                    <small class="p-error" *ngIf="submitted && !instructorCreateRequest.nationalIdentity">
-                        Kimlik Numarası alanı boş olamaz.
-                    </small>
+                    <input type="text" pInputText id="nationalIdentity" [(ngModel)]="instructorCreateRequest.nationalIdentity" />
                 </div>
                 <div class="field">
                     <label for="companyName">Şirket Adı</label>
+                    <small class="p-error" *ngIf="!instructorCreateRequest.companyName">*  Zorunlu alan.</small>
                     <input type="text" pInputText id="companyName" [(ngModel)]="instructorCreateRequest.companyName" required />
                     <small class="p-error" *ngIf="submitted && !instructorCreateRequest.companyName">
                         Şirket Adı alanı boş olamaz.
@@ -136,7 +135,7 @@
         
             <ng-template pTemplate="footer">
                 <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
-                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createInstructor()" [disabled]="submitted" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createInstructor()" [disabled]="submitButton" />
             </ng-template>
         </p-dialog>
         
@@ -145,6 +144,7 @@
             <ng-template pTemplate="content">
                 <div class="field">
                     <label for="firstName">Ad</label>
+                    <small class="p-error" *ngIf="!instructorUpdateRequest.firstName">*  Zorunlu alan.</small>
                     <input type="text" pInputText id="firstName" [(ngModel)]="instructorUpdateRequest.firstName" required autofocus />
                     <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.firstName">
                         Ad alanı boş olamaz.
@@ -152,13 +152,15 @@
                 </div>
                 <div class="field">
                     <label for="lastName">Soyad</label>
-                    <input type="text" pInputText id="lastName" [(ngModel)]="instructorUpdateRequest.lastName" required autofocus />
+                    <small class="p-error" *ngIf="!instructorUpdateRequest.lastName">*  Zorunlu alan.</small>
+                    <input type="text" pInputText id="lastName" [(ngModel)]="instructorUpdateRequest.lastName" required />
                     <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.lastName">
                         Soyad alanı boş olamaz.
                     </small>
                 </div>
                 <div class="field">
                     <label for="email">Email</label>
+                    <small class="p-error" *ngIf="!instructorUpdateRequest.email">*  Zorunlu alan.</small>
                     <input type="email" pInputText id="email" [(ngModel)]="instructorUpdateRequest.email" required />
                     <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.email">
                         Email alanı boş olamaz.
@@ -167,21 +169,16 @@
                 <div class="field">
                     <label for="dateOfBirth">Doğum Tarihi</label>
                     <p-calendar id="dateOfBirth" [(ngModel)]="instructorUpdateRequest.dateOfBirth" dateFormat="dd-mm-yy" [minDate]="minDate" [maxDate]="maxDate" showIcon="true"></p-calendar>
-                    <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.dateOfBirth">
-                        Doğum Tarihi alanı boş olamaz.
-                    </small>
                 </div>
                 <div class="field">
                     <label for="nationalIdentity">Kimlik Numarası</label>
-                    <input type="text" pInputText id="nationalIdentity" [(ngModel)]="instructorUpdateRequest.nationalIdentity" required />
-                    <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.nationalIdentity">
-                        Kimlik Numarası alanı boş olamaz.
-                    </small>
+                    <input type="text" pInputText id="nationalIdentity" [(ngModel)]="instructorUpdateRequest.nationalIdentity" />
                 </div>
                 <div class="field">
                     <label for="companyName">Şirket Adı</label>
+                    <small class="p-error" *ngIf="!instructorUpdateRequest.companyName">*  Zorunlu alan.</small>
                     <input type="text" pInputText id="companyName" [(ngModel)]="instructorUpdateRequest.companyName" required />
-                    <small class="p-error" *ngIf="submitted && !instructorUpdateRequest.companyName">
+                    <small class="p-error" *ngIf="submitted && !instructorCreateRequest.companyName">
                         Şirket Adı alanı boş olamaz.
                     </small>
                 </div>
@@ -190,7 +187,7 @@
 
             <ng-template pTemplate="footer">
                 <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
-                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="updateInstructor()" [disabled]="submitted" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="updateInstructor()" [disabled]="submitButton" />
             </ng-template>
         </p-dialog>
 
@@ -215,7 +212,9 @@
             [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="500px">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
-                    <h5 class="m-0">Deleted Instructors</h5>
+                    <div class="p-toolbar table-header">
+                        <h5 class="m-0">Deleted Instructors</h5>
+                    </div>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
                         <input pInputText type="text" [(ngModel)]="filterValues[1]" (input)="filterTable($event, dt2, 1)" placeholder="Filtrele..." />

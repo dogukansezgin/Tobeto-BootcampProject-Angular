@@ -116,7 +116,8 @@ export class BootcampsComponent implements OnInit {
 
   selectedBootcampState: BootcampStateGetListResponse = {
     id: '',
-    name: ''
+    name: '',
+    createdDate: new Date("0001-01-01T01:00:00")
   };
 
   //
@@ -130,6 +131,7 @@ export class BootcampsComponent implements OnInit {
 
   //
   submitted: boolean = false;
+  submitButton: boolean = false;
 
   filterValues: string[] = ['', ''];
 
@@ -183,7 +185,8 @@ export class BootcampsComponent implements OnInit {
     };
     this.selectedBootcampState = {
       id: '',
-      name: ''
+      name: '',
+      createdDate: new Date("0001-01-01T01:00:00")
     };
     this.selectedInstructor = {
       id: '',
@@ -210,7 +213,8 @@ export class BootcampsComponent implements OnInit {
     };
     this.selectedBootcampState = {
       id: this.bootcamp.bootcampStateId,
-      name: this.bootcamp.bootcampStateName
+      name: this.bootcamp.bootcampStateName,
+      createdDate: new Date("0001-01-01T01:00:00")
     };
     this.selectedInstructor = {
       id: this.bootcamp.instructorId,
@@ -263,8 +267,8 @@ export class BootcampsComponent implements OnInit {
               });
             }
           }
-          
-          
+
+
           this.bootcampService.deleteRangeBootcamp(this.bootcampDeleteRangeRequest).subscribe(response => {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamps Deleted', life: 3000 });
 
@@ -296,7 +300,7 @@ export class BootcampsComponent implements OnInit {
             else {
               this.deletedBootcamps.items = this.deletedBootcamps.items.filter((val) => !this.selectedDeletedBootcamps?.includes(val));
             }
-            
+
 
           }).add(() => {
             this.selectedBootcamps = [];
@@ -546,17 +550,22 @@ export class BootcampsComponent implements OnInit {
 
   createBootcamp() {
     this.submitted = true;
-    if (this.bootcampCreateRequest.name?.trim()) {
-      if (!this.selectedInstructor.id || !this.selectedBootcampState.id) {
-        return console.error("Instructor ve BootcampState seçilmeli!")
-      }
+    this.submitButton = true;
 
-      this.bootcampCreateRequest.instructorId = this.selectedInstructor.id;
-      this.bootcampCreateRequest.bootcampStateId = this.selectedBootcampState.id;
+    if (!this.selectedInstructor.id || !this.selectedBootcampState.id) {
+      this.submitButton = false;
+      return
+    }
+
+    this.bootcampCreateRequest.instructorId = this.selectedInstructor.id;
+    this.bootcampCreateRequest.bootcampStateId = this.selectedBootcampState.id;
+
+    if (this.validationControl("create")) {
 
       this.bootcampService.createBootcamp(this.bootcampCreateRequest).subscribe(response => {
         this.bootcampCreateDialog = false;
         this.submitted = false;
+        this.submitButton = false;
 
         this.bootcamp = {
           id: response.id,
@@ -608,7 +617,8 @@ export class BootcampsComponent implements OnInit {
         };
         this.selectedBootcampState = {
           id: '',
-          name: ''
+          name: '',
+          createdDate: new Date("0001-01-01T01:00:00")
         }
         this.selectedInstructor = {
           id: '',
@@ -618,22 +628,29 @@ export class BootcampsComponent implements OnInit {
 
       });
     }
+    else {
+      this.submitButton = false;
+    }
   }
 
   updateBootcamp() {
     this.submitted = true;
+    this.submitButton = true;
 
-    if (this.bootcamp.name?.trim()) {
-      if (!this.selectedInstructor.id || !this.selectedBootcampState.id) {
-        return console.error("Instructor ve BootcampState seçilmeli!")
-      }
+    if (!this.selectedInstructor.id || !this.selectedBootcampState.id) {
+      this.submitButton = false;
+      return
+    }
 
-      this.bootcampUpdateRequest.instructorId = this.selectedInstructor.id;
-      this.bootcampUpdateRequest.bootcampStateId = this.selectedBootcampState.id;
+    this.bootcampUpdateRequest.instructorId = this.selectedInstructor.id;
+    this.bootcampUpdateRequest.bootcampStateId = this.selectedBootcampState.id;
+
+    if (this.validationControl("update")) {
 
       this.bootcampService.updateBootcamp(this.bootcampUpdateRequest).subscribe(response => {
         this.bootcampUpdateDialog = false;
         this.submitted = false;
+        this.submitButton = false;
 
         this.bootcamp = {
           id: response.id,
@@ -685,7 +702,8 @@ export class BootcampsComponent implements OnInit {
         };
         this.selectedBootcampState = {
           id: '',
-          name: ''
+          name: '',
+          createdDate: new Date("0001-01-01T01:00:00")
         }
         this.selectedInstructor = {
           id: '',
@@ -694,6 +712,9 @@ export class BootcampsComponent implements OnInit {
         }
 
       });
+    }
+    else {
+      this.submitButton = false;
     }
   }
 
@@ -711,11 +732,13 @@ export class BootcampsComponent implements OnInit {
 
   getSeverity(status: string) {
     switch (status) {
-      case 'ACTIVE':
-        return 'success';
-      case 'INACTIVE':
+      case 'PLANLANDI':
+        return 'info';
+      case 'DEVAM EDIYOR':
         return 'warning';
-      case 'CANCELLED':
+      case 'TAMAMLANDI':
+        return 'success';
+      case 'İPTAL EDILDI':
         return 'danger';
       default:
         return '';
@@ -754,6 +777,29 @@ export class BootcampsComponent implements OnInit {
   initializeFormDates() {
     this.minStartDate = new Date();
     this.minEndDate = new Date(this.minStartDate.getFullYear(), this.minStartDate.getMonth(), this.minStartDate.getDate() + 7);
+  }
+
+  validationControl(requestName: string): boolean {
+    switch (requestName) {
+      case "create":
+        if (
+          this.bootcampCreateRequest.name.trim() && this.bootcampCreateRequest.instructorId &&
+          this.bootcampCreateRequest.bootcampStateId && this.bootcampCreateRequest.startDate &&
+          this.bootcampCreateRequest.endDate) {
+          return true;
+        }
+        return false
+      case "update":
+        if (
+          this.bootcampUpdateRequest.name.trim() && this.bootcampUpdateRequest.instructorId &&
+          this.bootcampUpdateRequest.bootcampStateId && this.bootcampUpdateRequest.startDate &&
+          this.bootcampUpdateRequest.endDate) {
+          return true;
+        }
+        return false
+      default:
+        return false;
+    }
   }
 
 }

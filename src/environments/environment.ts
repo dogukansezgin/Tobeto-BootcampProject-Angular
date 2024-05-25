@@ -5,6 +5,7 @@ export const environment = {
     bootcamps: {
       getList: '/api/Bootcamps/get',
       getListDeleted: '/api/Bootcamps/getDeleted',
+      getBasicInfo: '/api/Bootcamps/getBasicInfo',
       getBootcampById: '/api/Bootcamps/id/',
       getBootcampByName: '/api/Bootcamps/name/',
       getUnfinishedBootcamps: '/api/Bootcamps/getUnfinished',
@@ -18,7 +19,14 @@ export const environment = {
       restoreRangeBootcamp: '/api/Bootcamps/restoreRange'
     },
     bootcampStates: {
-      getList: '/api/BootcampStates'
+      getList: '/api/BootcampStates/get',
+      getListDeleted: '/api/BootcampStates/getDeleted',
+      createBootcampState: '/api/BootcampStates/create',
+      updateBootcampState: '/api/BootcampStates/update',
+      deleteBootcampState: '/api/BootcampStates/delete',
+      deleteRangeBootcampState: '/api/BootcampStates/deleteRange',
+      restoreBootcampState: '/api/BootcampStates/restore',
+      restoreRangeBootcampState: '/api/BootcampStates/restoreRange'
     },
     auth: {
       register: {
@@ -34,6 +42,7 @@ export const environment = {
     applicants: {
       getList: '/api/Applicants/get',
       getListDeleted: '/api/Applicants/getDeleted',
+      getBasicInfo: '/api/Applicants/getBasicInfo',
       getApplicantById: '/api/Applicants/',
       updateApplicantInfo: '/api/Applicants/UpdateFromAuth',
       createApplicants: '/api/Applicants/create',
@@ -44,12 +53,27 @@ export const environment = {
       restoreRangeApplicants: '/api/Applicants/restoreRange'
     },
     applications: {
-      post: '/api/Applications/post',
       checkApplication: '/api/Applications/checkApplication',
-      appliedBootcamps: '/api/Applications/appliedBootcamps'
+      appliedBootcamps: '/api/Applications/appliedBootcamps',
+      getList: '/api/Applications/get',
+      getListDeleted: '/api/Applications/getDeleted',
+      createApplication: '/api/Applications/create',
+      updateApplication: '/api/Applications/update',
+      deleteApplication: '/api/Applications/delete',
+      deleteRangeApplication: '/api/Applications/deleteRange',
+      restoreApplication: '/api/Applications/restore',
+      restoreRangeApplication: '/api/Applications/restoreRange'
     },
     applicationStates: {
-      getByName: '/api/ApplicationStates/getByName/'
+      getByName: '/api/ApplicationStates/getByName/',
+      getList: '/api/ApplicationStates/get',
+      getListDeleted: '/api/ApplicationStates/getDeleted',
+      createApplicationState: '/api/ApplicationStates/create',
+      updateApplicationState: '/api/ApplicationStates/update',
+      deleteApplicationState: '/api/ApplicationStates/delete',
+      deleteRangeApplicationState: '/api/ApplicationStates/deleteRange',
+      restoreApplicationState: '/api/ApplicationStates/restore',
+      restoreRangeApplicationState: '/api/ApplicationStates/restoreRange'
     },
     instructors: {
       getList: '/api/Instructors/get',

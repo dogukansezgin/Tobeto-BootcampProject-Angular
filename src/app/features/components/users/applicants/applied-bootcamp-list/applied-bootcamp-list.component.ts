@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
-import { ApplicationListItemDto } from '../../../../models/responses/applications/application-list-item-dto';
+import { Router } from '@angular/router';
 import { ApplicationService } from '../../../../services/concretes/application.service';
 import { TokenService } from '../../../../services/concretes/token.service';
 import { PageRequest } from '../../../../../core/models/pagination/page-request';
@@ -8,6 +7,7 @@ import { AppliedBootcampResponse } from '../../../../models/responses/applicatio
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../../../shared/shared.module';
 import { FormatService } from '../../../../services/concretes/format.service';
+import { ListItemsDto } from '../../../../../core/models/pagination/list-items-dto';
 
 @Component({
   selector: 'app-applied-bootcamp-list',
@@ -20,7 +20,7 @@ export class AppliedBootcampListComponent implements OnInit {
 
   userId!: string;
 
-  appliedBootcampsList: ApplicationListItemDto = {
+  appliedBootcampsList: ListItemsDto<AppliedBootcampResponse> = {
     index: 0,
     size: 0,
     count: 0,

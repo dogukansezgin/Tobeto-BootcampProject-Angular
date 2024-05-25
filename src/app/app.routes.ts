@@ -26,6 +26,9 @@ import { SettingsComponent } from './features/components/admin/settings/settings
 import { AccountComponent } from './features/components/admin/account/account.component';
 import { ApplicantsComponent } from './features/components/admin/applicants/applicants.component';
 import { EmployeesComponent } from './features/components/admin/employees/employees.component';
+import { BootcampStatesComponent } from './features/components/admin/bootcamp-states/bootcamp-states.component';
+import { ApplicationStatesComponent } from './features/components/admin/application-states/application-states.component';
+import { ApplicationsSecondComponent } from './features/components/admin/applications-second/applications-second.component';
 
 export const routes: Routes =
     [
@@ -107,7 +110,10 @@ export const routes: Routes =
                 {path:'',pathMatch:'full',redirectTo:'Dashboard'},
                 { path: 'Dashboard', component: DashboardComponent },
                 { path: 'Bootcamps', component: BootcampsComponent },
+                { path: 'BootcampStates', component: BootcampStatesComponent },
                 { path: 'Applications', component: ApplicationsComponent },
+                { path: 'ApplicationsSecond', component: ApplicationsSecondComponent },
+                { path: 'ApplicationStates', component: ApplicationStatesComponent },
                 { path: 'Applicants', component: ApplicantsComponent },
                 { path: 'Instructors', component: InstructorsComponent },
                 { path: 'Employees', component: EmployeesComponent },

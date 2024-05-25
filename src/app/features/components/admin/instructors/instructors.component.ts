@@ -78,7 +78,6 @@ export class InstructorsComponent implements OnInit {
   instructorUpdateRequest: InstructorUpdateRequest = {
     id: '',
     email: '',
-    userName: '',
     firstName: '',
     lastName: '',
     dateOfBirth: new Date("0001-01-01T01:00:00"),
@@ -109,6 +108,7 @@ export class InstructorsComponent implements OnInit {
 
   //
   submitted: boolean = false;
+  submitButton: boolean = false;
 
   filterValues: string[] = ['', '']
 
@@ -161,13 +161,21 @@ export class InstructorsComponent implements OnInit {
     this.instructorUpdateRequest = {
       id: this.instructor.id,
       email: this.instructor.email,
-      userName: this.instructor.userName,
       firstName: this.instructor.firstName,
       lastName: this.instructor.lastName,
-      dateOfBirth: new Date(this.instructor.dateOfBirth),
-      nationalIdentity: this.instructor.nationalIdentity,
-      companyName: this.instructor.companyName,
+      companyName: this.instructor.companyName
     };
+
+    if(instructor.nationalIdentity) {
+      if (instructor.dateOfBirth != null) {
+        this.instructorUpdateRequest.nationalIdentity = instructor.nationalIdentity;
+      }
+    }
+    if (instructor.dateOfBirth) {
+      if (new Date(instructor.dateOfBirth).getFullYear() != 1 && instructor.dateOfBirth != null) {
+        this.instructorUpdateRequest.dateOfBirth = new Date(instructor.dateOfBirth);
+      }
+    }
 
     this.instructorUpdateDialog = true;
     this.submitted = false;
@@ -458,11 +466,14 @@ export class InstructorsComponent implements OnInit {
   createInstructor() {
     console.log(this.instructorCreateRequest)
     this.submitted = true;
-    if (this.instructorCreateRequest.firstName?.trim() && this.instructorCreateRequest.lastName?.trim()) {
+    this.submitButton = true;
+
+    if (this.validationControl("create")) {
 
       this.instructorService.createInstructor(this.instructorCreateRequest).subscribe(response => {
         this.instructorCreateDialog = false;
         this.submitted = false;
+        this.submitButton = false;
 
         this.instructor = {
           id: response.id,
@@ -507,16 +518,21 @@ export class InstructorsComponent implements OnInit {
 
       });
     }
+    else {
+      this.submitButton = false;
+    }
   }
 
   updateInstructor() {
     this.submitted = true;
+    this.submitButton = true;
 
-    if (this.instructor.userName?.trim()) {
+    if (this.validationControl("update")) {
 
       this.instructorService.updateInstructor(this.instructorUpdateRequest).subscribe(response => {
         this.instructorUpdateDialog = false;
         this.submitted = false;
+        this.submitButton = false;
 
         this.instructor = {
           id: response.id,
@@ -539,11 +555,10 @@ export class InstructorsComponent implements OnInit {
         this.instructorUpdateRequest = {
           id: '',
           email: '',
-          userName: '',
           firstName: '',
           lastName: '',
           dateOfBirth: new Date("0001-01-01T01:00:00"),
-          nationalIdentity: '',
+          nationalIdentity: undefined,
           companyName: '',
         };
         this.instructor = {
@@ -560,6 +575,9 @@ export class InstructorsComponent implements OnInit {
         };
 
       });
+    }
+    else {
+      this.submitButton = false;
     }
   }
 
@@ -598,6 +616,28 @@ export class InstructorsComponent implements OnInit {
   clearFilter(dt: any, index: number) {
     dt.clear();
     this.filterValues[index] = ''
+  }
+
+  validationControl(requestName: string): boolean {
+    switch (requestName) {
+      case "create":
+        if (
+          this.instructorCreateRequest.firstName?.trim() && this.instructorCreateRequest.lastName?.trim() &&
+          this.instructorCreateRequest.email.trim() && this.instructorCreateRequest.password &&
+          this.instructorCreateRequest.companyName.trim()) {
+          return true;
+        }
+        return false
+      case "update":
+        if (
+          this.instructorUpdateRequest.firstName?.trim() && this.instructorUpdateRequest.lastName?.trim() &&
+          this.instructorUpdateRequest.email.trim() && this.instructorUpdateRequest.companyName.trim()) {
+          return true;
+        }
+        return false
+      default:
+        return false;
+    }
   }
 
 }

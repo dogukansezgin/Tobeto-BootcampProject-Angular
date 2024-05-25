@@ -108,6 +108,7 @@ export class ApplicantsComponent implements OnInit {
 
   //
   submitted: boolean = false;
+  submitButton: boolean = false;
 
   filterValues: string[] = ['', '']
 
@@ -469,11 +470,14 @@ export class ApplicantsComponent implements OnInit {
   createApplicant() {
     console.log(this.applicantCreateRequest)
     this.submitted = true;
-    if (this.applicantCreateRequest.firstName?.trim() && this.applicantCreateRequest.lastName?.trim()) {
+    this.submitButton = true;
+
+    if (this.validationControl("create")) {
 
       this.applicantService.createApplicant(this.applicantCreateRequest).subscribe(response => {
         this.applicantCreateDialog = false;
         this.submitted = false;
+        this.submitButton = false;
 
         this.applicant = {
           id: response.id,
@@ -518,16 +522,21 @@ export class ApplicantsComponent implements OnInit {
 
       });
     }
+    else {
+      this.submitButton = false;
+    }
   }
 
   updateApplicant() {
     this.submitted = true;
+    this.submitButton = true;
 
-    if (this.applicant.userName?.trim()) {
+    if (this.validationControl("update")) {
 
       this.applicantService.updateApplicant(this.applicantUpdateRequest).subscribe(response => {
         this.applicantUpdateDialog = false;
         this.submitted = false;
+        this.submitButton = false;
 
         this.applicant = {
           id: response.id,
@@ -571,6 +580,9 @@ export class ApplicantsComponent implements OnInit {
 
       });
     }
+    else {
+      this.submitButton = false;
+    }
   }
 
   findIndexById(id: string): number {
@@ -608,6 +620,27 @@ export class ApplicantsComponent implements OnInit {
   clearFilter(dt: any, index: number) {
     dt.clear();
     this.filterValues[index] = ''
+  }
+
+  validationControl(requestName: string): boolean {
+    switch (requestName) {
+      case "create":
+        if (
+          this.applicantCreateRequest.firstName?.trim() && this.applicantCreateRequest.lastName?.trim() &&
+          this.applicantCreateRequest.email.trim() && this.applicantCreateRequest.password) {
+          return true;
+        }
+        return false
+      case "update":
+        if (
+          this.applicantUpdateRequest.firstName?.trim() && this.applicantUpdateRequest.lastName?.trim() &&
+          this.applicantUpdateRequest.email.trim()) {
+          return true;
+        }
+        return false
+      default:
+        return false;
+    }
   }
 
 }

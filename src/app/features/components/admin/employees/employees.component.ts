@@ -108,6 +108,8 @@ export class EmployeesComponent implements OnInit {
 
   //
   submitted: boolean = false;
+  submitButton: boolean = false;
+
 
   filterValues: string[] = ['', '']
 
@@ -162,9 +164,10 @@ export class EmployeesComponent implements OnInit {
       email: this.employee.email,
       firstName: this.employee.firstName,
       lastName: this.employee.lastName,
+      position: this.employee.position
     };
 
-    if(employee.nationalIdentity) {
+    if (employee.nationalIdentity) {
       if (employee.dateOfBirth != null) {
         this.employeeUpdateRequest.nationalIdentity = employee.nationalIdentity;
       }
@@ -172,11 +175,6 @@ export class EmployeesComponent implements OnInit {
     if (employee.dateOfBirth) {
       if (new Date(employee.dateOfBirth).getFullYear() != 1 && employee.dateOfBirth != null) {
         this.employeeUpdateRequest.dateOfBirth = new Date(employee.dateOfBirth);
-      }
-    }
-    if (employee.position) {
-      if (employee.position != null) {
-        this.employeeUpdateRequest.position = employee.position;
       }
     }
 
@@ -469,11 +467,14 @@ export class EmployeesComponent implements OnInit {
   createEmployee() {
     console.log(this.employeeCreateRequest)
     this.submitted = true;
-    if (this.employeeCreateRequest.firstName?.trim() && this.employeeCreateRequest.lastName?.trim()) {
+    this.submitButton = true;
+
+    if (this.validationControl("create")) {
 
       this.employeeService.createEmployee(this.employeeCreateRequest).subscribe(response => {
         this.employeeCreateDialog = false;
         this.submitted = false;
+        this.submitButton = false;
 
         this.employee = {
           id: response.id,
@@ -518,16 +519,21 @@ export class EmployeesComponent implements OnInit {
 
       });
     }
+    else {
+      this.submitButton = false;
+    }
   }
 
   updateEmployee() {
     this.submitted = true;
+    this.submitButton = true;
 
-    if (this.employee.userName?.trim()) {
+    if (this.validationControl("update")) {
 
       this.employeeService.updateEmployee(this.employeeUpdateRequest).subscribe(response => {
         this.employeeUpdateDialog = false;
         this.submitted = false;
+        this.submitButton = false;
 
         this.employee = {
           id: response.id,
@@ -571,6 +577,9 @@ export class EmployeesComponent implements OnInit {
 
       });
     }
+    else {
+      this.submitButton = false;
+    }
   }
 
   findIndexById(id: string): number {
@@ -608,6 +617,28 @@ export class EmployeesComponent implements OnInit {
   clearFilter(dt: any, index: number) {
     dt.clear();
     this.filterValues[index] = ''
+  }
+
+  validationControl(requestName: string): boolean {
+    switch (requestName) {
+      case "create":
+        if (
+          this.employeeCreateRequest.firstName?.trim() && this.employeeCreateRequest.lastName?.trim() &&
+          this.employeeCreateRequest.email.trim() && this.employeeCreateRequest.password &&
+          this.employeeCreateRequest.position.trim()) {
+          return true;
+        }
+        return false
+      case "update":
+        if (
+          this.employeeUpdateRequest.firstName?.trim() && this.employeeUpdateRequest.lastName?.trim() &&
+          this.employeeUpdateRequest.email.trim() && this.employeeUpdateRequest.position.trim()) {
+          return true;
+        }
+        return false
+      default:
+        return false;
+    }
   }
 
 }

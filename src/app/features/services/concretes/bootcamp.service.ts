@@ -20,6 +20,7 @@ import { BootcampDeleteRangeRequest } from "../../models/requests/bootcamps/boot
 import { BootcampRestoreRangeRequest } from "../../models/requests/bootcamps/bootcamp-restore-range-request";
 import { BootcampDeleteRangeResponse } from "../../models/responses/bootcamps/bootcamp-delete-range-response";
 import { BootcampRestoreRangeResponse } from "../../models/responses/bootcamps/bootcamp-restore-range-response";
+import { BootcampGetBasicInfoResponse } from "../../models/responses/bootcamps/bootcamp-get-basic-info-response";
 
 @Injectable({
     providedIn: 'root'
@@ -28,6 +29,7 @@ export class BootcampService extends BootcampBaseService {
 
     private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.bootcamps.getList;
     private readonly apiUrl_GetListDeleted: string = environment.apiUrl + environment.endpoints.bootcamps.getListDeleted;
+    private readonly apiUrl_GetBasicInfoList: string = environment.apiUrl + environment.endpoints.bootcamps.getBasicInfo;
     private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcampById;
     private readonly apiUrl_GetByName: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcampByName;
     private readonly apiUrl_GetUnfinished = environment.apiUrl + environment.endpoints.bootcamps.getUnfinishedBootcamps;
@@ -66,7 +68,6 @@ export class BootcampService extends BootcampBaseService {
 
             );
     }
-
     override getListDeleted(pageRequest: PageRequest): Observable<ListItemsDto<BootcampGetListDeletedResponse>> {
         const newRequest: { [key: string]: string | number } = {
             pageIndex: pageRequest.pageIndex,
@@ -76,6 +77,28 @@ export class BootcampService extends BootcampBaseService {
             .pipe(
                 map((response) => {
                     const newResponse: ListItemsDto<BootcampGetListDeletedResponse> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
+
+            );
+    }
+    override getBootcampsBasicInfoList(pageRequest: PageRequest): Observable<ListItemsDto<BootcampGetBasicInfoResponse>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize
+        }
+        return this.httpClient.get<ListItemsDto<BootcampGetBasicInfoResponse>>(this.apiUrl_GetBasicInfoList, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: ListItemsDto<BootcampGetBasicInfoResponse> = {
                         items: response.items,
                         index: response.index,
                         size: response.size,
