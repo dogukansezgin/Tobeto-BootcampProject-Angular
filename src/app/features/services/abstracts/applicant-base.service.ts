@@ -7,6 +7,7 @@ import { ApplicantUpdateRequest } from "../../models/requests/users/applicants/a
 import { ApplicantAboutUpdateRequest } from "../../models/requests/users/applicants/applicant-about-model";
 import { PageRequest } from "../../../core/models/pagination/page-request";
 import { GetListResponse } from "../../models/responses/applicants/get-list-response";
+import { GetListByJoinApplicantListItemDto } from "../../models/responses/applicants/get-list-by-join-applicant-list-item-dto";
 import { GetListApplicantListItemDto } from "../../models/responses/applicants/get-list-applicant-list-item-dto";
 
 @Injectable()
@@ -16,5 +17,6 @@ export abstract class ApplicantBaseService {
     abstract updateApplicant(request: ApplicantUpdateRequest): Observable<GetApplicantResponse>
 
     abstract updateAboutApplicant(request: ApplicantAboutUpdateRequest): Observable<GetApplicantResponse>
+    abstract getListByJoin(pageRequest: PageRequest): Observable<GetListResponse<GetListByJoinApplicantListItemDto>>
     abstract getList(pageRequest: PageRequest): Observable<GetListResponse<GetListApplicantListItemDto>>
 }

@@ -135,7 +135,7 @@ export class ApplicationsComponent implements OnInit {
       acceptLabel: 'Evet',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.applicationStateService.getByName('Onay').subscribe(response => {
+        this.applicationStateService.getByName('Onaylandı').subscribe(response => {
           const obj = {
             id: application.id,
             applicantId: application.applicantId,

@@ -12,6 +12,7 @@ import { GetApplicantResponse } from "../../models/responses/users/applicant/get
 import { ApplicantAboutUpdateRequest } from "../../models/requests/users/applicants/applicant-about-model";
 import { PageRequest } from "../../../core/models/pagination/page-request";
 import { GetListResponse } from "../../models/responses/applicants/get-list-response";
+import { GetListByJoinApplicantListItemDto } from "../../models/responses/applicants/get-list-by-join-applicant-list-item-dto";
 import { GetListApplicantListItemDto } from "../../models/responses/applicants/get-list-applicant-list-item-dto";
 
 @Injectable({
@@ -21,6 +22,7 @@ export class ApplicantService extends ApplicantBaseService {
 
     private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.applicants.getApplicantById;
     private readonly apiUrl_UpdateInfo: string = environment.apiUrl + environment.endpoints.applicants.updateApplicantInfo;
+    private readonly apiUrl_GetListByJoin: string = environment.apiUrl + environment.endpoints.applicants.getListByJoin;
     private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.applicants.getList;
 
     constructor(private httpClient: HttpClient, private localStorageService: LocalStorageService) { super(); }
@@ -54,6 +56,28 @@ export class ApplicantService extends ApplicantBaseService {
                 throw responseError;
             })
             ));
+    }
+    override getListByJoin(pageRequest: PageRequest): Observable<GetListResponse<GetListByJoinApplicantListItemDto>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize
+        }
+        return this.httpClient.get<GetListResponse<GetListByJoinApplicantListItemDto>>(this.apiUrl_GetListByJoin, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: GetListResponse<GetListByJoinApplicantListItemDto> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
+
+            );
     }
     override getList(pageRequest: PageRequest): Observable<GetListResponse<GetListApplicantListItemDto>> {
         const newRequest: { [key: string]: string | number } = {

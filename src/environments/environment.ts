@@ -34,6 +34,7 @@ export const environment = {
     applicants: {
       getApplicantById: '/api/Applicants/',
       updateApplicantInfo: '/api/Applicants/UpdateFromAuth',
+      getListByJoin:'/api/Applications/getByJoin',
       getList:'/api/Applicants'
     },
     applications: {
