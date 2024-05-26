@@ -9,7 +9,7 @@ body {
 
 .navbar {
     // margin-top: 40px;
-    position: fixed;
+    position: absolute;
     top: 30px;
     left: 1.5rem;
     background: #fff;
@@ -71,10 +71,10 @@ body {
 
     filter: drop-shadow(0px 0px 1px #9e9b9b);
 }
-.blue span{
+.purple span{
     color: #5e72e4;
 }
-.blue:hover{
+.purple:hover{
     color: #5e72e4;
 }
 .orange span{
@@ -96,10 +96,10 @@ body {
     color: #f5365c;
 }
 .pink span{
-    color: #f3a4b5;
+    color: #edacba;
 }
 .pink:hover{
-    color: #f3a4b5;
+    color: #edacba;
 }
 
 .navbar_link:hover span,

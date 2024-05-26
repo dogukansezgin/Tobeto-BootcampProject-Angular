@@ -1,15 +1,11 @@
-/* İçeriklerin stilleri */
-
-.p-float-label {
-  margin: 17px;
-}
-
-.p-inputtext {
-  width: 275px;
-}
-
 :host {
   ::ng-deep {
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      gap:1rem;
+    }
+
     .p-button.p-button-success {
       background-color: #4bd17c;
       border: 1px solid #4bd17c;
@@ -18,9 +14,8 @@
       width: 275px;
     }
 
-    .form-check-inline {
-      margin-left: 1.3rem;
-      font-size: 14px;
+    input:hover {
+      border-color: #1d1d1d;
     }
 
     .form-check-label {
@@ -33,14 +28,18 @@
 
     .have-account {
       display: flex;
-      color: #1d1d1d;
-      font-size: 14px;
-      width: 310px;
       justify-content: center;
+      color: #1d1d1d;
+      width: 280px;
+      margin-top: 20px;
     }
 
     .p-button-label {
       font-weight: 600;
+    }
+
+    .p-button:hover {
+      background-color: #4bd17ccf;
     }
 
     a {
@@ -48,5 +47,32 @@
       font-weight: 500;
       text-decoration: none;
     }
+
+    .p-inputtext {
+      width: 275px;
+    }
+
+    .form-group {
+      margin-bottom: 0;
+    }
+    
+    .info{
+      font-size: 13px;
+      color: #fb3b2e !important;
+      text-align: left;
+    }
+    .error-messages {
+      margin-top: 0;
+      padding: 0;
+    }
+    .error-messages small {
+      font-size: 13px;
+      color: #fb3b2e !important;
+      text-align: left;
+      display: block;
+      margin: 0;
+      padding: 0;
+    }
+
   }
 }
