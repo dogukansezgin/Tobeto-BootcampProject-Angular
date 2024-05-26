@@ -189,6 +189,7 @@ export class ApplicantsComponent implements OnInit {
     this.applicantCreateDialog = false;
     this.applicantUpdateDialog = false;
     this.submitted = false;
+    this.submitButton = false;
   }
 
   deleteSelectedApplicants(isPermament: boolean) {
@@ -475,9 +476,7 @@ export class ApplicantsComponent implements OnInit {
     if (this.validationControl("create")) {
 
       this.applicantService.createApplicant(this.applicantCreateRequest).subscribe(response => {
-        this.applicantCreateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.applicant = {
           id: response.id,
@@ -495,6 +494,9 @@ export class ApplicantsComponent implements OnInit {
         this.applicants.items.push(this.applicant);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Applicant Created', life: 3000 });
 
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.applicants.items = [...this.applicants.items];
         this.applicantCreateDialog = false;
@@ -534,9 +536,7 @@ export class ApplicantsComponent implements OnInit {
     if (this.validationControl("update")) {
 
       this.applicantService.updateApplicant(this.applicantUpdateRequest).subscribe(response => {
-        this.applicantUpdateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.applicant = {
           id: response.id,
@@ -553,6 +553,9 @@ export class ApplicantsComponent implements OnInit {
 
         this.applicants.items[this.findIndexById(this.applicant.id)] = this.applicant;
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Applicant Updated', life: 3000 });
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.applicants.items = [...this.applicants.items];
         this.applicantUpdateDialog = false;
@@ -626,21 +629,64 @@ export class ApplicantsComponent implements OnInit {
     switch (requestName) {
       case "create":
         if (
-          this.applicantCreateRequest.firstName?.trim() && this.applicantCreateRequest.lastName?.trim() &&
-          this.applicantCreateRequest.email.trim() && this.applicantCreateRequest.password) {
-          return true;
+          !this.applicantCreateRequest.firstName?.trim() ||
+          !this.applicantCreateRequest.lastName?.trim() ||
+          !this.beValidEmail(this.applicantCreateRequest.email) ||
+          !this.strongPassword(this.applicantCreateRequest.password)
+        ) {
+          if (this.applicantCreateRequest.nationalIdentity) {
+            if (!(this.applicantCreateRequest.nationalIdentity.length == 0 || this.applicantCreateRequest.nationalIdentity.length == 11)) {
+              return false;
+            }
+            else {
+              return true;
+            }
+          }
+          return false;
         }
-        return false
+        return true;
       case "update":
         if (
-          this.applicantUpdateRequest.firstName?.trim() && this.applicantUpdateRequest.lastName?.trim() &&
-          this.applicantUpdateRequest.email.trim()) {
-          return true;
+          !this.applicantUpdateRequest.id?.trim() ||
+          !this.applicantUpdateRequest.firstName?.trim() ||
+          !this.applicantUpdateRequest.lastName?.trim() ||
+          !this.beValidEmail(this.applicantUpdateRequest.email)
+        ) {
+          if (this.applicantUpdateRequest.nationalIdentity) {
+            if (!(this.applicantUpdateRequest.nationalIdentity.length == 0 || this.applicantUpdateRequest.nationalIdentity.length == 11)) {
+              return false;
+            }
+            else {
+              return true;
+            }
+          }
+          return false;
         }
-        return false
+        return true;
       default:
         return false;
     }
   }
 
+  strongPassword(value: string): boolean {
+    const strongPasswordRegex: RegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    return strongPasswordRegex.test(value); // Asdasd12!
+  }
+  beValidEmail(email: string): boolean {
+    const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(email)) {
+      return false;
+    }
+
+    if ((email.match(/@/g) || []).length !== 1) {
+      return false;
+    }
+
+    const validDomains: string[] = ["gmail.com", "hotmail.com"];
+    const emailDomain: string = email.split('@').pop() || '';
+
+    return validDomains.includes(emailDomain);
+  }
+  
 }

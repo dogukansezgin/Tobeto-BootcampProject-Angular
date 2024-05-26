@@ -230,6 +230,7 @@ export class BootcampsComponent implements OnInit {
     this.bootcampCreateDialog = false;
     this.bootcampUpdateDialog = false;
     this.submitted = false;
+    this.submitButton = false;
   }
 
   deleteSelectedBootcamps(isPermament: boolean) {
@@ -563,9 +564,7 @@ export class BootcampsComponent implements OnInit {
     if (this.validationControl("create")) {
 
       this.bootcampService.createBootcamp(this.bootcampCreateRequest).subscribe(response => {
-        this.bootcampCreateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.bootcamp = {
           id: response.id,
@@ -588,6 +587,9 @@ export class BootcampsComponent implements OnInit {
         this.bootcamps.items.push(this.bootcamp);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Created', life: 3000 });
 
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.bootcamps.items = [...this.bootcamps.items];
         this.bootcampCreateDialog = false;
@@ -648,9 +650,7 @@ export class BootcampsComponent implements OnInit {
     if (this.validationControl("update")) {
 
       this.bootcampService.updateBootcamp(this.bootcampUpdateRequest).subscribe(response => {
-        this.bootcampUpdateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.bootcamp = {
           id: response.id,
@@ -672,6 +672,9 @@ export class BootcampsComponent implements OnInit {
 
         this.bootcamps.items[this.findIndexById(this.bootcamp.id)] = this.bootcamp;
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Updated', life: 3000 });
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.bootcamps.items = [...this.bootcamps.items];
         this.bootcampUpdateDialog = false;
@@ -783,20 +786,27 @@ export class BootcampsComponent implements OnInit {
     switch (requestName) {
       case "create":
         if (
-          this.bootcampCreateRequest.name.trim() && this.bootcampCreateRequest.instructorId &&
-          this.bootcampCreateRequest.bootcampStateId && this.bootcampCreateRequest.startDate &&
-          this.bootcampCreateRequest.endDate) {
-          return true;
+          !this.bootcampCreateRequest.name?.trim() ||
+          !this.bootcampCreateRequest.instructorId?.trim() ||
+          !this.bootcampCreateRequest.bootcampStateId?.trim() ||
+          !this.bootcampCreateRequest.startDate ||
+          !this.bootcampCreateRequest.endDate
+        ) {
+          return false;
         }
-        return false
+        return true;
       case "update":
         if (
-          this.bootcampUpdateRequest.name.trim() && this.bootcampUpdateRequest.instructorId &&
-          this.bootcampUpdateRequest.bootcampStateId && this.bootcampUpdateRequest.startDate &&
-          this.bootcampUpdateRequest.endDate) {
-          return true;
+          !this.bootcampUpdateRequest.id?.trim() ||
+          !this.bootcampUpdateRequest.name?.trim() ||
+          !this.bootcampUpdateRequest.instructorId?.trim() ||
+          !this.bootcampUpdateRequest.bootcampStateId?.trim() ||
+          !this.bootcampUpdateRequest.startDate ||
+          !this.bootcampUpdateRequest.endDate
+        ) {
+          return false;
         }
-        return false
+        return true;
       default:
         return false;
     }

@@ -152,6 +152,7 @@ export class ApplicationStatesComponent implements OnInit {
     this.applicationStateCreateDialog = false;
     this.applicationStateUpdateDialog = false;
     this.submitted = false;
+    this.submitButton = false;
   }
 
   deleteSelectedApplicationStates(isPermament: boolean) {
@@ -381,9 +382,7 @@ export class ApplicationStatesComponent implements OnInit {
     if (this.validationControl("create")) {
 
       this.applicationStateService.createApplicationState(this.applicationStateCreateRequest).subscribe(response => {
-        this.applicationStateCreateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.applicationState = {
           id: response.id,
@@ -394,6 +393,9 @@ export class ApplicationStatesComponent implements OnInit {
         this.applicationStates.items.push(this.applicationState);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'ApplicationState Created', life: 3000 });
 
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.applicationStates.items = [...this.applicationStates.items];
         this.applicationStateCreateDialog = false;
@@ -420,9 +422,7 @@ export class ApplicationStatesComponent implements OnInit {
     if (this.validationControl("update")) {
 
       this.applicationStateService.updateApplicationState(this.applicationStateUpdateRequest).subscribe(response => {
-        this.applicationStateUpdateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.applicationState = {
           id: response.id,
@@ -432,6 +432,9 @@ export class ApplicationStatesComponent implements OnInit {
 
         this.applicationStates.items[this.findIndexById(this.applicationState.id)] = this.applicationState;
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'ApplicationState Updated', life: 3000 });
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.applicationStates.items = [...this.applicationStates.items];
         this.applicationStateUpdateDialog = false;
@@ -493,16 +496,19 @@ export class ApplicationStatesComponent implements OnInit {
     switch (requestName) {
       case "create":
         if (
-          this.applicationStateCreateRequest.name.trim()) {
-          return true;
+          !this.applicationStateCreateRequest.name?.trim()
+        ) {
+          return false;
         }
-        return false
+        return true;
       case "update":
         if (
-          this.applicationStateUpdateRequest.name.trim()) {
-          return true;
+          !this.applicationStateUpdateRequest.id?.trim() ||
+          !this.applicationStateUpdateRequest.name?.trim()
+        ) {
+          return false;
         }
-        return false
+        return true;
       default:
         return false;
     }

@@ -185,6 +185,7 @@ export class InstructorsComponent implements OnInit {
     this.instructorCreateDialog = false;
     this.instructorUpdateDialog = false;
     this.submitted = false;
+    this.submitButton = false;
   }
 
   deleteSelectedInstructors(isPermament: boolean) {
@@ -464,16 +465,13 @@ export class InstructorsComponent implements OnInit {
   }
 
   createInstructor() {
-    console.log(this.instructorCreateRequest)
     this.submitted = true;
     this.submitButton = true;
 
     if (this.validationControl("create")) {
-
+      console.log("valid")
       this.instructorService.createInstructor(this.instructorCreateRequest).subscribe(response => {
-        this.instructorCreateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.instructor = {
           id: response.id,
@@ -491,9 +489,11 @@ export class InstructorsComponent implements OnInit {
         this.instructors.items.push(this.instructor);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instructor Created', life: 3000 });
 
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.instructors.items = [...this.instructors.items];
-        this.instructorCreateDialog = false;
         this.instructorCreateRequest = {
           email: '',
           password: '',
@@ -530,9 +530,7 @@ export class InstructorsComponent implements OnInit {
     if (this.validationControl("update")) {
 
       this.instructorService.updateInstructor(this.instructorUpdateRequest).subscribe(response => {
-        this.instructorUpdateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.instructor = {
           id: response.id,
@@ -549,9 +547,11 @@ export class InstructorsComponent implements OnInit {
 
         this.instructors.items[this.findIndexById(this.instructor.id)] = this.instructor;
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instructor Updated', life: 3000 });
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.instructors.items = [...this.instructors.items];
-        this.instructorUpdateDialog = false;
         this.instructorUpdateRequest = {
           id: '',
           email: '',
@@ -622,22 +622,66 @@ export class InstructorsComponent implements OnInit {
     switch (requestName) {
       case "create":
         if (
-          this.instructorCreateRequest.firstName?.trim() && this.instructorCreateRequest.lastName?.trim() &&
-          this.instructorCreateRequest.email.trim() && this.instructorCreateRequest.password &&
-          this.instructorCreateRequest.companyName.trim()) {
-          return true;
+          !this.instructorCreateRequest.firstName?.trim() ||
+          !this.instructorCreateRequest.lastName?.trim() ||
+          !this.beValidEmail(this.instructorCreateRequest.email) ||
+          !this.strongPassword(this.instructorCreateRequest.password) ||
+          !this.instructorCreateRequest.companyName?.trim()
+        ) {
+          if (this.instructorCreateRequest.nationalIdentity) {
+            if (!(this.instructorCreateRequest.nationalIdentity.length == 0 || this.instructorCreateRequest.nationalIdentity.length == 11)) {
+              return false;
+            }
+            else {
+              return true;
+            }
+          }
+          return false;
         }
-        return false
+        return true;
       case "update":
         if (
-          this.instructorUpdateRequest.firstName?.trim() && this.instructorUpdateRequest.lastName?.trim() &&
-          this.instructorUpdateRequest.email.trim() && this.instructorUpdateRequest.companyName.trim()) {
-          return true;
+          !this.instructorUpdateRequest.id?.trim() ||
+          !this.instructorUpdateRequest.firstName?.trim() ||
+          !this.instructorUpdateRequest.lastName?.trim() ||
+          !this.beValidEmail(this.instructorUpdateRequest.email) ||
+          !this.instructorUpdateRequest.companyName?.trim()
+        ) {
+          if (this.instructorUpdateRequest.nationalIdentity) {
+            if (!(this.instructorUpdateRequest.nationalIdentity.length == 0 || this.instructorUpdateRequest.nationalIdentity.length == 11)) {
+              return false;
+            }
+            else {
+              return true;
+            }
+          }
+          return false;
         }
-        return false
+        return true;
       default:
         return false;
     }
+  }
+
+  strongPassword(value: string): boolean {
+    const strongPasswordRegex: RegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    return strongPasswordRegex.test(value); // Asdasd12!
+  }
+  beValidEmail(email: string): boolean {
+    const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(email)) {
+      return false;
+    }
+
+    if ((email.match(/@/g) || []).length !== 1) {
+      return false;
+    }
+
+    const validDomains: string[] = ["gmail.com", "hotmail.com"];
+    const emailDomain: string = email.split('@').pop() || '';
+
+    return validDomains.includes(emailDomain);
   }
 
 }

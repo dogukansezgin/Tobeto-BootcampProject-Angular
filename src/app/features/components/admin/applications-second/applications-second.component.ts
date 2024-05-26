@@ -244,6 +244,7 @@ export class ApplicationsSecondComponent implements OnInit {
     this.applicationCreateDialog = false;
     this.applicationUpdateDialog = false;
     this.submitted = false;
+    this.submitButton = false;
   }
 
   deleteSelectedApplications(isPermament: boolean) {
@@ -562,9 +563,7 @@ export class ApplicationsSecondComponent implements OnInit {
     if (this.validationControl("create")) {
 
       this.applicationService.createApplication(this.applicationCreateRequest).subscribe(response => {
-        this.applicationCreateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.application = {
           id: response.id,
@@ -585,6 +584,9 @@ export class ApplicationsSecondComponent implements OnInit {
         this.applications.items.push(this.application);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Application Created', life: 3000 });
 
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.applications.items = [...this.applications.items];
         this.applicationCreateDialog = false;
@@ -646,9 +648,7 @@ export class ApplicationsSecondComponent implements OnInit {
     if (this.validationControl("update")) {
 
       this.applicationService.updateApplication(this.applicationUpdateRequest).subscribe(response => {
-        this.applicationUpdateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.application = {
           id: response.id,
@@ -668,6 +668,9 @@ export class ApplicationsSecondComponent implements OnInit {
 
         this.applications.items[this.findIndexById(this.application.id)] = this.application;
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Application Updated', life: 3000 });
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.applications.items = [...this.applications.items];
         this.applicationUpdateDialog = false;
@@ -755,18 +758,23 @@ export class ApplicationsSecondComponent implements OnInit {
     switch (requestName) {
       case "create":
         if (
-          this.applicationCreateRequest.applicantId && this.applicationCreateRequest.applicationStateId &&
-          this.applicationCreateRequest.bootcampId) {
-          return true;
+          !this.applicationCreateRequest.applicantId?.trim() ||
+          !this.applicationCreateRequest.applicationStateId?.trim() ||
+          !this.applicationCreateRequest.bootcampId?.trim()
+        ) {
+          return false;
         }
-        return false
+        return true;
       case "update":
         if (
-          this.applicationUpdateRequest.applicantId && this.applicationUpdateRequest.applicationStateId &&
-          this.applicationUpdateRequest.bootcampId) {
-          return true;
+          !this.applicationUpdateRequest.id?.trim() ||
+          !this.applicationUpdateRequest.applicantId?.trim() ||
+          !this.applicationUpdateRequest.applicationStateId?.trim() ||
+          !this.applicationUpdateRequest.bootcampId?.trim()
+        ) {
+          return false;
         }
-        return false
+        return true;
       default:
         return false;
     }

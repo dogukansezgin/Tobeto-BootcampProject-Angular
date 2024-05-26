@@ -186,6 +186,7 @@ export class EmployeesComponent implements OnInit {
     this.employeeCreateDialog = false;
     this.employeeUpdateDialog = false;
     this.submitted = false;
+    this.submitButton = false;
   }
 
   deleteSelectedEmployees(isPermament: boolean) {
@@ -472,9 +473,7 @@ export class EmployeesComponent implements OnInit {
     if (this.validationControl("create")) {
 
       this.employeeService.createEmployee(this.employeeCreateRequest).subscribe(response => {
-        this.employeeCreateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.employee = {
           id: response.id,
@@ -492,6 +491,9 @@ export class EmployeesComponent implements OnInit {
         this.employees.items.push(this.employee);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Employee Created', life: 3000 });
 
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.employees.items = [...this.employees.items];
         this.employeeCreateDialog = false;
@@ -531,9 +533,7 @@ export class EmployeesComponent implements OnInit {
     if (this.validationControl("update")) {
 
       this.employeeService.updateEmployee(this.employeeUpdateRequest).subscribe(response => {
-        this.employeeUpdateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.employee = {
           id: response.id,
@@ -550,6 +550,9 @@ export class EmployeesComponent implements OnInit {
 
         this.employees.items[this.findIndexById(this.employee.id)] = this.employee;
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Employee Updated', life: 3000 });
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.employees.items = [...this.employees.items];
         this.employeeUpdateDialog = false;
@@ -623,22 +626,66 @@ export class EmployeesComponent implements OnInit {
     switch (requestName) {
       case "create":
         if (
-          this.employeeCreateRequest.firstName?.trim() && this.employeeCreateRequest.lastName?.trim() &&
-          this.employeeCreateRequest.email.trim() && this.employeeCreateRequest.password &&
-          this.employeeCreateRequest.position.trim()) {
-          return true;
+          !this.employeeCreateRequest.firstName?.trim() ||
+          !this.employeeCreateRequest.lastName?.trim() ||
+          !this.beValidEmail(this.employeeCreateRequest.email) ||
+          !this.strongPassword(this.employeeCreateRequest.password) ||
+          !this.employeeCreateRequest.position?.trim()
+        ) {
+          if (this.employeeCreateRequest.nationalIdentity) {
+            if (!(this.employeeCreateRequest.nationalIdentity.length == 0 || this.employeeCreateRequest.nationalIdentity.length == 11)) {
+              return false;
+            }
+            else {
+              return true;
+            }
+          }
+          return false;
         }
-        return false
+        return true;
       case "update":
         if (
-          this.employeeUpdateRequest.firstName?.trim() && this.employeeUpdateRequest.lastName?.trim() &&
-          this.employeeUpdateRequest.email.trim() && this.employeeUpdateRequest.position.trim()) {
-          return true;
+          !this.employeeUpdateRequest.id?.trim() ||
+          !this.employeeUpdateRequest.firstName?.trim() ||
+          !this.employeeUpdateRequest.lastName?.trim() ||
+          !this.beValidEmail(this.employeeUpdateRequest.email) ||
+          !this.employeeUpdateRequest.position?.trim()
+        ) {
+          if (this.employeeUpdateRequest.nationalIdentity) {
+            if (!(this.employeeUpdateRequest.nationalIdentity.length == 0 || this.employeeUpdateRequest.nationalIdentity.length == 11)) {
+              return false;
+            }
+            else {
+              return true;
+            }
+          }
+          return false;
         }
-        return false
+        return true;
       default:
         return false;
     }
+  }
+
+  strongPassword(value: string): boolean {
+    const strongPasswordRegex: RegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    return strongPasswordRegex.test(value); // Asdasd12!
+  }
+  beValidEmail(email: string): boolean {
+    const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(email)) {
+      return false;
+    }
+
+    if ((email.match(/@/g) || []).length !== 1) {
+      return false;
+    }
+
+    const validDomains: string[] = ["gmail.com", "hotmail.com"];
+    const emailDomain: string = email.split('@').pop() || '';
+
+    return validDomains.includes(emailDomain);
   }
 
 }

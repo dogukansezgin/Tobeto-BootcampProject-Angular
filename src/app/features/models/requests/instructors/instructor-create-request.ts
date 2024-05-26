@@ -3,7 +3,7 @@ export interface InstructorCreateRequest{
     password: string,
     firstName: string,
     lastName: string,
-    dateOfBirth: Date,
-    nationalIdentity: string,
+    dateOfBirth?: Date,
+    nationalIdentity?: string,
     companyName: string,
 }

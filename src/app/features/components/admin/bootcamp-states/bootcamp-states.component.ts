@@ -152,6 +152,7 @@ export class BootcampStatesComponent implements OnInit {
     this.bootcampStateCreateDialog = false;
     this.bootcampStateUpdateDialog = false;
     this.submitted = false;
+    this.submitButton = false;
   }
 
   deleteSelectedBootcampStates(isPermament: boolean) {
@@ -381,9 +382,7 @@ export class BootcampStatesComponent implements OnInit {
     if (this.validationControl("create")) {
 
       this.bootcampStateService.createBootcampState(this.bootcampStateCreateRequest).subscribe(response => {
-        this.bootcampStateCreateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.bootcampState = {
           id: response.id,
@@ -394,6 +393,9 @@ export class BootcampStatesComponent implements OnInit {
         this.bootcampStates.items.push(this.bootcampState);
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'BootcampState Created', life: 3000 });
 
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.bootcampStates.items = [...this.bootcampStates.items];
         this.bootcampStateCreateDialog = false;
@@ -420,9 +422,7 @@ export class BootcampStatesComponent implements OnInit {
     if (this.validationControl("update")) {
 
       this.bootcampStateService.updateBootcampState(this.bootcampStateUpdateRequest).subscribe(response => {
-        this.bootcampStateUpdateDialog = false;
-        this.submitted = false;
-        this.submitButton = false;
+        this.hideDialog();
 
         this.bootcampState = {
           id: response.id,
@@ -432,6 +432,9 @@ export class BootcampStatesComponent implements OnInit {
 
         this.bootcampStates.items[this.findIndexById(this.bootcampState.id)] = this.bootcampState;
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'BootcampState Updated', life: 3000 });
+      }, error => {
+        this.submitButton = false;
+        console.log("bir hata oluştu.")
       }).add(() => {
         this.bootcampStates.items = [...this.bootcampStates.items];
         this.bootcampStateUpdateDialog = false;
@@ -495,16 +498,19 @@ export class BootcampStatesComponent implements OnInit {
     switch (requestName) {
       case "create":
         if (
-          this.bootcampStateCreateRequest.name.trim()) {
-          return true;
+          !this.bootcampStateCreateRequest.name?.trim()
+        ) {
+          return false;
         }
-        return false
+        return true;
       case "update":
         if (
-          this.bootcampStateUpdateRequest.name.trim()) {
-          return true;
+          !this.bootcampStateUpdateRequest.id?.trim() ||
+          !this.bootcampStateUpdateRequest.name?.trim()
+        ) {
+          return false;
         }
-        return false
+        return true;
       default:
         return false;
     }
