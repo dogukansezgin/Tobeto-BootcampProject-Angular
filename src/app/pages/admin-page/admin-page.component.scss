@@ -11,3 +11,219 @@
 .right-half {
     width: 80%;
 }
+
+// Style included in all child components.
+:host {
+    ::ng-deep {
+        .flex {
+            display: flex;
+        }
+
+        .card {
+            width: 100%;
+
+            // filter: drop-shadow(0px 0px 6px #c4c4c4);
+            // box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+            // box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+            
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .mr-2 {
+            margin-right: 0.5rem;
+        }
+
+        .p-button {
+            border-radius: 6px;
+        }
+
+        .p-button-rounded {
+            border-radius: 50%;
+        }
+
+        .content-container {
+            padding: 30px 60px 20px 0;
+        }
+
+        .table-header {
+            padding: 12px 20px 12px;
+        }
+
+
+
+        // Inside Dialog
+
+        // Fields
+        .field {
+            height: 5.75rem;
+            margin-bottom: 0.25rem;
+
+            .p-error {
+                user-select: none;
+            }
+
+            .p-inputtext {
+                border-radius: 1rem;
+            }
+
+            .p-button {
+                margin-left: 5px;
+                border-radius: 1rem;
+            }
+        }
+
+        .p-fluid {
+            overflow: hidden;
+        }
+        
+        // Dropdown
+        .p-dropdown {
+            border-radius: 1rem;
+            ul {
+                padding-left: 0;
+            }
+            .p-dropdown-panel {
+                border-radius: 1rem;
+            }
+
+            .p-dropdown-items-wrapper {
+                border: 2px solid #d1d5db;
+                border-radius: 1rem;
+            }
+            .p-dropdown-items-wrapper::-webkit-scrollbar {
+                width: 8px;
+            }
+            .p-dropdown-items-wrapper::-webkit-scrollbar-track {
+                border: 0;
+                background: transparent;
+            }
+            .p-dropdown-items-wrapper::-webkit-scrollbar-thumb {
+                border-radius: 1rem;
+                background: #888;
+            }
+            .p-dropdown-items-wrapper::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+    
+            .p-dropdown-items {
+                min-height: 600px;
+            }
+        }
+
+
+        // Calendar
+        .p-datepicker:not(.p-datepicker-inline) {
+            background: #fdfdfd;
+            border: 2px solid #d1d5db;
+            border-radius: 1rem;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+            transform: scale(0.75);
+        }
+
+        
+        // Confirm Dialog
+        .p-confirm-dialog {
+
+            .p-confirm-dialog-accept,
+            .p-confirm-dialog-reject {
+                border-radius: 0;
+                margin-left: 1rem;
+                min-width: 7rem;
+                background-color: transparent;
+                border: thin solid rgb(184, 184, 184);
+                color: #3b4047;
+            }
+
+            .p-confirm-dialog-accept:hover,
+            .p-confirm-dialog-reject:hover {
+                background-color: #adadad38;
+            }
+
+            .restore-accept {
+                color: rgb(255, 255, 255);
+                background-color: #16d45c;
+                border: thin solid #18ad4f;
+            }
+
+            .restore-accept:hover {
+                background-color: #18ad4f;
+                border: thin solid #16d45c;
+            }
+
+            .restore-accept.p-button:focus {
+                box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #18ad4f, 0 1px 2px 0 black;
+            }
+
+            .delete-accept {
+                color: rgb(255, 255, 255);
+                background-color: #e91c1c;
+                border: thin solid #c72424;
+            }
+
+            .delete-accept:hover {
+                background-color: #c72424;
+                border: thin solid #e91c1c;
+            }
+
+            .delete-accept.p-button:focus {
+                box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #c72424, 0 1px 2px 0 black;
+            }
+        }
+
+        // Primeng Datatable
+        p-table {
+
+            // Resize table contents
+            th {
+                transform: scale(0.96);
+            }
+
+            td {
+                transform: scale(0.92);
+            }
+
+            .p-button-icon-only {
+                transform: scale(0.96);
+            }
+        }
+
+        .p-datatable .p-datatable-header {
+            border: 0;
+            border-radius: 6px;
+        }
+
+        .p-datatable .p-datatable-footer {
+            border: 0;
+            border-radius: 6px;
+        }
+
+        .p-toolbar {
+            background-color: white;
+        }
+
+        .clear-filter-button {
+            position: absolute;
+            right: 0rem;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            padding: 0;
+
+            .p-button:hover {
+                background-color: #dc3545;
+                border-color: #dc3545;
+                color: white;
+            }
+
+            .p-button:focus {
+                box-shadow: none;
+            }
+        }
+
+        .p-input-icon-left {
+            padding-right: 3.5rem;
+        }
+
+    }
+}

@@ -28,12 +28,12 @@ import { ApplicationStateUpdateRequest } from "../../../models/requests/applicat
 import { ApplicationStateGetListDeletedResponse } from "../../../models/responses/application-states/application-state-get-list-deleted-response";
 import { ApplicationStateGetListResponse } from "../../../models/responses/application-states/application-state-get-list-response";
 import { ApplicationStateService } from "../../../services/concretes/application-state.service";
-
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-application-states',
   standalone: true,
-  imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
+  imports: [TooltipModule, TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
   providers: [ApplicationStateService, MessageService, ConfirmationService],
   templateUrl: './application-states.component.html',
   styleUrl: './application-states.component.scss'
@@ -104,9 +104,6 @@ export class ApplicationStatesComponent implements OnInit {
 
   readonly PAGE_SIZE = 30;
 
-  minStartDate!: Date;
-  minEndDate!: Date;
-
   constructor(
     private applicationStateService: ApplicationStateService,
     private messageService: MessageService,
@@ -127,7 +124,6 @@ export class ApplicationStatesComponent implements OnInit {
   }
 
   openNew() {
-
     this.applicationStateCreateRequest = {
       name: ''
     };
@@ -157,14 +153,15 @@ export class ApplicationStatesComponent implements OnInit {
 
   deleteSelectedApplicationStates(isPermament: boolean) {
     this.confirmationService.confirm({
-      message: 'Seçilen kurs durumlarını silmek istediğine emin misin?',
+      message: 'Seçilen başvuru durumlarını silmek istediğine emin misin?',
       header: 'Toplu Sil',
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log(this.selectedApplicationStates)
 
         if (this.selectedApplicationStates || this.selectedDeletedApplicationStates) {
           this.applicationStateDeleteRangeRequest = {
@@ -191,9 +188,7 @@ export class ApplicationStatesComponent implements OnInit {
             }
           }
 
-
           this.applicationStateService.deleteRangeApplicationState(this.applicationStateDeleteRangeRequest).subscribe(response => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'ApplicationStates Deleted', life: 3000 });
 
             if (!isPermament) {
               this.selectedApplicationStates?.forEach(b => {
@@ -207,12 +202,15 @@ export class ApplicationStatesComponent implements OnInit {
               });
 
               this.applicationStates.items = this.applicationStates.items.filter((val) => !this.selectedApplicationStates?.includes(val));
+              this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Seçili başvuru durumları silindi.', life: 4000 });
             }
             else {
               this.deletedApplicationStates.items = this.deletedApplicationStates.items.filter((val) => !this.selectedDeletedApplicationStates?.includes(val));
+              this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Seçili başvuru durumları kalıcı olarak silindi.', life: 5000 });
             }
 
-
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedApplicationStates = [];
             this.selectedDeletedApplicationStates = [];
@@ -234,11 +232,13 @@ export class ApplicationStatesComponent implements OnInit {
 
   restoreSelectedApplicationStates() {
     this.confirmationService.confirm({
-      message: 'Seçilen silinmiş kurs durumlarını kurtarmak istediğine emin misin?',
-      header: 'Toplu Kurtar',
+      message: 'Seçilen silinmiş başvuru durumlarını geri yüklemek istediğine emin misin?',
+      header: 'Toplu Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
 
@@ -265,8 +265,10 @@ export class ApplicationStatesComponent implements OnInit {
             });
 
             this.deletedApplicationStates.items = this.deletedApplicationStates.items.filter((val) => !this.selectedDeletedApplicationStates?.includes(val));
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'ApplicationStates Restored', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Seçili başvuru durumları geri yüklendi.', life: 4000 });
 
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedApplicationStates = [];
             this.selectedDeletedApplicationStates = [];
@@ -285,13 +287,14 @@ export class ApplicationStatesComponent implements OnInit {
   }
 
   deleteApplicationState(applicationState: ApplicationStateGetListResponse, isPermament: boolean) {
-    console.log(applicationState)
     this.confirmationService.confirm({
-      message: '"' + applicationState.name + '" Adlı kurs durumunu silmek istediğine emin misin?',
+      message: '"' + applicationState.name + '" Adlı başvuru durumunu silmek istediğine emin misin?',
       header: 'Sil',
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.applicationStateDeleteRequest = {
@@ -300,7 +303,6 @@ export class ApplicationStatesComponent implements OnInit {
         }
 
         this.applicationStateService.deleteApplicationState(this.applicationStateDeleteRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'ApplicationState Deleted', life: 3000 });
 
           if (!this.applicationStateDeleteRequest.isPermament) {
             this.deletedApplicationState = {
@@ -312,12 +314,15 @@ export class ApplicationStatesComponent implements OnInit {
 
             this.applicationStates.items = this.applicationStates.items.filter((val) => val.id !== applicationState.id);
             this.deletedApplicationStates.items.push(this.deletedApplicationState);
-
+            this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Bir başvuru durumu silindi.', life: 4000 });
           }
           else {
             this.deletedApplicationStates.items = this.deletedApplicationStates.items.filter((val) => val.id !== applicationState.id);
+            this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Bir başvuru durumu kalıcı olarak silindi.', life: 5000 });
           }
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.deletedApplicationState = {
             id: '',
@@ -336,13 +341,14 @@ export class ApplicationStatesComponent implements OnInit {
   }
 
   restoreApplicationState(applicationState: ApplicationStateGetListDeletedResponse) {
-    console.log(applicationState)
     this.confirmationService.confirm({
-      message: '"' + applicationState.name + '" Adlı silinen kurs durumunu kurtarmak istediğine emin misin?',
-      header: 'Kurtar',
+      message: '"' + applicationState.name + '" Adlı silinen başvuru durumunu geri yüklemek istediğine emin misin?',
+      header: 'Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.applicationStateRestoreRequest = {
@@ -350,7 +356,6 @@ export class ApplicationStatesComponent implements OnInit {
         }
 
         this.applicationStateService.restoreApplicationState(this.applicationStateRestoreRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'ApplicationState Restored', life: 3000 });
 
           this.applicationState = {
             id: response.id,
@@ -360,7 +365,10 @@ export class ApplicationStatesComponent implements OnInit {
 
           this.deletedApplicationStates.items = this.deletedApplicationStates.items.filter((val) => val.id !== applicationState.id);
           this.applicationStates.items.push(this.applicationState);
+          this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Bir başvuru durumu geri yüklendi.', life: 4000 });
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.applicationState = {
             id: '',
@@ -391,14 +399,15 @@ export class ApplicationStatesComponent implements OnInit {
         };
 
         this.applicationStates.items.push(this.applicationState);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'ApplicationState Created', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Başvuru durumu oluşturuldu.', life: 4000 });
 
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.applicationStates.items = [...this.applicationStates.items];
-        this.applicationStateCreateDialog = false;
         this.applicationStateCreateRequest = {
           name: ''
         };
@@ -431,13 +440,15 @@ export class ApplicationStatesComponent implements OnInit {
         };
 
         this.applicationStates.items[this.findIndexById(this.applicationState.id)] = this.applicationState;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'ApplicationState Updated', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Başvuru durumu güncellendi.', life: 4000 });
+
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.applicationStates.items = [...this.applicationStates.items];
-        this.applicationStateUpdateDialog = false;
         this.applicationStateUpdateRequest = {
           id: '',
           name: ''
@@ -476,7 +487,7 @@ export class ApplicationStatesComponent implements OnInit {
       case 'RED EDILDI':
         return 'danger';
       default:
-        return '';
+        return 'primary';
     }
   }
 

@@ -189,6 +189,8 @@ export class BlacklistsComponent implements OnInit {
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
 
@@ -276,6 +278,8 @@ export class BlacklistsComponent implements OnInit {
       rejectLabel: 'İptal',
       acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
 
@@ -340,6 +344,8 @@ export class BlacklistsComponent implements OnInit {
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.blacklistDeleteRequest = {
@@ -402,6 +408,8 @@ export class BlacklistsComponent implements OnInit {
       rejectLabel: 'İptal',
       acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.blacklistRestoreRequest = {
@@ -611,6 +619,7 @@ export class BlacklistsComponent implements OnInit {
         return true;
       case "update":
         if (
+          !this.blacklistUpdateRequest.id?.trim() ||
           !this.blacklistUpdateRequest.applicantId?.trim() ||
           !this.blacklistUpdateRequest.reason?.trim()
         ) {

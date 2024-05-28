@@ -35,12 +35,12 @@ import { BootcampGetListDeletedResponse } from '../../../models/responses/bootca
 import { BootcampRestoreRequest } from '../../../models/requests/bootcamps/bootcamp-restore-request';
 import { BootcampDeleteRangeRequest } from '../../../models/requests/bootcamps/bootcamp-delete-range-request';
 import { BootcampRestoreRangeRequest } from '../../../models/requests/bootcamps/bootcamp-restore-range-request';
-
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-bootcamps',
   standalone: true,
-  imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
+  imports: [TooltipModule, TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
   providers: [BootcampService, MessageService, ConfirmationService],
   templateUrl: './bootcamps.component.html',
   styleUrl: './bootcamps.component.scss'
@@ -235,14 +235,15 @@ export class BootcampsComponent implements OnInit {
 
   deleteSelectedBootcamps(isPermament: boolean) {
     this.confirmationService.confirm({
-      message: 'Seçilen kursları silmek istediğine emin misin?',
+      message: 'Seçilen etkinlikleri silmek istediğine emin misin?',
       header: 'Toplu Sil',
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log(this.selectedBootcamps)
 
         if (this.selectedBootcamps || this.selectedDeletedBootcamps) {
           this.bootcampDeleteRangeRequest = {
@@ -271,7 +272,6 @@ export class BootcampsComponent implements OnInit {
 
 
           this.bootcampService.deleteRangeBootcamp(this.bootcampDeleteRangeRequest).subscribe(response => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamps Deleted', life: 3000 });
 
             if (!isPermament) {
               this.selectedBootcamps?.forEach(b => {
@@ -297,12 +297,16 @@ export class BootcampsComponent implements OnInit {
               });
 
               this.bootcamps.items = this.bootcamps.items.filter((val) => !this.selectedBootcamps?.includes(val));
+              this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Seçili etkinlikler silindi.', life: 4000 });
             }
             else {
               this.deletedBootcamps.items = this.deletedBootcamps.items.filter((val) => !this.selectedDeletedBootcamps?.includes(val));
+              this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Seçili etkinlikler kalıcı olarak silindi.', life: 5000 });
             }
 
 
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedBootcamps = [];
             this.selectedDeletedBootcamps = [];
@@ -336,11 +340,13 @@ export class BootcampsComponent implements OnInit {
 
   restoreSelectedBootcamps() {
     this.confirmationService.confirm({
-      message: 'Seçilen silinmiş kursları kurtarmak istediğine emin misin?',
-      header: 'Toplu Kurtar',
+      message: 'Seçilen silinmiş etkinlikleri kurtarmak istediğine emin misin?',
+      header: 'Toplu Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
 
@@ -379,8 +385,10 @@ export class BootcampsComponent implements OnInit {
             });
 
             this.deletedBootcamps.items = this.deletedBootcamps.items.filter((val) => !this.selectedDeletedBootcamps?.includes(val));
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamps Restored', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Seçili etkinlikler geri yüklendi.', life: 4000 });
 
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedBootcamps = [];
             this.selectedDeletedBootcamps = [];
@@ -411,13 +419,14 @@ export class BootcampsComponent implements OnInit {
   }
 
   deleteBootcamp(bootcamp: BootcampGetListResponse, isPermament: boolean) {
-    console.log(bootcamp)
     this.confirmationService.confirm({
-      message: '"' + bootcamp.name + '" Adlı kursu silmek istediğine emin misin?',
+      message: '"' + bootcamp.name + '" Adlı etkinliği silmek istediğine emin misin?',
       header: 'Sil',
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.bootcampDeleteRequest = {
@@ -426,7 +435,6 @@ export class BootcampsComponent implements OnInit {
         }
 
         this.bootcampService.deleteBootcamp(this.bootcampDeleteRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Deleted', life: 3000 });
 
           if (!this.bootcampDeleteRequest.isPermament) {
             this.deletedBootcamp = {
@@ -450,12 +458,16 @@ export class BootcampsComponent implements OnInit {
 
             this.bootcamps.items = this.bootcamps.items.filter((val) => val.id !== bootcamp.id);
             this.deletedBootcamps.items.push(this.deletedBootcamp);
+            this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Bir etkinlik silindi.', life: 4000 });
 
           }
           else {
             this.deletedBootcamps.items = this.deletedBootcamps.items.filter((val) => val.id !== bootcamp.id);
+            this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Bir etkinlik kalıcı olarak silindi.', life: 5000 });
           }
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.deletedBootcamp = {
             id: '',
@@ -486,13 +498,14 @@ export class BootcampsComponent implements OnInit {
   }
 
   restoreBootcamp(bootcamp: BootcampGetListDeletedResponse) {
-    console.log(bootcamp)
     this.confirmationService.confirm({
-      message: '"' + bootcamp.name + '" Adlı silinen kursu kurtarmak istediğine emin misin?',
-      header: 'Kurtar',
+      message: '"' + bootcamp.name + '" Adlı silinen etkinliği kurtarmak istediğine emin misin?',
+      header: 'Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.bootcampRestoreRequest = {
@@ -500,7 +513,6 @@ export class BootcampsComponent implements OnInit {
         }
 
         this.bootcampService.restoreBootcamp(this.bootcampRestoreRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Restored', life: 3000 });
 
           this.bootcamp = {
             id: response.id,
@@ -522,7 +534,10 @@ export class BootcampsComponent implements OnInit {
 
           this.deletedBootcamps.items = this.deletedBootcamps.items.filter((val) => val.id !== bootcamp.id);
           this.bootcamps.items.push(this.bootcamp);
+          this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Bir etkinlik geri yüklendi.', life: 4000 });
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.bootcamp = {
             id: '',
@@ -585,14 +600,15 @@ export class BootcampsComponent implements OnInit {
         };
 
         this.bootcamps.items.push(this.bootcamp);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Created', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Etkinlik oluşturuldu.', life: 4000 });
 
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.bootcamps.items = [...this.bootcamps.items];
-        this.bootcampCreateDialog = false;
         this.bootcampCreateRequest = {
           name: '',
           instructorId: '',
@@ -671,13 +687,15 @@ export class BootcampsComponent implements OnInit {
         };
 
         this.bootcamps.items[this.findIndexById(this.bootcamp.id)] = this.bootcamp;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Bootcamp Updated', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Etkinlik bilgileri güncellendi.', life: 4000 });
+
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.bootcamps.items = [...this.bootcamps.items];
-        this.bootcampUpdateDialog = false;
         this.bootcampUpdateRequest = {
           id: '',
           name: '',
@@ -744,7 +762,7 @@ export class BootcampsComponent implements OnInit {
       case 'İPTAL EDILDI':
         return 'danger';
       default:
-        return 'info';
+        return 'primary';
     }
   }
 
@@ -766,20 +784,20 @@ export class BootcampsComponent implements OnInit {
   }
 
   onStartDateSelectCreate() {
-    var newMinEndDate = new Date(this.bootcampCreateRequest.startDate.getFullYear(), this.bootcampCreateRequest.startDate.getMonth(), this.bootcampCreateRequest.startDate.getDate() + 7);
+    var newMinEndDate = new Date(this.bootcampCreateRequest.startDate.getFullYear(), this.bootcampCreateRequest.startDate.getMonth(), this.bootcampCreateRequest.startDate.getDate() + 1);
     this.minEndDate = newMinEndDate;
     this.bootcampCreateRequest.endDate = this.minEndDate
   }
 
   onStartDateSelectUpdate() {
-    var newMinEndDate = new Date(this.bootcampUpdateRequest.startDate.getFullYear(), this.bootcampUpdateRequest.startDate.getMonth(), this.bootcampUpdateRequest.startDate.getDate() + 7);
+    var newMinEndDate = new Date(this.bootcampUpdateRequest.startDate.getFullYear(), this.bootcampUpdateRequest.startDate.getMonth(), this.bootcampUpdateRequest.startDate.getDate() + 1);
     this.minEndDate = newMinEndDate;
     this.bootcampUpdateRequest.endDate = this.minEndDate
   }
 
   initializeFormDates() {
     this.minStartDate = new Date();
-    this.minEndDate = new Date(this.minStartDate.getFullYear(), this.minStartDate.getMonth(), this.minStartDate.getDate() + 7);
+    this.minEndDate = new Date(this.minStartDate.getFullYear(), this.minStartDate.getMonth(), this.minStartDate.getDate() + 1);
   }
 
   validationControl(requestName: string): boolean {

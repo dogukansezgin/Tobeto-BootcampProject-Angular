@@ -5,18 +5,18 @@
 
         <p-table #dt1 [value]="applicationStates.items" [rows]="20" [paginator]="true"
             [globalFilterFields]="['name', 'createdDate']"
-            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedApplicationStates" [rowHover]="true" dataKey="id"
+            [tableStyle]="{ 'min-width': '30rem' }" [(selection)]="selectedApplicationStates" [rowHover]="true" dataKey="id"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="600px">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     <div class="p-toolbar table-header">    
-                        <h5 class=" m-0">ApplicationStates</h5>
+                        <h5 class=" m-0">Başvuru Durumları</h5>
                     </div>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
                         <input pInputText type="text" [(ngModel)]="filterValues[0]" (input)="filterTable($event, dt1, 0)" placeholder="Filtrele..." />
-                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt1, 0)" *ngIf="filterValues[0]" />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt1, 0)" *ngIf="filterValues[0]" pTooltip="Temizle" tooltipPosition="top" showDelay="0650" />
                     </span>
                 </div>
                 <p-toolbar styleClass="mb-2 mt-3 gap-2">
@@ -29,16 +29,16 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: 4rem">
+                    <th style="width: 5%;">
                         <p-tableHeaderCheckbox />
                     </th>
-                    <th pSortableColumn="name" style="min-width:12rem">
+                    <th pSortableColumn="name">
                         Ad <p-sortIcon field="name" />
                     </th>
-                    <th pSortableColumn="createdDate" style="min-width:12rem">
+                    <th pSortableColumn="createdDate" style="width: 35%;">
                         Oluşturulma Tarihi <p-sortIcon field="createdDate" />
                     </th>
-                    <th style="min-width:12rem;"></th>
+                    <th style="width: 10%;"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-applicationState>
@@ -53,58 +53,58 @@
                     <td>
                         {{ applicationState.createdDate.toString().substring(0,10) }}
                     </td>
-                    <td>
+                    <td style="text-align: center; vertical-align: middle;">
                         <p-button pRipple icon="pi pi-pencil" class="m-1" [rounded]="true" [outlined]="true"
-                            severity="success" (click)="openEdit(applicationState)" />
+                            severity="success" (click)="openEdit(applicationState)" pTooltip="Düzenle" tooltipPosition="top" showDelay="1150" />
                         <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                            (click)="deleteApplicationState(applicationState, false)" />
+                            (click)="deleteApplicationState(applicationState, false)" pTooltip="Sil" tooltipPosition="top" showDelay="1150" />
                     </td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="summary">
                 <div class="flex align-items-center justify-content-between">
-                    Toplam {{ applicationStates.items ? applicationStates.items.length : 0 }} adet ApplicationState var.
+                    Toplam {{ applicationStates.items ? applicationStates.items.length : 0 }} adet Başvuru Durumu var.
                 </div>
             </ng-template>
         </p-table>
 
         <!-- Create Dialog -->
-        <p-dialog [(visible)]="applicationStateCreateDialog" [style]="{ width: '450px', height: '400px' }" header="Create ApplicationState" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="applicationStateCreateDialog" [style]="{ width: '600px', height: '400px' }" header="Başvuru Durumu Oluştur" [modal]="true" styleClass="p-fluid" closeOnEscape="false">
             <ng-template pTemplate="content">
                 <div class="field">
-                    <label for="name">Ad</label>
-                    <small class="p-error" *ngIf="!applicationStateCreateRequest.name">*  Zorunlu alan.</small>
-                    <input type="text" pInputText id="name" [(ngModel)]="applicationStateCreateRequest.name" required autofocus />
+                    <small class="p-error" *ngIf="!applicationStateCreateRequest.name">*</small>
+                    <label for="firstName">Ad</label>
                     <small class="p-error" *ngIf="submitted && !applicationStateCreateRequest.name">
                         Ad alanı boş olamaz.
                     </small>
+                    <input type="text" pInputText id="firstName" [(ngModel)]="applicationStateCreateRequest.name" required autofocus />
                 </div>
   
             </ng-template>
         
             <ng-template pTemplate="footer">
-                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
-                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createApplicationState()" [disabled]="submitButton" />
+                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" pTooltip="Kapat" tooltipPosition="top" showDelay="1150" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createApplicationState()" [disabled]="submitButton" pTooltip="Oluştur" tooltipPosition="top" showDelay="1150" />
             </ng-template>
         </p-dialog>
         
         <!-- Update Dialog -->
-        <p-dialog [(visible)]="applicationStateUpdateDialog" [style]="{ width: '450px', height: '400px' }" header="ApplicationState Details" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="applicationStateUpdateDialog" [style]="{ width: '600px', height: '400px' }" header="Başvuru Durumu Detayları" [modal]="true" styleClass="p-fluid" closeOnEscape="false">
             <ng-template pTemplate="content">
                 <div class="field">
-                    <label for="name">Ad</label>
-                    <small class="p-error" *ngIf="!applicationStateUpdateRequest.name">*  Zorunlu alan.</small>
-                    <input type="text" pInputText id="name" [(ngModel)]="applicationStateUpdateRequest.name" required autofocus />
+                    <small class="p-error" *ngIf="!applicationStateUpdateRequest.name">*</small>
+                    <label for="firstName">Ad</label>
                     <small class="p-error" *ngIf="submitted && !applicationStateUpdateRequest.name">
                         Ad alanı boş olamaz.
                     </small>
+                    <input type="text" pInputText id="firstName" [(ngModel)]="applicationStateUpdateRequest.name" required autofocus />
                 </div>
   
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
-                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="updateApplicationState()" [disabled]="submitButton" />
+                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" pTooltip="Kapat" tooltipPosition="top" showDelay="1150" />
+                <p-button pRipple label="Güncelle" icon="pi pi-check" [text]="true" (click)="updateApplicationState()" [disabled]="submitButton" pTooltip="Güncelle" tooltipPosition="top" showDelay="1150" />
             </ng-template>
         </p-dialog>
 
@@ -120,27 +120,26 @@
 <!-- Deleted ApplicationStates Table -->
 <div class="content-container">
     <div class="card">
-        <p-toast />
 
         <p-table #dt2 [value]="deletedApplicationStates.items" [rows]="20" [paginator]="true"
-            [globalFilterFields]="['name', 'instructorUserName', 'instructorCompanyName', 'deletedDate', 'applicationStateStateName']"
-            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedDeletedApplicationStates" [rowHover]="true" dataKey="id"
+            [globalFilterFields]="['name', 'deletedDate']"
+            [tableStyle]="{ 'min-width': '30rem' }" [(selection)]="selectedDeletedApplicationStates" [rowHover]="true" dataKey="id"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="500px">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     <div class="p-toolbar table-header">
-                        <h5 class="m-0">Deleted ApplicationStates</h5>
+                        <h5 class="m-0">Silinen Başvuru Durumları</h5>
                     </div>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
                         <input pInputText type="text" [(ngModel)]="filterValues[1]" (input)="filterTable($event, dt2, 1)" placeholder="Filtrele..." />
-                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt2, 1)" *ngIf="filterValues[1]" />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt2, 1)" *ngIf="filterValues[1]" pTooltip="Temizle" tooltipPosition="top" showDelay="0650" />
                     </span>
                 </div>
                 <p-toolbar styleClass="mb-2 mt-3 gap-2">
                     <ng-template pTemplate="left">
-                        <p-button pRipple severity="success" label="Kurtar" icon="pi pi-replay" class="mr-2" (click)="restoreSelectedApplicationStates()"
+                        <p-button pRipple severity="success" label="Geri Yükle" icon="pi pi-replay" class="mr-2" (click)="restoreSelectedApplicationStates()"
                             [disabled]="!selectedDeletedApplicationStates || !selectedDeletedApplicationStates.length" />
                         <p-button pRipple severity="danger" label="Kalıcı Sil" icon="pi pi-trash" (click)="deleteSelectedApplicationStates(true)"
                             [disabled]="!selectedDeletedApplicationStates || !selectedDeletedApplicationStates.length" />
@@ -149,16 +148,16 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: 4rem">
+                    <th style="width: 5%;">
                         <p-tableHeaderCheckbox />
                     </th>
-                    <th pSortableColumn="name" style="min-width:12rem">
+                    <th pSortableColumn="name">
                         Ad <p-sortIcon field="name" />
                     </th>
-                    <th pSortableColumn="deletedDate" style="min-width:12rem">
+                    <th pSortableColumn="deletedDate" style="width: 35%;">
                         Silinme Tarihi <p-sortIcon field="deletedDate" />
                     </th>
-                    <th style="min-width:12rem;"></th>
+                    <th style="width: 10%;"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-applicationState>
@@ -173,17 +172,17 @@
                     <td>
                         {{ applicationState.deletedDate.toString().substring(0,10) }}
                     </td>
-                    <td>
+                    <td style="text-align: center; vertical-align: middle;">
                         <p-button pRipple icon="pi pi-replay" class="m-1" [rounded]="true" [outlined]="true"
-                            severity="success" (click)="restoreApplicationState(applicationState)" />
+                            severity="success" (click)="restoreApplicationState(applicationState)" pTooltip="Geri Yükle" tooltipPosition="top" showDelay="1150" />
                         <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                            (click)="deleteApplicationState(applicationState, true)" />
+                            (click)="deleteApplicationState(applicationState, true)" pTooltip="Kalıcı Sil" tooltipPosition="top" showDelay="1150" />
                     </td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="summary">
                 <div class="flex align-items-center justify-content-between">
-                    Toplam {{ deletedApplicationStates.items ? deletedApplicationStates.items.length : 0 }} adet Silinmiş ApplicationState var.
+                    Toplam {{ deletedApplicationStates.items ? deletedApplicationStates.items.length : 0 }} adet Silinmiş Başvuru Durumu var.
                 </div>
             </ng-template>
         </p-table>

@@ -28,11 +28,13 @@ import { ApplicantUpdateRequest } from '../../../models/requests/applicants/appl
 import { CalendarModule } from 'primeng/calendar';
 import { ApplicantGetListDeletedResponse } from '../../../models/responses/applicant/applicant-get-list-deleted-response';
 import { ApplicantGetListResponse } from '../../../models/responses/applicant/applicant-get-list-response';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-applicants',
   standalone: true,
-  imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
+  imports: [TooltipModule, KeyFilterModule, TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
   providers: [ApplicantService, MessageService, ConfirmationService],
   templateUrl: './applicants.component.html',
   styleUrl: './applicants.component.scss'
@@ -70,9 +72,9 @@ export class ApplicantsComponent implements OnInit {
     password: '',
     firstName: '',
     lastName: '',
-    dateOfBirth: new Date("0001-01-01T01:00:00"),
+    dateOfBirth: undefined,
     nationalIdentity: '',
-    about: '',
+    about: undefined,
   };
 
   applicantUpdateRequest: ApplicantUpdateRequest = {
@@ -80,9 +82,9 @@ export class ApplicantsComponent implements OnInit {
     email: '',
     firstName: '',
     lastName: '',
-    dateOfBirth: new Date("0001-01-01T01:00:00"),
+    dateOfBirth: undefined,
     nationalIdentity: '',
-    about: '',
+    about: undefined,
   };
 
   applicantDeleteRequest: ApplicantDeleteRequest = {
@@ -140,15 +142,14 @@ export class ApplicantsComponent implements OnInit {
   }
 
   openNew() {
-
     this.applicantCreateRequest = {
       email: '',
       password: '',
       firstName: '',
       lastName: '',
-      dateOfBirth: new Date(this.maxDate.getFullYear() - 30, this.maxDate.getMonth(), this.maxDate.getDate()),
+      dateOfBirth: undefined,
       nationalIdentity: '',
-      about: '',
+      about: undefined,
     };
 
     this.applicantCreateDialog = true;
@@ -162,11 +163,12 @@ export class ApplicantsComponent implements OnInit {
       id: this.applicant.id,
       email: this.applicant.email,
       firstName: this.applicant.firstName,
-      lastName: this.applicant.lastName
+      lastName: this.applicant.lastName,
+      nationalIdentity: ''
     };
 
     if(applicant.nationalIdentity) {
-      if (applicant.dateOfBirth != null) {
+      if (applicant.nationalIdentity != null) {
         this.applicantUpdateRequest.nationalIdentity = applicant.nationalIdentity;
       }
     }
@@ -194,14 +196,15 @@ export class ApplicantsComponent implements OnInit {
 
   deleteSelectedApplicants(isPermament: boolean) {
     this.confirmationService.confirm({
-      message: 'Seçilen öğrenciyi silmek istediğine emin misin?',
+      message: 'Seçilen öğrencileri silmek istediğine emin misin?',
       header: 'Toplu Sil',
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log(this.selectedApplicants)
 
         if (this.selectedApplicants || this.selectedDeletedApplicants) {
           this.applicantDeleteRangeRequest = {
@@ -228,9 +231,7 @@ export class ApplicantsComponent implements OnInit {
             }
           }
 
-
           this.applicantService.deleteRangeApplicant(this.applicantDeleteRangeRequest).subscribe(response => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Applicants Deleted', life: 3000 });
 
             if (!isPermament) {
               this.selectedApplicants?.forEach(i => {
@@ -251,12 +252,15 @@ export class ApplicantsComponent implements OnInit {
               });
 
               this.applicants.items = this.applicants.items.filter((val) => !this.selectedApplicants?.includes(val));
+              this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Seçili öğrenciler silindi.', life: 4000 });
             }
             else {
               this.deletedApplicants.items = this.deletedApplicants.items.filter((val) => !this.selectedDeletedApplicants?.includes(val));
+              this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Seçili öğrenciler kalıcı olarak silindi.', life: 5000 });
             }
 
-
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedApplicants = [];
             this.selectedDeletedApplicants = [];
@@ -285,11 +289,13 @@ export class ApplicantsComponent implements OnInit {
 
   restoreSelectedApplicants() {
     this.confirmationService.confirm({
-      message: 'Seçilen silinmiş öğrencileri kurtarmak istediğine emin misin?',
-      header: 'Toplu Kurtar',
+      message: 'Seçilen silinmiş öğrencileri geri yüklemek istediğine emin misin?',
+      header: 'Toplu Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
 
@@ -323,8 +329,10 @@ export class ApplicantsComponent implements OnInit {
             });
 
             this.deletedApplicants.items = this.deletedApplicants.items.filter((val) => !this.selectedDeletedApplicants?.includes(val));
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Applicants Restored', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Seçili öğrenciler geri yüklendi.', life: 4000 });
 
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedApplicants = [];
             this.selectedDeletedApplicants = [];
@@ -350,13 +358,14 @@ export class ApplicantsComponent implements OnInit {
   }
 
   deleteApplicant(applicant: ApplicantGetListResponse, isPermament: boolean) {
-    console.log(applicant)
     this.confirmationService.confirm({
       message: '"' + applicant.userName + '" Adlı öğrenciyi silmek istediğine emin misin?',
       header: 'Sil',
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.applicantDeleteRequest = {
@@ -365,7 +374,6 @@ export class ApplicantsComponent implements OnInit {
         }
 
         this.applicantService.deleteApplicant(this.applicantDeleteRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Applicant Deleted', life: 3000 });
 
           if (!this.applicantDeleteRequest.isPermament) {
             this.deletedApplicant = {
@@ -384,12 +392,15 @@ export class ApplicantsComponent implements OnInit {
 
             this.applicants.items = this.applicants.items.filter((val) => val.id !== applicant.id);
             this.deletedApplicants.items.push(this.deletedApplicant);
-
+            this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Bir öğrenci silindi.', life: 4000 });
           }
           else {
             this.deletedApplicants.items = this.deletedApplicants.items.filter((val) => val.id !== applicant.id);
+            this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Bir öğrenci kalıcı olarak silindi.', life: 5000 });
           }
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.deletedApplicant = {
             id: '',
@@ -415,13 +426,14 @@ export class ApplicantsComponent implements OnInit {
   }
 
   restoreApplicant(applicant: ApplicantGetListDeletedResponse) {
-    console.log(applicant)
     this.confirmationService.confirm({
-      message: '"' + applicant.userName + '" Adlı silinen öğrenciyi kurtarmak istediğine emin misin?',
-      header: 'Kurtar',
+      message: '"' + applicant.userName + '" Adlı silinen öğrenciyi geri yüklemek istediğine emin misin?',
+      header: 'Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.applicantRestoreRequest = {
@@ -429,7 +441,6 @@ export class ApplicantsComponent implements OnInit {
         }
 
         this.applicantService.restoreApplicant(this.applicantRestoreRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Applicant Restored', life: 3000 });
 
           this.applicant = {
             id: response.id,
@@ -446,7 +457,10 @@ export class ApplicantsComponent implements OnInit {
 
           this.deletedApplicants.items = this.deletedApplicants.items.filter((val) => val.id !== applicant.id);
           this.applicants.items.push(this.applicant);
+          this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Bir öğrenci geri yüklendi.', life: 4000 });
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.applicant = {
             id: '',
@@ -469,7 +483,6 @@ export class ApplicantsComponent implements OnInit {
   }
 
   createApplicant() {
-    console.log(this.applicantCreateRequest)
     this.submitted = true;
     this.submitButton = true;
 
@@ -492,20 +505,21 @@ export class ApplicantsComponent implements OnInit {
         };
 
         this.applicants.items.push(this.applicant);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Applicant Created', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Öğrenci oluşturuldu.', life: 4000 });
 
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.applicants.items = [...this.applicants.items];
-        this.applicantCreateDialog = false;
         this.applicantCreateRequest = {
           email: '',
           password: '',
           firstName: '',
           lastName: '',
-          dateOfBirth: new Date("0001-01-01T01:00:00"),
+          dateOfBirth: undefined,
           nationalIdentity: '',
           about: '',
         };
@@ -552,13 +566,15 @@ export class ApplicantsComponent implements OnInit {
         };
 
         this.applicants.items[this.findIndexById(this.applicant.id)] = this.applicant;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Applicant Updated', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Öğrenci bilgileri güncellendi.', life: 4000 });
+
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.applicants.items = [...this.applicants.items];
-        this.applicantUpdateDialog = false;
         this.applicantUpdateRequest = {
           id: '',
           email: '',
@@ -600,19 +616,6 @@ export class ApplicantsComponent implements OnInit {
     return index;
   }
 
-  // getSeverity(status: string) {
-  //   switch (status) {
-  //     case 'ACTIVE':
-  //       return 'success';
-  //     case 'INACTIVE':
-  //       return 'warning';
-  //     case 'CANCELLED':
-  //       return 'danger';
-  //     default:
-  //       return '';
-  //   }
-  // }
-
   filterTable(event: Event, dt: any, index: number): void {
     if (event.target instanceof HTMLInputElement) {
       this.filterValues[index] = event.target.value;
@@ -634,17 +637,17 @@ export class ApplicantsComponent implements OnInit {
           !this.beValidEmail(this.applicantCreateRequest.email) ||
           !this.strongPassword(this.applicantCreateRequest.password)
         ) {
-          if (this.applicantCreateRequest.nationalIdentity) {
-            if (!(this.applicantCreateRequest.nationalIdentity.length == 0 || this.applicantCreateRequest.nationalIdentity.length == 11)) {
-              return false;
-            }
-            else {
-              return true;
-            }
-          }
           return false;
         }
-        return true;
+        else {
+          if (!(this.applicantCreateRequest.nationalIdentity?.length == 0 || this.applicantCreateRequest.nationalIdentity?.length == 11)) {
+            return false;
+          }
+          else {
+            this.applicantCreateRequest.nationalIdentity = this.applicantCreateRequest.nationalIdentity.length == 0 ? undefined : this.applicantCreateRequest.nationalIdentity;
+            return true;
+          }
+        }
       case "update":
         if (
           !this.applicantUpdateRequest.id?.trim() ||
@@ -652,17 +655,17 @@ export class ApplicantsComponent implements OnInit {
           !this.applicantUpdateRequest.lastName?.trim() ||
           !this.beValidEmail(this.applicantUpdateRequest.email)
         ) {
-          if (this.applicantUpdateRequest.nationalIdentity) {
-            if (!(this.applicantUpdateRequest.nationalIdentity.length == 0 || this.applicantUpdateRequest.nationalIdentity.length == 11)) {
-              return false;
-            }
-            else {
-              return true;
-            }
-          }
           return false;
         }
-        return true;
+        else {
+          if (!(this.applicantUpdateRequest.nationalIdentity?.length == 0 || this.applicantUpdateRequest.nationalIdentity?.length == 11)) {
+            return false;
+          }
+          else {
+            this.applicantUpdateRequest.nationalIdentity = this.applicantUpdateRequest.nationalIdentity.length == 0 ? undefined : this.applicantUpdateRequest.nationalIdentity;
+            return true;
+          }
+        }
       default:
         return false;
     }
@@ -687,6 +690,16 @@ export class ApplicantsComponent implements OnInit {
     const emailDomain: string = email.split('@').pop() || '';
 
     return validDomains.includes(emailDomain);
+  }
+  onInputNationalId(event: Event, requestName: string) {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+    if (requestName == "create") {
+      this.applicantCreateRequest.nationalIdentity = value;
+    }
+    if (requestName == "update") {
+      this.applicantUpdateRequest.nationalIdentity = value;
+    }
   }
   
 }

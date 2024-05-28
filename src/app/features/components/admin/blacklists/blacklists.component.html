@@ -80,7 +80,7 @@
         </p-table>
 
         <!-- Create Dialog -->
-        <p-dialog [(visible)]="blacklistCreateDialog" [style]="{ width: '600px', height: '475px' }" header="Kara Liste Kaydı Oluştur" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="blacklistCreateDialog" [style]="{ width: '600px', height: '475px' }" header="Kara Liste Kaydı Oluştur" [modal]="true" styleClass="p-fluid" closeOnEscape="false">
             <ng-template pTemplate="content">
                 <div class="field">
                     <small class="p-error" *ngIf="!selectedApplicant.id">*</small>
@@ -117,7 +117,7 @@
         </p-dialog>
         
         <!-- Update Dialog -->
-        <p-dialog [(visible)]="blacklistUpdateDialog" [style]="{ width: '600px', height: '475px' }" header="Kara Liste Kaydı Bilgileri" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="blacklistUpdateDialog" [style]="{ width: '600px', height: '475px' }" header="Kara Liste Kaydı Bilgileri" [modal]="true" styleClass="p-fluid" closeOnEscape="false">
             <ng-template pTemplate="content">
                 <div class="field">
                     <small class="p-error" *ngIf="!selectedApplicant.id">*</small>

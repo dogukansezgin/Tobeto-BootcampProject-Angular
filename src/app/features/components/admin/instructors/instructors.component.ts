@@ -28,11 +28,13 @@ import { InstructorRestoreRequest } from '../../../models/requests/instructors/i
 import { InstructorUpdateRequest } from '../../../models/requests/instructors/instructor-update-request';
 import { InstructorGetListDeletedResponse } from '../../../models/responses/instructors/instructor-get-list-deleted-response';
 import { CalendarModule } from 'primeng/calendar';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-instructors',
   standalone: true,
-  imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
+  imports: [TooltipModule, KeyFilterModule, TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
   providers: [InstructorService, MessageService, ConfirmationService],
   templateUrl: './instructors.component.html',
   styleUrl: './instructors.component.scss'
@@ -70,7 +72,7 @@ export class InstructorsComponent implements OnInit {
     password: '',
     firstName: '',
     lastName: '',
-    dateOfBirth: new Date("0001-01-01T01:00:00"),
+    dateOfBirth: undefined,
     nationalIdentity: '',
     companyName: '',
   };
@@ -80,7 +82,7 @@ export class InstructorsComponent implements OnInit {
     email: '',
     firstName: '',
     lastName: '',
-    dateOfBirth: new Date("0001-01-01T01:00:00"),
+    dateOfBirth: undefined,
     nationalIdentity: '',
     companyName: '',
   };
@@ -140,13 +142,12 @@ export class InstructorsComponent implements OnInit {
   }
 
   openNew() {
-
     this.instructorCreateRequest = {
       email: '',
       password: '',
       firstName: '',
       lastName: '',
-      dateOfBirth: new Date(this.maxDate.getFullYear() - 30, this.maxDate.getMonth(), this.maxDate.getDate()),
+      dateOfBirth: undefined,
       nationalIdentity: '',
       companyName: '',
     };
@@ -163,11 +164,12 @@ export class InstructorsComponent implements OnInit {
       email: this.instructor.email,
       firstName: this.instructor.firstName,
       lastName: this.instructor.lastName,
+      nationalIdentity: '',
       companyName: this.instructor.companyName
     };
 
     if(instructor.nationalIdentity) {
-      if (instructor.dateOfBirth != null) {
+      if (instructor.nationalIdentity != null) {
         this.instructorUpdateRequest.nationalIdentity = instructor.nationalIdentity;
       }
     }
@@ -195,9 +197,10 @@ export class InstructorsComponent implements OnInit {
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log(this.selectedInstructors)
 
         if (this.selectedInstructors || this.selectedDeletedInstructors) {
           this.instructorDeleteRangeRequest = {
@@ -224,10 +227,8 @@ export class InstructorsComponent implements OnInit {
             }
           }
 
-
           this.instructorService.deleteRangeInstructor(this.instructorDeleteRangeRequest).subscribe(response => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instructors Deleted', life: 3000 });
-
+            
             if (!isPermament) {
               this.selectedInstructors?.forEach(i => {
                 this.deletedInstructor = {
@@ -247,12 +248,15 @@ export class InstructorsComponent implements OnInit {
               });
 
               this.instructors.items = this.instructors.items.filter((val) => !this.selectedInstructors?.includes(val));
+              this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Seçili eğitmenler silindi.', life: 4000 });
             }
             else {
               this.deletedInstructors.items = this.deletedInstructors.items.filter((val) => !this.selectedDeletedInstructors?.includes(val));
+              this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Seçili eğitmenler kalıcı olarak silindi.', life: 5000 });
             }
 
-
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedInstructors = [];
             this.selectedDeletedInstructors = [];
@@ -281,11 +285,13 @@ export class InstructorsComponent implements OnInit {
 
   restoreSelectedInstructors() {
     this.confirmationService.confirm({
-      message: 'Seçilen silinmiş eğitmenleri kurtarmak istediğine emin misin?',
-      header: 'Toplu Kurtar',
+      message: 'Seçilen silinmiş eğitmenleri geri yüklemek istediğine emin misin?',
+      header: 'Toplu Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
 
@@ -319,8 +325,10 @@ export class InstructorsComponent implements OnInit {
             });
 
             this.deletedInstructors.items = this.deletedInstructors.items.filter((val) => !this.selectedDeletedInstructors?.includes(val));
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instructors Restored', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Seçili eğitmenler geri yüklendi.', life: 4000 });
 
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedInstructors = [];
             this.selectedDeletedInstructors = [];
@@ -346,13 +354,14 @@ export class InstructorsComponent implements OnInit {
   }
 
   deleteInstructor(instructor: InstructorGetListResponse, isPermament: boolean) {
-    console.log(instructor)
     this.confirmationService.confirm({
       message: '"' + instructor.userName + '" Adlı eğitmeni silmek istediğine emin misin?',
       header: 'Sil',
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.instructorDeleteRequest = {
@@ -361,7 +370,6 @@ export class InstructorsComponent implements OnInit {
         }
 
         this.instructorService.deleteInstructor(this.instructorDeleteRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instructor Deleted', life: 3000 });
 
           if (!this.instructorDeleteRequest.isPermament) {
             this.deletedInstructor = {
@@ -380,12 +388,15 @@ export class InstructorsComponent implements OnInit {
 
             this.instructors.items = this.instructors.items.filter((val) => val.id !== instructor.id);
             this.deletedInstructors.items.push(this.deletedInstructor);
-
+            this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Bir eğitmen silindi.', life: 4000 });
           }
           else {
             this.deletedInstructors.items = this.deletedInstructors.items.filter((val) => val.id !== instructor.id);
+            this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Bir eğitmen kalıcı olarak silindi.', life: 5000 });
           }
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.deletedInstructor = {
             id: '',
@@ -411,13 +422,14 @@ export class InstructorsComponent implements OnInit {
   }
 
   restoreInstructor(instructor: InstructorGetListDeletedResponse) {
-    console.log(instructor)
     this.confirmationService.confirm({
-      message: '"' + instructor.userName + '" Adlı silinen eğitmeni kurtarmak istediğine emin misin?',
-      header: 'Kurtar',
+      message: '"' + instructor.userName + '" Adlı silinen eğitmeni geri yüklemek istediğine emin misin?',
+      header: 'Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.instructorRestoreRequest = {
@@ -425,7 +437,6 @@ export class InstructorsComponent implements OnInit {
         }
 
         this.instructorService.restoreInstructor(this.instructorRestoreRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instructor Restored', life: 3000 });
 
           this.instructor = {
             id: response.id,
@@ -442,7 +453,10 @@ export class InstructorsComponent implements OnInit {
 
           this.deletedInstructors.items = this.deletedInstructors.items.filter((val) => val.id !== instructor.id);
           this.instructors.items.push(this.instructor);
+          this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Bir eğitmen geri yüklendi.', life: 4000 });
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.instructor = {
             id: '',
@@ -469,7 +483,7 @@ export class InstructorsComponent implements OnInit {
     this.submitButton = true;
 
     if (this.validationControl("create")) {
-      console.log("valid")
+
       this.instructorService.createInstructor(this.instructorCreateRequest).subscribe(response => {
         this.hideDialog();
 
@@ -487,11 +501,13 @@ export class InstructorsComponent implements OnInit {
         };
 
         this.instructors.items.push(this.instructor);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instructor Created', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Eğitmen oluşturuldu.', life: 4000 });
 
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.instructors.items = [...this.instructors.items];
         this.instructorCreateRequest = {
@@ -499,7 +515,7 @@ export class InstructorsComponent implements OnInit {
           password: '',
           firstName: '',
           lastName: '',
-          dateOfBirth: new Date("0001-01-01T01:00:00"),
+          dateOfBirth: undefined,
           nationalIdentity: '',
           companyName: '',
         };
@@ -546,10 +562,13 @@ export class InstructorsComponent implements OnInit {
         };
 
         this.instructors.items[this.findIndexById(this.instructor.id)] = this.instructor;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Instructor Updated', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Eğitmen bilgileri güncellendi.', life: 4000 });
+
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.instructors.items = [...this.instructors.items];
         this.instructorUpdateRequest = {
@@ -593,19 +612,6 @@ export class InstructorsComponent implements OnInit {
     return index;
   }
 
-  // getSeverity(status: string) {
-  //   switch (status) {
-  //     case 'ACTIVE':
-  //       return 'success';
-  //     case 'INACTIVE':
-  //       return 'warning';
-  //     case 'CANCELLED':
-  //       return 'danger';
-  //     default:
-  //       return '';
-  //   }
-  // }
-
   filterTable(event: Event, dt: any, index: number): void {
     if (event.target instanceof HTMLInputElement) {
       this.filterValues[index] = event.target.value;
@@ -628,17 +634,17 @@ export class InstructorsComponent implements OnInit {
           !this.strongPassword(this.instructorCreateRequest.password) ||
           !this.instructorCreateRequest.companyName?.trim()
         ) {
-          if (this.instructorCreateRequest.nationalIdentity) {
-            if (!(this.instructorCreateRequest.nationalIdentity.length == 0 || this.instructorCreateRequest.nationalIdentity.length == 11)) {
-              return false;
-            }
-            else {
-              return true;
-            }
-          }
           return false;
         }
-        return true;
+        else {
+          if (!(this.instructorCreateRequest.nationalIdentity?.length == 0 || this.instructorCreateRequest.nationalIdentity?.length == 11)) {
+            return false;
+          }
+          else {
+            this.instructorCreateRequest.nationalIdentity = this.instructorCreateRequest.nationalIdentity.length == 0 ? undefined : this.instructorCreateRequest.nationalIdentity;
+            return true;
+          }
+        }
       case "update":
         if (
           !this.instructorUpdateRequest.id?.trim() ||
@@ -647,17 +653,17 @@ export class InstructorsComponent implements OnInit {
           !this.beValidEmail(this.instructorUpdateRequest.email) ||
           !this.instructorUpdateRequest.companyName?.trim()
         ) {
-          if (this.instructorUpdateRequest.nationalIdentity) {
-            if (!(this.instructorUpdateRequest.nationalIdentity.length == 0 || this.instructorUpdateRequest.nationalIdentity.length == 11)) {
-              return false;
-            }
-            else {
-              return true;
-            }
-          }
           return false;
         }
-        return true;
+        else {
+          if (!(this.instructorUpdateRequest.nationalIdentity?.length == 0 || this.instructorUpdateRequest.nationalIdentity?.length == 11)) {
+            return false;
+          }
+          else {
+            this.instructorUpdateRequest.nationalIdentity = this.instructorUpdateRequest.nationalIdentity.length == 0 ? undefined : this.instructorUpdateRequest.nationalIdentity;
+            return true;
+          }
+        }
       default:
         return false;
     }
@@ -682,6 +688,16 @@ export class InstructorsComponent implements OnInit {
     const emailDomain: string = email.split('@').pop() || '';
 
     return validDomains.includes(emailDomain);
+  }
+  onInputNationalId(event: Event, requestName: string) {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+    if (requestName == "create") {
+      this.instructorCreateRequest.nationalIdentity = value;
+    }
+    if (requestName == "update") {
+      this.instructorUpdateRequest.nationalIdentity = value;
+    }
   }
 
 }

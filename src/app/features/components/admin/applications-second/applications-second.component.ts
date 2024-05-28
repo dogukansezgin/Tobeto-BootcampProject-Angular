@@ -18,16 +18,12 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { Router } from '@angular/router';
 import { ApplicationGetListResponse } from '../../../models/responses/applications/application-get-list-response';
 import { ApplicationService } from '../../../services/concretes/application.service';
-import { FormatService } from '../../../services/concretes/format.service';
 import { ApplicationStateService } from '../../../services/concretes/application-state.service';
 import { ApplicationStateGetListResponse } from '../../../models/responses/application-states/application-state-get-list-response';
 import { ApplicationCreateRequest } from '../../../models/requests/applications/application-create-request';
 import { CalendarModule } from 'primeng/calendar';
-import { InstructorService } from '../../../services/concretes/instructor.service';
-import { InstructorGetBasicInfoResponse } from '../../../models/responses/instructors/instructor-get-basic-info-response';
 import { ApplicationUpdateRequest } from '../../../models/requests/applications/application-update-request';
 import { ApplicationDeleteRequest } from '../../../models/requests/applications/application-delete-request';
 import { ListItemsDto } from '../../../../core/models/pagination/list-items-dto';
@@ -39,12 +35,12 @@ import { ApplicantService } from '../../../services/concretes/applicant.service'
 import { BootcampService } from '../../../services/concretes/bootcamp.service';
 import { ApplicantGetBasicInfoResponse } from '../../../models/responses/applicant/applicant-get-basic-info-response';
 import { BootcampGetBasicInfoResponse } from '../../../models/responses/bootcamps/bootcamp-get-basic-info-response';
-
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-applications',
   standalone: true,
-  imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
+  imports: [TooltipModule, TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
   providers: [ApplicationService, MessageService, ConfirmationService],
   templateUrl: './applications-second.component.html',
   styleUrl: './applications-second.component.scss'
@@ -149,20 +145,18 @@ export class ApplicationsSecondComponent implements OnInit {
     private applicationService: ApplicationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private router: Router,
-    private formatService: FormatService,
     private applicationStateService: ApplicationStateService,
     private applicantService: ApplicantService,
     private bootcampService: BootcampService
   ) { }
 
   ngOnInit() {
-    this.applicationService.getList({ pageIndex: 0, pageSize: this.PAGE_SIZE }).subscribe(response => {
+    this.applicationService.getList({ pageIndex: 0, pageSize: 9999 }).subscribe(response => {
       this.applications = response;
       console.log(this.applications)
     });
 
-    this.applicationService.getListDeleted({ pageIndex: 0, pageSize: this.PAGE_SIZE }).subscribe(response => {
+    this.applicationService.getListDeleted({ pageIndex: 0, pageSize: 9999 }).subscribe(response => {
       this.deletedApplications = response;
       console.log(this.deletedApplications)
     });
@@ -185,7 +179,6 @@ export class ApplicationsSecondComponent implements OnInit {
   }
 
   openNew() {
-
     this.applicationCreateRequest = {
       applicantId: '',
       bootcampId: '',
@@ -249,14 +242,15 @@ export class ApplicationsSecondComponent implements OnInit {
 
   deleteSelectedApplications(isPermament: boolean) {
     this.confirmationService.confirm({
-      message: 'Seçilen kursları silmek istediğine emin misin?',
+      message: 'Seçilen başvuru kayıtlarını silmek istediğine emin misin?',
       header: 'Toplu Sil',
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log(this.selectedApplications)
 
         if (this.selectedApplications || this.selectedDeletedApplications) {
           this.applicationDeleteRangeRequest = {
@@ -283,9 +277,7 @@ export class ApplicationsSecondComponent implements OnInit {
             }
           }
 
-
           this.applicationService.deleteRangeApplication(this.applicationDeleteRangeRequest).subscribe(response => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Applications Deleted', life: 3000 });
 
             if (!isPermament) {
               this.selectedApplications?.forEach(b => {
@@ -309,12 +301,16 @@ export class ApplicationsSecondComponent implements OnInit {
               });
 
               this.applications.items = this.applications.items.filter((val) => !this.selectedApplications?.includes(val));
+              this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Seçili başvuru kayıtları silindi.', life: 4000 });
+
             }
             else {
               this.deletedApplications.items = this.deletedApplications.items.filter((val) => !this.selectedDeletedApplications?.includes(val));
+              this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Seçili başvuru kayıtları kalıcı olarak silindi.', life: 5000 });
             }
 
-
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedApplications = [];
             this.selectedDeletedApplications = [];
@@ -346,11 +342,13 @@ export class ApplicationsSecondComponent implements OnInit {
 
   restoreSelectedApplications() {
     this.confirmationService.confirm({
-      message: 'Seçilen silinmiş kursları kurtarmak istediğine emin misin?',
-      header: 'Toplu Kurtar',
+      message: 'Seçilen silinmiş başvuru kayıtlarını geri yüklemek istediğine emin misin?',
+      header: 'Toplu Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
 
@@ -387,8 +385,10 @@ export class ApplicationsSecondComponent implements OnInit {
             });
 
             this.deletedApplications.items = this.deletedApplications.items.filter((val) => !this.selectedDeletedApplications?.includes(val));
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Applications Restored', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Seçili başvuru kayıtları geri yüklendi.', life: 4000 });
 
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedApplications = [];
             this.selectedDeletedApplications = [];
@@ -417,13 +417,14 @@ export class ApplicationsSecondComponent implements OnInit {
   }
 
   deleteApplication(application: ApplicationGetListResponse, isPermament: boolean) {
-    console.log(application)
     this.confirmationService.confirm({
-      message: 'Adlı kursu silmek istediğine emin misin?',
+      message: 'Adlı başvuru kaydını silmek istediğine emin misin?',
       header: 'Sil',
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.applicationDeleteRequest = {
@@ -432,7 +433,6 @@ export class ApplicationsSecondComponent implements OnInit {
         }
 
         this.applicationService.deleteApplication(this.applicationDeleteRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Application Deleted', life: 3000 });
 
           if (!this.applicationDeleteRequest.isPermament) {
             this.deletedApplication = {
@@ -454,12 +454,15 @@ export class ApplicationsSecondComponent implements OnInit {
 
             this.applications.items = this.applications.items.filter((val) => val.id !== application.id);
             this.deletedApplications.items.push(this.deletedApplication);
-
+            this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Bir başvuru kaydı silindi.', life: 4000 });
           }
           else {
             this.deletedApplications.items = this.deletedApplications.items.filter((val) => val.id !== application.id);
+            this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Bir başvuru kaydı kalıcı olarak silindi.', life: 5000 });
           }
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.deletedApplication = {
             id: '',
@@ -488,13 +491,14 @@ export class ApplicationsSecondComponent implements OnInit {
   }
 
   restoreApplication(application: ApplicationGetListDeletedResponse) {
-    console.log(application)
     this.confirmationService.confirm({
-      message: 'Adlı silinen kursu kurtarmak istediğine emin misin?',
-      header: 'Kurtar',
+      message: 'Adlı silinen başvuru kaydını geri yüklemek istediğine emin misin?',
+      header: 'Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.applicationRestoreRequest = {
@@ -502,7 +506,6 @@ export class ApplicationsSecondComponent implements OnInit {
         }
 
         this.applicationService.restoreApplication(this.applicationRestoreRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Application Restored', life: 3000 });
 
           this.application = {
             id: response.id,
@@ -522,7 +525,10 @@ export class ApplicationsSecondComponent implements OnInit {
 
           this.deletedApplications.items = this.deletedApplications.items.filter((val) => val.id !== application.id);
           this.applications.items.push(this.application);
+          this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Bir başvuru kaydı geri yüklendi.', life: 4000 });
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.application = {
             id: '',
@@ -582,11 +588,13 @@ export class ApplicationsSecondComponent implements OnInit {
         };
 
         this.applications.items.push(this.application);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Application Created', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Başvuru kaydı oluşturuldu.', life: 4000 });
 
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.applications.items = [...this.applications.items];
         this.applicationCreateDialog = false;
@@ -667,13 +675,15 @@ export class ApplicationsSecondComponent implements OnInit {
         };
 
         this.applications.items[this.findIndexById(this.application.id)] = this.application;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Application Updated', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Başvuru kaydı güncellendi.', life: 4000 });
+
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.applications.items = [...this.applications.items];
-        this.applicationUpdateDialog = false;
         this.applicationUpdateRequest = {
           id: '',
           applicantId: '',
@@ -738,7 +748,7 @@ export class ApplicationsSecondComponent implements OnInit {
       case 'RED EDILDI':
         return 'danger';
       default:
-        return '';
+        return 'primary';
     }
   }
 

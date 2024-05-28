@@ -28,11 +28,13 @@ import { EmployeeRestoreRequest } from '../../../models/requests/employees/emplo
 import { EmployeeUpdateRequest } from '../../../models/requests/employees/employee-update-request';
 import { EmployeeGetListDeletedResponse } from '../../../models/responses/employees/employee-get-list-deleted-response';
 import { CalendarModule } from 'primeng/calendar';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-employees',
   standalone: true,
-  imports: [TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
+  imports: [TooltipModule, KeyFilterModule, TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
   providers: [EmployeeService, MessageService, ConfirmationService],
   templateUrl: './employees.component.html',
   styleUrl: './employees.component.scss'
@@ -70,7 +72,7 @@ export class EmployeesComponent implements OnInit {
     password: '',
     firstName: '',
     lastName: '',
-    dateOfBirth: new Date("0001-01-01T01:00:00"),
+    dateOfBirth: undefined,
     nationalIdentity: '',
     position: '',
   };
@@ -80,7 +82,7 @@ export class EmployeesComponent implements OnInit {
     email: '',
     firstName: '',
     lastName: '',
-    dateOfBirth: new Date("0001-01-01T01:00:00"),
+    dateOfBirth: undefined,
     nationalIdentity: '',
     position: '',
   };
@@ -141,13 +143,12 @@ export class EmployeesComponent implements OnInit {
   }
 
   openNew() {
-
     this.employeeCreateRequest = {
       email: '',
       password: '',
       firstName: '',
       lastName: '',
-      dateOfBirth: new Date(this.maxDate.getFullYear() - 30, this.maxDate.getMonth(), this.maxDate.getDate()),
+      dateOfBirth: undefined,
       nationalIdentity: '',
       position: '',
     };
@@ -164,11 +165,12 @@ export class EmployeesComponent implements OnInit {
       email: this.employee.email,
       firstName: this.employee.firstName,
       lastName: this.employee.lastName,
+      nationalIdentity: '',
       position: this.employee.position
     };
 
     if (employee.nationalIdentity) {
-      if (employee.dateOfBirth != null) {
+      if (employee.nationalIdentity != null) {
         this.employeeUpdateRequest.nationalIdentity = employee.nationalIdentity;
       }
     }
@@ -196,9 +198,10 @@ export class EmployeesComponent implements OnInit {
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log(this.selectedEmployees)
 
         if (this.selectedEmployees || this.selectedDeletedEmployees) {
           this.employeeDeleteRangeRequest = {
@@ -225,9 +228,7 @@ export class EmployeesComponent implements OnInit {
             }
           }
 
-
           this.employeeService.deleteRangeEmployee(this.employeeDeleteRangeRequest).subscribe(response => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Employees Deleted', life: 3000 });
 
             if (!isPermament) {
               this.selectedEmployees?.forEach(i => {
@@ -248,12 +249,15 @@ export class EmployeesComponent implements OnInit {
               });
 
               this.employees.items = this.employees.items.filter((val) => !this.selectedEmployees?.includes(val));
+              this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Seçili çalışanlar silindi.', life: 4000 });
             }
             else {
               this.deletedEmployees.items = this.deletedEmployees.items.filter((val) => !this.selectedDeletedEmployees?.includes(val));
+              this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Seçili çalışanlar kalıcı olarak silindi.', life: 5000 });
             }
 
-
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedEmployees = [];
             this.selectedDeletedEmployees = [];
@@ -282,11 +286,13 @@ export class EmployeesComponent implements OnInit {
 
   restoreSelectedEmployees() {
     this.confirmationService.confirm({
-      message: 'Seçilen silinmiş çalışanları kurtarmak istediğine emin misin?',
-      header: 'Toplu Kurtar',
+      message: 'Seçilen silinmiş çalışanları geri yüklemek istediğine emin misin?',
+      header: 'Toplu Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
 
@@ -320,8 +326,10 @@ export class EmployeesComponent implements OnInit {
             });
 
             this.deletedEmployees.items = this.deletedEmployees.items.filter((val) => !this.selectedDeletedEmployees?.includes(val));
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Employees Restored', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Seçili çalışanlar geri yüklendi.', life: 4000 });
 
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
           }).add(() => {
             this.selectedEmployees = [];
             this.selectedDeletedEmployees = [];
@@ -347,13 +355,14 @@ export class EmployeesComponent implements OnInit {
   }
 
   deleteEmployee(employee: EmployeeGetListResponse, isPermament: boolean) {
-    console.log(employee)
     this.confirmationService.confirm({
       message: '"' + employee.userName + '" Adlı çalışanı silmek istediğine emin misin?',
       header: 'Sil',
       rejectLabel: 'İptal',
       acceptLabel: 'Sil',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "delete-accept",
+      rejectButtonStyleClass: "delete-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.employeeDeleteRequest = {
@@ -362,7 +371,6 @@ export class EmployeesComponent implements OnInit {
         }
 
         this.employeeService.deleteEmployee(this.employeeDeleteRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Employee Deleted', life: 3000 });
 
           if (!this.employeeDeleteRequest.isPermament) {
             this.deletedEmployee = {
@@ -381,12 +389,15 @@ export class EmployeesComponent implements OnInit {
 
             this.employees.items = this.employees.items.filter((val) => val.id !== employee.id);
             this.deletedEmployees.items.push(this.deletedEmployee);
-
+            this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Bir çalışan silindi.', life: 4000 });
           }
           else {
             this.deletedEmployees.items = this.deletedEmployees.items.filter((val) => val.id !== employee.id);
+            this.messageService.add({ severity: 'error', summary: 'Uyarı', detail: 'Bir çalışan kalıcı olarak silindi.', life: 5000 });
           }
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.deletedEmployee = {
             id: '',
@@ -412,13 +423,14 @@ export class EmployeesComponent implements OnInit {
   }
 
   restoreEmployee(employee: EmployeeGetListDeletedResponse) {
-    console.log(employee)
     this.confirmationService.confirm({
-      message: '"' + employee.userName + '" Adlı silinen çalışanı kurtarmak istediğine emin misin?',
-      header: 'Kurtar',
+      message: '"' + employee.userName + '" Adlı silinen çalışanı geri yüklemek istediğine emin misin?',
+      header: 'Geri Yükle',
       rejectLabel: 'İptal',
-      acceptLabel: 'Kurtar',
+      acceptLabel: 'Geri Yükle',
       defaultFocus: 'reject',
+      acceptButtonStyleClass: "restore-accept",
+      rejectButtonStyleClass: "restore-reject",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.employeeRestoreRequest = {
@@ -426,7 +438,6 @@ export class EmployeesComponent implements OnInit {
         }
 
         this.employeeService.restoreEmployee(this.employeeRestoreRequest).subscribe(response => {
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Employee Restored', life: 3000 });
 
           this.employee = {
             id: response.id,
@@ -443,7 +454,10 @@ export class EmployeesComponent implements OnInit {
 
           this.deletedEmployees.items = this.deletedEmployees.items.filter((val) => val.id !== employee.id);
           this.employees.items.push(this.employee);
+          this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Bir çalışan geri yüklendi.', life: 4000 });
 
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
         }).add(() => {
           this.employee = {
             id: '',
@@ -466,7 +480,6 @@ export class EmployeesComponent implements OnInit {
   }
 
   createEmployee() {
-    console.log(this.employeeCreateRequest)
     this.submitted = true;
     this.submitButton = true;
 
@@ -489,20 +502,21 @@ export class EmployeesComponent implements OnInit {
         };
 
         this.employees.items.push(this.employee);
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Employee Created', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Çalışan oluşturuldu.', life: 4000 });
 
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.employees.items = [...this.employees.items];
-        this.employeeCreateDialog = false;
         this.employeeCreateRequest = {
           email: '',
           password: '',
           firstName: '',
           lastName: '',
-          dateOfBirth: new Date("0001-01-01T01:00:00"),
+          dateOfBirth: undefined,
           nationalIdentity: '',
           position: '',
         };
@@ -549,13 +563,15 @@ export class EmployeesComponent implements OnInit {
         };
 
         this.employees.items[this.findIndexById(this.employee.id)] = this.employee;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Employee Updated', life: 3000 });
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Çalışan bilgileri güncellendi.', life: 4000 });
+
       }, error => {
+        this.submitted = false;
         this.submitButton = false;
-        console.log("bir hata oluştu.")
+        console.log("- Bir hata meydana geldi.: ", error)
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
       }).add(() => {
         this.employees.items = [...this.employees.items];
-        this.employeeUpdateDialog = false;
         this.employeeUpdateRequest = {
           id: '',
           email: '',
@@ -597,19 +613,6 @@ export class EmployeesComponent implements OnInit {
     return index;
   }
 
-  // getSeverity(status: string) {
-  //   switch (status) {
-  //     case 'ACTIVE':
-  //       return 'success';
-  //     case 'INACTIVE':
-  //       return 'warning';
-  //     case 'CANCELLED':
-  //       return 'danger';
-  //     default:
-  //       return '';
-  //   }
-  // }
-
   filterTable(event: Event, dt: any, index: number): void {
     if (event.target instanceof HTMLInputElement) {
       this.filterValues[index] = event.target.value;
@@ -632,17 +635,17 @@ export class EmployeesComponent implements OnInit {
           !this.strongPassword(this.employeeCreateRequest.password) ||
           !this.employeeCreateRequest.position?.trim()
         ) {
-          if (this.employeeCreateRequest.nationalIdentity) {
-            if (!(this.employeeCreateRequest.nationalIdentity.length == 0 || this.employeeCreateRequest.nationalIdentity.length == 11)) {
-              return false;
-            }
-            else {
-              return true;
-            }
-          }
           return false;
         }
-        return true;
+        else {
+          if (!(this.employeeCreateRequest.nationalIdentity?.length == 0 || this.employeeCreateRequest.nationalIdentity?.length == 11)) {
+            return false;
+          }
+          else {
+            this.employeeCreateRequest.nationalIdentity = this.employeeCreateRequest.nationalIdentity.length == 0 ? undefined : this.employeeCreateRequest.nationalIdentity;
+            return true;
+          }
+        }
       case "update":
         if (
           !this.employeeUpdateRequest.id?.trim() ||
@@ -651,17 +654,17 @@ export class EmployeesComponent implements OnInit {
           !this.beValidEmail(this.employeeUpdateRequest.email) ||
           !this.employeeUpdateRequest.position?.trim()
         ) {
-          if (this.employeeUpdateRequest.nationalIdentity) {
-            if (!(this.employeeUpdateRequest.nationalIdentity.length == 0 || this.employeeUpdateRequest.nationalIdentity.length == 11)) {
-              return false;
-            }
-            else {
-              return true;
-            }
-          }
           return false;
         }
-        return true;
+        else {
+          if (!(this.employeeUpdateRequest.nationalIdentity?.length == 0 || this.employeeUpdateRequest.nationalIdentity?.length == 11)) {
+            return false;
+          }
+          else {
+            this.employeeUpdateRequest.nationalIdentity = this.employeeUpdateRequest.nationalIdentity.length == 0 ? undefined : this.employeeUpdateRequest.nationalIdentity;
+            return true;
+          }
+        }
       default:
         return false;
     }
@@ -686,6 +689,16 @@ export class EmployeesComponent implements OnInit {
     const emailDomain: string = email.split('@').pop() || '';
 
     return validDomains.includes(emailDomain);
+  }
+  onInputNationalId(event: Event, requestName: string) {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+    if (requestName == "create") {
+      this.employeeCreateRequest.nationalIdentity = value;
+    }
+    if (requestName == "update") {
+      this.employeeUpdateRequest.nationalIdentity = value;
+    }
   }
 
 }

@@ -5,18 +5,18 @@
 
         <p-table #dt1 [value]="employees.items" [rows]="20" [paginator]="true"
             [globalFilterFields]="['userName', 'email', 'position', 'createdDate']"
-            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedEmployees" [rowHover]="true" dataKey="id"
+            [tableStyle]="{ 'min-width': '30rem' }" [(selection)]="selectedEmployees" [rowHover]="true" dataKey="id"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="600px">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     <div class="p-toolbar table-header">    
-                        <h5 class=" m-0">Employees</h5>
+                        <h5 class=" m-0">Çalışanlar</h5>
                     </div>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
                         <input pInputText type="text" [(ngModel)]="filterValues[0]" (input)="filterTable($event, dt1, 0)" placeholder="Filtrele..." />
-                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt1, 0)" *ngIf="filterValues[0]" />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt1, 0)" *ngIf="filterValues[0]" pTooltip="Temizle" tooltipPosition="top" showDelay="0650" />
                     </span>
                 </div>
                 <p-toolbar styleClass="mb-2 mt-3 gap-2">
@@ -29,22 +29,22 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: 4rem">
+                    <th style="width: 5%">
                         <p-tableHeaderCheckbox />
                     </th>
-                    <th pSortableColumn="userName" style="min-width:12rem">
+                    <th pSortableColumn="userName" style="width: 25%;">
                         Ad Soyad <p-sortIcon field="userName" />
                     </th>
-                    <th pSortableColumn="email" style="min-width:12rem">
+                    <th pSortableColumn="email" style="min-width: 10%; max-width: 15%;">
                         Email <p-sortIcon field="email" />
                     </th>
-                    <th pSortableColumn="position" style="min-width:8rem">
+                    <th pSortableColumn="position" style="width: 15%;">
                         Pozisyon <p-sortIcon field="position" />
                     </th>
-                    <th pSortableColumn="createdDate" style="min-width:12rem">
+                    <th pSortableColumn="createdDate" style="width: 20%;">
                         Oluşturulma Tarihi <p-sortIcon field="createdDate" />
                     </th>
-                    <th style="min-width:12rem;"></th>
+                    <th style="width: 10%;"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-employee>
@@ -66,128 +66,143 @@
                     </td>
                     <td>
                         <p-button pRipple icon="pi pi-pencil" class="m-1" [rounded]="true" [outlined]="true"
-                            severity="success" (click)="openEdit(employee)" />
+                            severity="success" (click)="openEdit(employee)" pTooltip="Düzenle" tooltipPosition="top" showDelay="1150" />
                         <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                            (click)="deleteEmployee(employee, false)" />
+                            (click)="deleteEmployee(employee, false)" pTooltip="Sil" tooltipPosition="top" showDelay="1150" />
                     </td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="summary">
                 <div class="flex align-items-center justify-content-between">
-                    Toplam {{ employees.items ? employees.items.length : 0 }} adet Employee var.
+                    Toplam {{ employees.items ? employees.items.length : 0 }} adet Çalışan var.
                 </div>
             </ng-template>
         </p-table>
 
         <!-- Create Dialog -->
-        <p-dialog [(visible)]="employeeCreateDialog" [style]="{ width: '450px', height: '800px' }" header="Create Employee" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="employeeCreateDialog" [style]="{ width: '600px', height: '850px' }" header="Çalışan Oluştur" [modal]="true" styleClass="p-fluid" closeOnEscape="false">
             <ng-template pTemplate="content">
                 <div class="field">
+                    <small class="p-error" *ngIf="!employeeCreateRequest.firstName">*</small>
                     <label for="firstName">Ad</label>
-                    <small class="p-error" *ngIf="!employeeCreateRequest.firstName">*  Zorunlu alan.</small>
-                    <input type="text" pInputText id="firstName" [(ngModel)]="employeeCreateRequest.firstName" required autofocus />
                     <small class="p-error" *ngIf="submitted && !employeeCreateRequest.firstName">
                         Ad alanı boş olamaz.
                     </small>
+                    <input type="text" pInputText id="firstName" [(ngModel)]="employeeCreateRequest.firstName" required autofocus />
                 </div>
                 <div class="field">
+                    <small class="p-error" *ngIf="!employeeCreateRequest.lastName">*</small>
                     <label for="lastName">Soyad</label>
-                    <small class="p-error" *ngIf="!employeeCreateRequest.lastName">*  Zorunlu alan.</small>
-                    <input type="text" pInputText id="lastName" [(ngModel)]="employeeCreateRequest.lastName" required autofocus />
                     <small class="p-error" *ngIf="submitted && !employeeCreateRequest.lastName">
                         Soyad alanı boş olamaz.
                     </small>
+                    <input type="text" pInputText id="lastName" [(ngModel)]="employeeCreateRequest.lastName" required autofocus />
                 </div>
                 <div class="field">
+                    <small class="p-error" *ngIf="!employeeCreateRequest.email">*</small>
                     <label for="email">Email</label>
-                    <small class="p-error" *ngIf="!employeeCreateRequest.email">*  Zorunlu alan.</small>
-                    <input type="email" pInputText id="email" [(ngModel)]="employeeCreateRequest.email" required />
                     <small class="p-error" *ngIf="submitted && !employeeCreateRequest.email">
                         Email alanı boş olamaz.
                     </small>
+                    <input type="email" pInputText id="email" [(ngModel)]="employeeCreateRequest.email" required />
+                    <small class="p-error" *ngIf="submitted && (employeeCreateRequest.email && !beValidEmail(employeeCreateRequest.email))">
+                        Geçerli bir Email giriniz.
+                    </small>
                 </div>
                 <div class="field">
+                    <small class="p-error" *ngIf="!employeeCreateRequest.password">*</small>
                     <label for="password">Şifre</label>
-                    <small class="p-error" *ngIf="!employeeCreateRequest.password">*  Zorunlu alan.</small>
-                    <input type="password" pInputText id="password" [(ngModel)]="employeeCreateRequest.password" required />
                     <small class="p-error" *ngIf="submitted && !employeeCreateRequest.password">
                         Şifre alanı boş olamaz.
+                    </small>
+                    <input type="password" pInputText id="password" [(ngModel)]="employeeCreateRequest.password" required />
+                    <small class="p-error" *ngIf="submitted && (employeeCreateRequest.password && !strongPassword(employeeCreateRequest.password))">
+                        Şifre en az; 1 Büyük karakter, 1 Küçük karakter, 2 Rakam, 1 Özel harf içermelidir.
                     </small>
                 </div>
                 <div class="field">
                     <label for="dateOfBirth">Doğum Tarihi</label>
-                    <p-calendar id="dateOfBirth" [(ngModel)]="employeeCreateRequest.dateOfBirth" dateFormat="dd-mm-yy" [minDate]="minDate" [maxDate]="maxDate" showIcon="true"></p-calendar>
+                    <p-calendar id="dateOfBirth" [(ngModel)]="employeeCreateRequest.dateOfBirth" dateFormat="dd-mm-yy" [minDate]="minDate" [maxDate]="maxDate" showIcon="true" [showClear]="true"></p-calendar>
                 </div>
                 <div class="field">
                     <label for="nationalIdentity">Kimlik Numarası</label>
-                    <input type="text" pInputText id="nationalIdentity" [(ngModel)]="employeeCreateRequest.nationalIdentity" />
+                    <input type="text" [maxLength]="11" pInputText pKeyFilter="int" id="nationalIdentity" (input)="onInputNationalId($event, 'create')" />
+                    <small class="p-error" *ngIf="submitted && !(this.employeeCreateRequest.nationalIdentity?.length == 0 || this.employeeCreateRequest.nationalIdentity?.length == 11)">
+                        Geçerli bir Kimlik Numarası girin.
+                    </small>
                 </div>
                 <div class="field">
+                    <small class="p-error" *ngIf="!employeeCreateRequest.position">*</small>
                     <label for="position">Pozisyon</label>
-                    <small class="p-error" *ngIf="!employeeUpdateRequest.position">*  Zorunlu alan.</small>
-                    <input type="text" pInputText id="position" [(ngModel)]="employeeCreateRequest.position" required />
                     <small class="p-error" *ngIf="submitted && !employeeCreateRequest.position">
                         Pozisyon alanı boş olamaz.
                     </small>
+                    <input type="text" pInputText id="position" [(ngModel)]="employeeCreateRequest.position" required />
                 </div>
 
             </ng-template>
         
             <ng-template pTemplate="footer">
-                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
-                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createEmployee()" [disabled]="submitButton" />
+                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" pTooltip="Kapat" tooltipPosition="top" showDelay="1150" />
+                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="createEmployee()" [disabled]="submitButton" pTooltip="Oluştur" tooltipPosition="top" showDelay="1150" />
             </ng-template>
         </p-dialog>
         
         <!-- Update Dialog -->
-        <p-dialog [(visible)]="employeeUpdateDialog" [style]="{ width: '450px', height: '800px' }" header="Employee Details" [modal]="true" styleClass="p-fluid">
+        <p-dialog [(visible)]="employeeUpdateDialog" [style]="{ width: '600px', height: '850px' }" header="Çalışan Bilgileri" [modal]="true" styleClass="p-fluid" closeOnEscape="false">
             <ng-template pTemplate="content">
                 <div class="field">
-                    <label for="firstName">Ad</label>                
-                    <small class="p-error" *ngIf="!employeeUpdateRequest.firstName">*  Zorunlu alan.</small>
-                    <input type="text" pInputText id="firstName" [(ngModel)]="employeeUpdateRequest.firstName" required autofocus />
+                    <small class="p-error" *ngIf="!employeeUpdateRequest.firstName">*</small>
+                    <label for="firstName">Ad</label>
                     <small class="p-error" *ngIf="submitted && !employeeUpdateRequest.firstName">
                         Ad alanı boş olamaz.
                     </small>
+                    <input type="text" pInputText id="firstName" [(ngModel)]="employeeUpdateRequest.firstName" required autofocus />
                 </div>
                 <div class="field">
+                    <small class="p-error" *ngIf="!employeeUpdateRequest.lastName">*</small>
                     <label for="lastName">Soyad</label>
-                    <small class="p-error" *ngIf="!employeeUpdateRequest.lastName">*  Zorunlu alan.</small>
-                    <input type="text" pInputText id="lastName" [(ngModel)]="employeeUpdateRequest.lastName" required autofocus />
                     <small class="p-error" *ngIf="submitted && !employeeUpdateRequest.lastName">
                         Soyad alanı boş olamaz.
                     </small>
+                    <input type="text" pInputText id="lastName" [(ngModel)]="employeeUpdateRequest.lastName" required autofocus />
                 </div>
                 <div class="field">
+                    <small class="p-error" *ngIf="!employeeUpdateRequest.email">*</small>
                     <label for="email">Email</label>
-                    <small class="p-error" *ngIf="!employeeUpdateRequest.email">*  Zorunlu alan.</small>
-                    <input type="email" pInputText id="email" [(ngModel)]="employeeUpdateRequest.email" required />
                     <small class="p-error" *ngIf="submitted && !employeeUpdateRequest.email">
                         Email alanı boş olamaz.
+                    </small>
+                    <input type="email" pInputText id="email" [(ngModel)]="employeeUpdateRequest.email" required />
+                    <small class="p-error" *ngIf="submitted && (employeeUpdateRequest.email && !beValidEmail(employeeUpdateRequest.email))">
+                        Geçerli bir Email giriniz.
                     </small>
                 </div>
                 <div class="field">
                     <label for="dateOfBirth">Doğum Tarihi</label>
-                    <p-calendar id="dateOfBirth" [(ngModel)]="employeeUpdateRequest.dateOfBirth" dateFormat="dd-mm-yy" [minDate]="minDate" [maxDate]="maxDate" showIcon="true"></p-calendar>
+                    <p-calendar id="dateOfBirth" [(ngModel)]="employeeUpdateRequest.dateOfBirth" dateFormat="dd-mm-yy" [minDate]="minDate" [maxDate]="maxDate" showIcon="true" [showClear]="true"></p-calendar>
                 </div>
                 <div class="field">
                     <label for="nationalIdentity">Kimlik Numarası</label>
-                    <input type="text" pInputText id="nationalIdentity" [(ngModel)]="employeeUpdateRequest.nationalIdentity" />
+                    <input type="text" [maxLength]="11" pInputText pKeyFilter="int" id="nationalIdentity" (input)="onInputNationalId($event, 'update')" [value]="this.employeeUpdateRequest.nationalIdentity"  />
+                    <small class="p-error" *ngIf="submitted && !(this.employeeUpdateRequest.nationalIdentity?.length == 0 || this.employeeUpdateRequest.nationalIdentity?.length == 11)">
+                        Geçerli bir Kimlik Numarası girin.
+                    </small>
                 </div>
                 <div class="field">
+                    <small class="p-error" *ngIf="!employeeUpdateRequest.position">*</small>
                     <label for="position">Pozisyon</label>
-                    <small class="p-error" *ngIf="!employeeUpdateRequest.position">*  Zorunlu alan.</small>
-                    <input type="text" pInputText id="position" [(ngModel)]="employeeUpdateRequest.position" required />
-                    <small class="p-error" *ngIf="submitted && !employeeCreateRequest.position">
+                    <small class="p-error" *ngIf="submitted && !employeeUpdateRequest.position">
                         Pozisyon alanı boş olamaz.
                     </small>
+                    <input type="text" pInputText id="position" [(ngModel)]="employeeUpdateRequest.position" required />
                 </div>
         
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" />
-                <p-button pRipple label="Oluştur" icon="pi pi-check" [text]="true" (click)="updateEmployee()" [disabled]="submitButton" />
+                <p-button pRipple label="İptal" icon="pi pi-times" [text]="true" (click)="hideDialog()" pTooltip="Kapat" tooltipPosition="top" showDelay="1150" />
+                <p-button pRipple label="Güncelle" icon="pi pi-check" [text]="true" (click)="updateEmployee()" [disabled]="submitButton" pTooltip="Güncelle" tooltipPosition="top" showDelay="1150" />
             </ng-template>
         </p-dialog>
 
@@ -203,27 +218,26 @@
 <!-- Deleted Employees Table -->
 <div class="content-container">
     <div class="card">
-        <p-toast />
 
         <p-table #dt2 [value]="deletedEmployees.items" [rows]="20" [paginator]="true"
             [globalFilterFields]="['userName', 'email', 'position', 'deletedDate']"
-            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedDeletedEmployees" [rowHover]="true" dataKey="id"
+            [tableStyle]="{ 'min-width': '30rem' }" [(selection)]="selectedDeletedEmployees" [rowHover]="true" dataKey="id"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [showCurrentPageReport]="false" [scrollable]="true" scrollHeight="500px">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     <div class="p-toolbar table-header">
-                        <h5 class="m-0">Deleted Employees</h5>
+                        <h5 class="m-0">Silinen Çalışanlar</h5>
                     </div>
                     <span class="p-input-icon-left">
                         <i class="pi pi-search"></i>
                         <input pInputText type="text" [(ngModel)]="filterValues[1]" (input)="filterTable($event, dt2, 1)" placeholder="Filtrele..." />
-                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt2, 1)" *ngIf="filterValues[1]" />
+                        <p-button class="clear-filter-button" [outlined]="true" icon="pi pi-filter-slash" (click)="clearFilter(dt2, 1)" *ngIf="filterValues[1]" pTooltip="Temizle" tooltipPosition="top" showDelay="0650" />
                     </span>
                 </div>
                 <p-toolbar styleClass="mb-2 mt-3 gap-2">
                     <ng-template pTemplate="left">
-                        <p-button pRipple severity="success" label="Kurtar" icon="pi pi-replay" class="mr-2" (click)="restoreSelectedEmployees()"
+                        <p-button pRipple severity="success" label="Geri Yükle" icon="pi pi-replay" class="mr-2" (click)="restoreSelectedEmployees()"
                             [disabled]="!selectedDeletedEmployees || !selectedDeletedEmployees.length" />
                         <p-button pRipple severity="danger" label="Kalıcı Sil" icon="pi pi-trash" (click)="deleteSelectedEmployees(true)"
                             [disabled]="!selectedDeletedEmployees || !selectedDeletedEmployees.length" />
@@ -232,22 +246,22 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: 4rem">
+                    <th style="width: 5%">
                         <p-tableHeaderCheckbox />
                     </th>
-                    <th pSortableColumn="userName" style="min-width:12rem">
+                    <th pSortableColumn="userName" style="width: 25%;">
                         Ad Soyad <p-sortIcon field="userName" />
                     </th>
-                    <th pSortableColumn="email" style="min-width:12rem">
+                    <th pSortableColumn="email" style="min-width: 10%; max-width: 15%;">
                         Email <p-sortIcon field="email" />
                     </th>
-                    <th pSortableColumn="position" style="min-width:8rem">
+                    <th pSortableColumn="position" style="width: 15%;">
                         Pozisyon <p-sortIcon field="position" />
                     </th>
-                    <th pSortableColumn="deletedDate" style="min-width:12rem">
+                    <th pSortableColumn="deletedDate" style="width: 20%;">
                         Silinme Tarihi <p-sortIcon field="deletedDate" />
                     </th>
-                    <th style="min-width:12rem;"></th>
+                    <th style="width: 10%;"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-employee>
@@ -267,17 +281,17 @@
                     <td>
                         {{ employee.deletedDate.toString().substring(0,10) }}
                     </td>
-                    <td>
+                    <td style="text-align: center; vertical-align: middle;">
                         <p-button pRipple icon="pi pi-replay" class="m-1" [rounded]="true" [outlined]="true"
-                            severity="success" (click)="restoreEmployee(employee)" />
+                            severity="success" (click)="restoreEmployee(employee)" pTooltip="Geri Yükle" tooltipPosition="top" showDelay="1150" />
                         <p-button pRipple icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                            (click)="deleteEmployee(employee, true)" />
+                            (click)="deleteEmployee(employee, true)" pTooltip="Kalıcı Sil" tooltipPosition="top" showDelay="1150" />
                     </td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="summary">
                 <div class="flex align-items-center justify-content-between">
-                    Toplam {{ deletedEmployees.items ? deletedEmployees.items.length : 0 }} adet Silinmiş Employee var.
+                    Toplam {{ deletedEmployees.items ? deletedEmployees.items.length : 0 }} adet Silinmiş Çalışan var.
                 </div>
             </ng-template>
         </p-table>
