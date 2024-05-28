@@ -28,6 +28,16 @@ export const environment = {
       restoreBootcampState: '/api/BootcampStates/restore',
       restoreRangeBootcampState: '/api/BootcampStates/restoreRange'
     },
+    blacklists: {
+      getList: '/api/Blacklists/get',
+      getListDeleted: '/api/Blacklists/getDeleted',
+      createBlacklist: '/api/Blacklists/create',
+      updateBlacklist: '/api/Blacklists/update',
+      deleteBlacklist: '/api/Blacklists/delete',
+      deleteRangeBlacklist: '/api/Blacklists/deleteRange',
+      restoreBlacklist: '/api/Blacklists/restore',
+      restoreRangeBlacklist: '/api/Blacklists/restoreRange'
+    },
     auth: {
       register: {
         applicant: '/api/Auth/Register/Applicant'

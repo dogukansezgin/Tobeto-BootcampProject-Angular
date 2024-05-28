@@ -30,6 +30,7 @@ import { BootcampStatesComponent } from './features/components/admin/bootcamp-st
 import { ApplicationStatesComponent } from './features/components/admin/application-states/application-states.component';
 import { ApplicationsSecondComponent } from './features/components/admin/applications-second/applications-second.component';
 import { ApplicantsFirstComponent } from './features/components/admin/applicants-first/applicants-first.component';
+import { BlacklistsComponent } from './features/components/admin/blacklists/blacklists.component';
 
 export const routes: Routes =
     [
@@ -110,6 +111,7 @@ export const routes: Routes =
             children: [
                 {path:'',pathMatch:'full',redirectTo:'Dashboard'},
                 { path: 'Dashboard', component: DashboardComponent },
+                { path: 'Blacklist', component: BlacklistsComponent },
                 { path: 'Bootcamps', component: BootcampsComponent },
                 { path: 'BootcampStates', component: BootcampStatesComponent },
                 { path: 'Applications', component: ApplicationsComponent },
