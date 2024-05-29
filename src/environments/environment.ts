@@ -68,14 +68,15 @@ export const environment = {
       appliedBootcamps: '/api/Applications/appliedBootcamps',
       getList: '/api/Applications/get',
       getListDeleted: '/api/Applications/getDeleted',
+      getListByInstructor:'/api/Applications/getByInstructor',
+      getListByInstructorByState:'/api/Applications/getByInstructorByState',
       createApplication: '/api/Applications/create',
       updateApplication: '/api/Applications/update',
+      updateRangeApplication: '/api/Applications/updateRange',
       deleteApplication: '/api/Applications/delete',
       deleteRangeApplication: '/api/Applications/deleteRange',
       restoreApplication: '/api/Applications/restore',
       restoreRangeApplication: '/api/Applications/restoreRange',
-      getByState:'/api/Applications/getByState'
-
     },
     applicationStates: {
       getByName: '/api/ApplicationStates/getByName/',

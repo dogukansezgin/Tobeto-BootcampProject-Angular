@@ -21,27 +21,33 @@ import { ApplicationRestoreResponse } from "../../models/responses/applications/
 import { ApplicationUpdateResponse } from "../../models/responses/applications/application-update-response";
 import { AppliedBootcampResponse } from "../../models/responses/applications/applied-bootcamp-response";
 import { CheckApplicationResponse } from "../../models/responses/applications/check-application-response";
+import { ApplicationGetListByInstructorByStateResponse } from "../../models/responses/applications/application-get-list-by-instructor-by-state-response";
+import { ApplicationGetListByInstructorResponse } from "../../models/responses/applications/application-get-list-by-instructor-response";
+import { ApplicationUpdateRangeRequest } from "../../models/requests/applications/application-update-range-request";
+import { ApplicationUpdateRangeResponse } from "../../models/responses/applications/application-update-range-response";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ApplicationService extends ApplicationBaseService {
-    
+
     private readonly apiUrl_CheckApplication: string = environment.apiUrl + environment.endpoints.applications.checkApplication
     private readonly apiUrl_AppliedBootcamps: string = environment.apiUrl + environment.endpoints.applications.appliedBootcamps
     private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.applications.getList;
     private readonly apiUrl_GetListDeleted: string = environment.apiUrl + environment.endpoints.applications.getListDeleted;
-    private readonly apiUrl_GetByState: string = environment.apiUrl + environment.endpoints.applications.getByState;
-  
+    private readonly apiUrl_GetListByInstructor: string = environment.apiUrl + environment.endpoints.applications.getListByInstructor;
+    private readonly apiUrl_GetListByInstructorByState: string = environment.apiUrl + environment.endpoints.applications.getListByInstructorByState;
+
     private readonly apiUrl_CreateApplication = environment.apiUrl + environment.endpoints.applications.createApplication;
     private readonly apiUrl_UpdateApplication = environment.apiUrl + environment.endpoints.applications.updateApplication;
+    private readonly apiUrl_UpdateRangeApplication = environment.apiUrl + environment.endpoints.applications.updateRangeApplication;
     private readonly apiUrl_DeleteApplication = environment.apiUrl + environment.endpoints.applications.deleteApplication;
     private readonly apiUrl_DeleteRangeApplication = environment.apiUrl + environment.endpoints.applications.deleteRangeApplication;
     private readonly apiUrl_RestoreApplication = environment.apiUrl + environment.endpoints.applications.restoreApplication;
     private readonly apiUrl_RestoreRangeApplication = environment.apiUrl + environment.endpoints.applications.restoreRangeApplication;
-    
+
     constructor(private httpClient: HttpClient) { super(); }
-    
+
     override getList(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListResponse>> {
         const newRequest: { [key: string]: string | number } = {
             pageIndex: pageRequest.pageIndex,
@@ -86,27 +92,51 @@ export class ApplicationService extends ApplicationBaseService {
 
             )
     }
-    override getByState(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListResponse>> {
-      const newRequest: { [key: string]: string | number } = {
-          pageIndex: pageRequest.pageIndex,
-          pageSize: pageRequest.pageSize
-      }
-      return this.httpClient.get<ListItemsDto<ApplicationGetListResponse>>(this.apiUrl_GetByState, { params: newRequest })
-          .pipe(
-              map((response) => {
-                  const newResponse: ListItemsDto<ApplicationGetListResponse> = {
-                      items: response.items,
-                      index: response.index,
-                      size: response.size,
-                      count: response.count,
-                      pages: response.pages,
-                      hasNext: response.hasNext,
-                      hasPrevious: response.hasPrevious
-                  };
-                  return newResponse;
-              })
+    override getListByInstructor(pageRequest: PageRequest, instructorId: string): Observable<ListItemsDto<ApplicationGetListByInstructorResponse>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize,
+            instructorId: instructorId
+        }
+        return this.httpClient.get<ListItemsDto<ApplicationGetListByInstructorResponse>>(this.apiUrl_GetListByInstructor, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: ListItemsDto<ApplicationGetListByInstructorResponse> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
 
-          );
+            );
+    }
+    override getListByInstructorByState(pageRequest: PageRequest, instructorId: string): Observable<ListItemsDto<ApplicationGetListByInstructorByStateResponse>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize,
+            instructorId: instructorId
+        }
+        return this.httpClient.get<ListItemsDto<ApplicationGetListByInstructorByStateResponse>>(this.apiUrl_GetListByInstructorByState, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: ListItemsDto<ApplicationGetListByInstructorByStateResponse> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
+
+            );
     }
 
     override checkApplication(applicantId: string, bootcampId: string): Observable<CheckApplicationResponse> {
@@ -115,16 +145,16 @@ export class ApplicationService extends ApplicationBaseService {
     }
 
     override appliedBootcamps(applicantIdRequest: string, pageRequest: PageRequest): Observable<ListItemsDto<AppliedBootcampResponse>> {
-        const newRequest: {[key: string]: string | number} = {
+        const newRequest: { [key: string]: string | number } = {
             page: pageRequest.pageIndex,
             pageSize: pageRequest.pageSize,
             applicantId: applicantIdRequest
         }
 
-        return this.httpClient.get<ListItemsDto<AppliedBootcampResponse>>(this.apiUrl_AppliedBootcamps, {params: newRequest} )
+        return this.httpClient.get<ListItemsDto<AppliedBootcampResponse>>(this.apiUrl_AppliedBootcamps, { params: newRequest })
             .pipe(
-                map((response) =>{
-                    const newResponse: ListItemsDto<AppliedBootcampResponse> ={
+                map((response) => {
+                    const newResponse: ListItemsDto<AppliedBootcampResponse> = {
                         items: response.items,
                         index: response.index,
                         size: response.size,
@@ -143,6 +173,9 @@ export class ApplicationService extends ApplicationBaseService {
     }
     override updateApplication(applicationUpdateRequest: ApplicationUpdateRequest): Observable<ApplicationUpdateResponse> {
         return this.httpClient.put<ApplicationUpdateResponse>(this.apiUrl_UpdateApplication, applicationUpdateRequest)
+    }
+    override updateRangeApplication(applicationUpdateRangeRequest: ApplicationUpdateRangeRequest): Observable<ApplicationUpdateRangeResponse> {
+        return this.httpClient.put<ApplicationUpdateRangeResponse>(this.apiUrl_UpdateRangeApplication, applicationUpdateRangeRequest)
     }
     override deleteApplication(applicationDeleteRequest: ApplicationDeleteRequest): Observable<ApplicationDeleteResponse> {
         return this.httpClient.post<ApplicationDeleteResponse>(this.apiUrl_DeleteApplication, applicationDeleteRequest)

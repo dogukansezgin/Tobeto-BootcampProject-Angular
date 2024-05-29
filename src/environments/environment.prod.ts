@@ -28,6 +28,16 @@ export const environment = {
       restoreBootcampState: '',
       restoreRangeBootcampState: ''
     },
+    blacklists: {
+      getList: '',
+      getListDeleted: '',
+      createBlacklist: '',
+      updateBlacklist: '',
+      deleteBlacklist: '',
+      deleteRangeBlacklist: '',
+      restoreBlacklist: '',
+      restoreRangeBlacklist: ''
+    },
     auth: {
       register: {
         applicant: ''
@@ -50,15 +60,19 @@ export const environment = {
       deleteApplicants: '',
       deleteRangeApplicants: '',
       restoreApplicants: '',
-      restoreRangeApplicants: ''
+      restoreRangeApplicants: '',
+      getListByJoin:''
     },
     applications: {
       checkApplication: '',
       appliedBootcamps: '',
       getList: '',
       getListDeleted: '',
+      getListByInstructor:'',
+      getListByInstructorByState:'',
       createApplication: '',
       updateApplication: '',
+      updateRangeApplication: '',
       deleteApplication: '',
       deleteRangeApplication: '',
       restoreApplication: '',

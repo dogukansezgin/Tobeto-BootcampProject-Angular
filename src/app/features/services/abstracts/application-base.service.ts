@@ -18,6 +18,10 @@ import { ApplicationRestoreRangeResponse } from "../../models/responses/applicat
 import { ApplicationRestoreResponse } from "../../models/responses/applications/application-restore-response";
 import { ApplicationUpdateResponse } from "../../models/responses/applications/application-update-response";
 import { CheckApplicationResponse } from "../../models/responses/applications/check-application-response";
+import { ApplicationGetListByInstructorByStateResponse } from "../../models/responses/applications/application-get-list-by-instructor-by-state-response";
+import { ApplicationGetListByInstructorResponse } from "../../models/responses/applications/application-get-list-by-instructor-response";
+import { ApplicationUpdateRangeRequest } from "../../models/requests/applications/application-update-range-request";
+import { ApplicationUpdateRangeResponse } from "../../models/responses/applications/application-update-range-response";
 
 @Injectable()
 export abstract class ApplicationBaseService {
@@ -27,9 +31,11 @@ export abstract class ApplicationBaseService {
 
     abstract getList(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListResponse>>
     abstract getListDeleted(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListDeletedResponse>>
-    abstract getByState(pageRequest: PageRequest): Observable<ListItemsDto<ApplicationGetListResponse>>
+    abstract getListByInstructor(pageRequest: PageRequest, instructorId: string): Observable<ListItemsDto<ApplicationGetListByInstructorResponse>>
+    abstract getListByInstructorByState(pageRequest: PageRequest, instructorId: string): Observable<ListItemsDto<ApplicationGetListByInstructorByStateResponse>>
     abstract createApplication(applicationCreateRequest: ApplicationCreateRequest): Observable<ApplicationCreateResponse>
     abstract updateApplication(applicationUpdateRequest: ApplicationUpdateRequest): Observable<ApplicationUpdateResponse>
+    abstract updateRangeApplication(applicationUpdateRangeRequest: ApplicationUpdateRangeRequest): Observable<ApplicationUpdateRangeResponse>
     abstract deleteApplication(applicationDeleteRequest: ApplicationDeleteRequest): Observable<ApplicationDeleteResponse>
     abstract deleteRangeApplication(applicationDeleteRangeRequest: ApplicationDeleteRangeRequest): Observable<ApplicationDeleteRangeResponse>
     abstract restoreApplication(applicationRestoreRequest: ApplicationRestoreRequest): Observable<ApplicationRestoreResponse>
