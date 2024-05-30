@@ -20,6 +20,7 @@ import { InstructorRestoreRangeResponse } from "../../models/responses/instructo
 import { InstructorRestoreResponse } from "../../models/responses/instructors/instructor-restore-response";
 import { InstructorUpdateResponse } from "../../models/responses/instructors/instructor-update-response";
 import { InstructorGetListDeletedResponse } from "../../models/responses/instructors/instructor-get-list-deleted-response";
+import { InstructorGetBasicInfoByIdResponse } from "../../models/responses/instructors/instructor-get-basic-info-by-id-response";
 
 @Injectable({
     providedIn: 'root'
@@ -29,6 +30,7 @@ export class InstructorService extends InstructorBaseService {
     private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.instructors.getList;
     private readonly apiUrl_GetListDeleted: string = environment.apiUrl + environment.endpoints.instructors.getListDeleted;
     private readonly apiUrl_GetBasicInfoList: string = environment.apiUrl + environment.endpoints.instructors.getBasicInfo;
+    private readonly apiUrl_GetBasicInfoById: string = environment.apiUrl + environment.endpoints.instructors.getBasicInfoById;
     private readonly apiUrl_CreateInstructor = environment.apiUrl + environment.endpoints.instructors.createInstructors;
     private readonly apiUrl_UpdateInstructor = environment.apiUrl + environment.endpoints.instructors.updateInstructors;
     private readonly apiUrl_DeleteInstructor = environment.apiUrl + environment.endpoints.instructors.deleteInstructors;
@@ -105,6 +107,10 @@ export class InstructorService extends InstructorBaseService {
                 })
 
             )
+    }
+
+    override getInstructorBasicInfoById(instructorId: string): Observable<InstructorGetBasicInfoByIdResponse> {
+        return this.httpClient.get<InstructorGetBasicInfoByIdResponse>(this.apiUrl_GetBasicInfoById + instructorId);
     }
 
     override createInstructor(instructorCreateRequest: InstructorCreateRequest): Observable<InstructorCreateResponse> {

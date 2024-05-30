@@ -21,6 +21,7 @@ import { BootcampRestoreRangeRequest } from "../../models/requests/bootcamps/boo
 import { BootcampDeleteRangeResponse } from "../../models/responses/bootcamps/bootcamp-delete-range-response";
 import { BootcampRestoreRangeResponse } from "../../models/responses/bootcamps/bootcamp-restore-range-response";
 import { BootcampGetBasicInfoResponse } from "../../models/responses/bootcamps/bootcamp-get-basic-info-response";
+import { BootcampGetListByInstructorResponse } from "../../models/responses/bootcamps/bootcamp-get-list-by-instructor-response";
 
 @Injectable({
     providedIn: 'root'
@@ -30,6 +31,7 @@ export class BootcampService extends BootcampBaseService {
     private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.bootcamps.getList;
     private readonly apiUrl_GetListDeleted: string = environment.apiUrl + environment.endpoints.bootcamps.getListDeleted;
     private readonly apiUrl_GetBasicInfoList: string = environment.apiUrl + environment.endpoints.bootcamps.getBasicInfo;
+    private readonly apiUrl_GetListByInstructor: string = environment.apiUrl + environment.endpoints.bootcamps.getListByInstructor;
     private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcampById;
     private readonly apiUrl_GetByName: string = environment.apiUrl + environment.endpoints.bootcamps.getBootcampByName;
     private readonly apiUrl_GetUnfinished = environment.apiUrl + environment.endpoints.bootcamps.getUnfinishedBootcamps;
@@ -99,6 +101,29 @@ export class BootcampService extends BootcampBaseService {
             .pipe(
                 map((response) => {
                     const newResponse: ListItemsDto<BootcampGetBasicInfoResponse> = {
+                        items: response.items,
+                        index: response.index,
+                        size: response.size,
+                        count: response.count,
+                        pages: response.pages,
+                        hasNext: response.hasNext,
+                        hasPrevious: response.hasPrevious
+                    };
+                    return newResponse;
+                })
+
+            );
+    }
+    override getListByInstructor(pageRequest: PageRequest, instructorId: string): Observable<ListItemsDto<BootcampGetListByInstructorResponse>> {
+        const newRequest: { [key: string]: string | number } = {
+            pageIndex: pageRequest.pageIndex,
+            pageSize: pageRequest.pageSize,
+            instructorId: instructorId
+        }
+        return this.httpClient.get<ListItemsDto<BootcampGetListByInstructorResponse>>(this.apiUrl_GetListByInstructor, { params: newRequest })
+            .pipe(
+                map((response) => {
+                    const newResponse: ListItemsDto<BootcampGetListByInstructorResponse> = {
                         items: response.items,
                         index: response.index,
                         size: response.size,

@@ -26,7 +26,6 @@ import { BootcampStateService } from '../../../services/concretes/bootcamp-state
 import { BootcampStateGetListResponse } from '../../../models/responses/bootcamp-states/bootcamp-state-get-list-response';
 import { BootcampCreateRequest } from '../../../models/requests/bootcamps/bootcamp-create-request';
 import { CalendarModule } from 'primeng/calendar';
-import { InstructorService } from '../../../services/concretes/instructor.service';
 import { InstructorGetBasicInfoResponse } from '../../../models/responses/instructors/instructor-get-basic-info-response';
 import { BootcampUpdateRequest } from '../../../models/requests/bootcamps/bootcamp-update-request';
 import { BootcampDeleteRequest } from '../../../models/requests/bootcamps/bootcamp-delete-request';
@@ -36,16 +35,20 @@ import { BootcampRestoreRequest } from '../../../models/requests/bootcamps/bootc
 import { BootcampDeleteRangeRequest } from '../../../models/requests/bootcamps/bootcamp-delete-range-request';
 import { BootcampRestoreRangeRequest } from '../../../models/requests/bootcamps/bootcamp-restore-range-request';
 import { TooltipModule } from 'primeng/tooltip';
+import { TokenService } from '../../../services/concretes/token.service';
+import { InstructorService } from '../../../services/concretes/instructor.service';
 
 @Component({
-  selector: 'app-bootcamps',
+  selector: 'app-instructor-bootcamps',
   standalone: true,
   imports: [TooltipModule, TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
   providers: [BootcampService, MessageService, ConfirmationService],
-  templateUrl: './bootcamps.component.html',
-  styleUrl: './bootcamps.component.scss'
+  templateUrl: './instructor-bootcamps.component.html',
+  styleUrl: './instructor-bootcamps.component.scss'
 })
-export class BootcampsComponent implements OnInit {
+export class InstructorBootcampsComponent implements OnInit {
+  // This component lists bootcamps related to the logged-in instructor.
+
   bootcampCreateDialog: boolean = false;
   bootcampUpdateDialog: boolean = false;
 
@@ -121,13 +124,8 @@ export class BootcampsComponent implements OnInit {
   };
 
   //
-  instructors!: InstructorGetBasicInfoResponse[];
-
-  selectedInstructor: InstructorGetBasicInfoResponse = {
-    id: '',
-    userName: '',
-    companyName: ''
-  };
+  instructorId!: string;
+  instructor!: InstructorGetBasicInfoResponse;
 
   //
   submitted: boolean = false;
@@ -147,11 +145,14 @@ export class BootcampsComponent implements OnInit {
     private router: Router,
     private formatService: FormatService,
     private bootcampStateService: BootcampStateService,
-    private instructorService: InstructorService
+    private instructorService: InstructorService,
+    private tokenService: TokenService
   ) { }
 
   ngOnInit() {
-    this.bootcampService.getList({ pageIndex: 0, pageSize: this.PAGE_SIZE }).subscribe(response => {
+    this.instructorId =  this.tokenService.getCurrentUserId();
+
+    this.bootcampService.getListByInstructor({ pageIndex: 0, pageSize: this.PAGE_SIZE }, this.instructorId).subscribe(response => {
       this.bootcamps = response;
       console.log(this.bootcamps)
     });
@@ -166,9 +167,9 @@ export class BootcampsComponent implements OnInit {
       console.log(this.bootcampStates)
     });
 
-    this.instructorService.getInstructorsBasicInfoList({ pageIndex: 0, pageSize: 99 }).subscribe(response => {
-      this.instructors = response.items;
-      console.log(this.instructors)
+    this.instructorService.getInstructorBasicInfoById(this.instructorId).subscribe(response => {
+      this.instructor = response;
+      console.log(this.instructor)
     });
 
   }
@@ -188,11 +189,6 @@ export class BootcampsComponent implements OnInit {
       name: '',
       createdDate: new Date("0001-01-01T01:00:00")
     };
-    this.selectedInstructor = {
-      id: '',
-      userName: '',
-      companyName: ''
-    }
 
     this.bootcampCreateDialog = true;
     this.submitted = false;
@@ -216,11 +212,6 @@ export class BootcampsComponent implements OnInit {
       name: this.bootcamp.bootcampStateName,
       createdDate: new Date("0001-01-01T01:00:00")
     };
-    this.selectedInstructor = {
-      id: this.bootcamp.instructorId,
-      userName: this.bootcamp.instructorUserName,
-      companyName: this.bootcamp.instructorCompanyName
-    }
 
     this.bootcampUpdateDialog = true;
     this.submitted = false;
@@ -568,12 +559,12 @@ export class BootcampsComponent implements OnInit {
     this.submitted = true;
     this.submitButton = true;
 
-    if (!this.selectedInstructor.id || !this.selectedBootcampState.id) {
+    if (!this.selectedBootcampState.id) {
       this.submitButton = false;
       return
     }
 
-    this.bootcampCreateRequest.instructorId = this.selectedInstructor.id;
+    this.bootcampCreateRequest.instructorId = this.instructor.id;
     this.bootcampCreateRequest.bootcampStateId = this.selectedBootcampState.id;
 
     if (this.validationControl("create")) {
@@ -587,11 +578,11 @@ export class BootcampsComponent implements OnInit {
           startDate: response.startDate,
           endDate: response.endDate,
 
-          instructorId: this.selectedInstructor.id,
-          instructorUserName: this.selectedInstructor.userName,
+          instructorId: this.instructor.id,
+          instructorUserName: this.instructor.userName,
           instructorFirstName: '',
           instructorLastName: '',
-          instructorCompanyName: this.selectedInstructor.companyName,
+          instructorCompanyName: this.instructor.companyName,
 
           bootcampStateId: this.selectedBootcampState.id,
           bootcampStateName: this.selectedBootcampState.name,
@@ -638,11 +629,6 @@ export class BootcampsComponent implements OnInit {
           name: '',
           createdDate: new Date("0001-01-01T01:00:00")
         }
-        this.selectedInstructor = {
-          id: '',
-          userName: '',
-          companyName: ''
-        }
 
       });
     }
@@ -655,12 +641,12 @@ export class BootcampsComponent implements OnInit {
     this.submitted = true;
     this.submitButton = true;
 
-    if (!this.selectedInstructor.id || !this.selectedBootcampState.id) {
+    if (!this.instructor.id || !this.selectedBootcampState.id) {
       this.submitButton = false;
       return
     }
 
-    this.bootcampUpdateRequest.instructorId = this.selectedInstructor.id;
+    this.bootcampUpdateRequest.instructorId = this.instructor.id;
     this.bootcampUpdateRequest.bootcampStateId = this.selectedBootcampState.id;
 
     if (this.validationControl("update")) {
@@ -674,11 +660,11 @@ export class BootcampsComponent implements OnInit {
           startDate: response.startDate,
           endDate: response.endDate,
 
-          instructorId: this.selectedInstructor.id,
-          instructorUserName: this.selectedInstructor.userName,
+          instructorId: this.instructor.id,
+          instructorUserName: this.instructor.userName,
           instructorFirstName: '',
           instructorLastName: '',
-          instructorCompanyName: this.selectedInstructor.companyName,
+          instructorCompanyName: this.instructor.companyName,
 
           bootcampStateId: this.selectedBootcampState.id,
           bootcampStateName: this.selectedBootcampState.name,
@@ -725,11 +711,6 @@ export class BootcampsComponent implements OnInit {
           id: '',
           name: '',
           createdDate: new Date("0001-01-01T01:00:00")
-        }
-        this.selectedInstructor = {
-          id: '',
-          userName: '',
-          companyName: ''
         }
 
       });

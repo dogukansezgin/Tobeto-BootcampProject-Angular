@@ -17,6 +17,7 @@ import { InstructorUpdateResponse } from "../../models/responses/instructors/ins
 import { InstructorCreateRequest } from "../../models/requests/instructors/instructor-create-request";
 import { InstructorCreateResponse } from "../../models/responses/instructors/instructor-create-response";
 import { InstructorGetListDeletedResponse } from "../../models/responses/instructors/instructor-get-list-deleted-response";
+import { InstructorGetBasicInfoByIdResponse } from "../../models/responses/instructors/instructor-get-basic-info-by-id-response";
 
 @Injectable()
 export abstract class InstructorBaseService {
@@ -24,6 +25,8 @@ export abstract class InstructorBaseService {
     abstract getInstructorsList(pageRequest: PageRequest): Observable<ListItemsDto<InstructorGetListResponse>>
     abstract getInstructorsListDeleted(pageRequest: PageRequest): Observable<ListItemsDto<InstructorGetListDeletedResponse>>
     abstract getInstructorsBasicInfoList(pageRequest: PageRequest): Observable<ListItemsDto<InstructorGetBasicInfoResponse>>
+    abstract getInstructorBasicInfoById(instructorId: string): Observable<InstructorGetBasicInfoByIdResponse>
+
     abstract createInstructor(instructorCreateRequest: InstructorCreateRequest): Observable<InstructorCreateResponse>
     abstract updateInstructor(instructorUpdateRequest: InstructorUpdateRequest): Observable<InstructorUpdateResponse>
     abstract deleteInstructor(instructorDeleteRequest: InstructorDeleteRequest): Observable<InstructorDeleteResponse>
