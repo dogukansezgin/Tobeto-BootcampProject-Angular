@@ -105,9 +105,6 @@ export class NavbarComponent implements OnInit {
         {
           label: "Etkinlikler",
           routerLink: '/bootcamp',
-        },
-        {
-          label: "Şirketler"
         }
       ]
 
@@ -130,16 +127,10 @@ export class NavbarComponent implements OnInit {
               separator: true
             },
             {
-              label: 'Dashboard',
-            },
-            {
               label: 'Profilim',
             },
             {
               label: 'Başvurularım',
-            },
-            {
-              label: 'Ayarlar',
             },
             {
               separator: true

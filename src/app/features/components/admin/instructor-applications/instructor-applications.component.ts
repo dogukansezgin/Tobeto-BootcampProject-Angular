@@ -22,14 +22,15 @@ import { ApplicationUpdateRangeRequest } from '../../../models/requests/applicat
 import { ApplicationStateGetByNameResponse } from '../../../models/responses/application-states/application-state-get-by-name-response';
 
 @Component({
-  selector: 'app-applications',
+  selector: 'app-instructor-applications',
   standalone: true,
   imports: [TooltipModule, CommonModule, FormsModule, ToastModule, ToolbarModule, ButtonModule, TableModule, TagModule, InputTextModule, ConfirmDialogModule, RippleModule],
   providers: [ApplicationService, MessageService, ConfirmationService],
-  templateUrl: './applications.component.html',
-  styleUrl: './applications.component.scss'
+  templateUrl: './instructor-applications.component.html',
+  styleUrl: './instructor-applications.component.scss'
 })
-export class ApplicationsComponent implements OnInit {
+export class InstructorApplicationsComponent implements OnInit {
+  // This component lists applications related to the logged-in instructor.
 
   applicationsToReview: ListItemsDto<ApplicationGetListByInstructorByStateResponse> = {
     index: 0,
@@ -440,18 +441,6 @@ export class ApplicationsComponent implements OnInit {
       }
     });
   }
-
-  // findIndexById(id: string): number {
-  //   let index = -1;
-  //   for (let i = 0; i < this.applications.items.length; i++) {
-  //     if (this.applications.items[i].id === id) {
-  //       index = i;
-  //       break;
-  //     }
-  //   }
-
-  //   return index;
-  // }
 
   getSeverity(status: string) {
     switch (status) {

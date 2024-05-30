@@ -11,7 +11,7 @@ export const RoleGuard: CanActivateFn = (route, state) => {
     const userRoles = tokenService.getUserRoles();
 
     let hasRole = false;
-
+    console.log(expectedRoles, userRoles)
     if (!expectedRoles || !userRoles) {
         router.navigate(['']);
         return false;
@@ -22,6 +22,7 @@ export const RoleGuard: CanActivateFn = (route, state) => {
             hasRole = true
         }
     }
+    console.log(hasRole)
 
     if(hasRole){
         return true;

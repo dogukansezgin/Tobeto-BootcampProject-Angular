@@ -38,14 +38,16 @@ import { BootcampGetBasicInfoResponse } from '../../../models/responses/bootcamp
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
-  selector: 'app-applications',
+  selector: 'app-employee-applications',
   standalone: true,
   imports: [TooltipModule, TableModule, DialogModule, RippleModule, ButtonModule, ToastModule, ToolbarModule, ConfirmDialogModule, InputTextModule, InputTextareaModule, CommonModule, FileUploadModule, DropdownModule, TagModule, RadioButtonModule, RatingModule, InputTextModule, FormsModule, InputNumberModule, CalendarModule],
   providers: [ApplicationService, MessageService, ConfirmationService],
-  templateUrl: './applications-second.component.html',
-  styleUrl: './applications-second.component.scss'
+  templateUrl: './employee-applications.component.html',
+  styleUrl: './employee-applications.component.scss'
 })
-export class ApplicationsSecondComponent implements OnInit {
+export class EmployeeApplicationsComponent implements OnInit {
+  // This component lists all applications for employees.
+
   applicationCreateDialog: boolean = false;
   applicationUpdateDialog: boolean = false;
 

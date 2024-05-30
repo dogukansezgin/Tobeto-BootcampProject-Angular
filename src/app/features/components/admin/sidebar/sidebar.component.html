@@ -1,51 +1,49 @@
-<body>
-  <nav class="navbar">
-    <ul class="navbar_menu">
-      <li class="navbar_item back">
-        <a routerLink="../" class="navbar_link red"><i data-feather="corner-up-left"></i><span>Anasayfa</span></a>
-      </li>
-    </ul>
-    <div class="seperator"></div>
-    <ul class="navbar_menu">
-      <li class="navbar_item back">
-        <a routerLink="Dashboard" class="navbar_link purple"><i data-feather="box"></i><span>Dashboard</span></a>
-      </li>
-      <li class="navbar_item back">
-        <a routerLink="Blacklist" class="navbar_link purple"><i data-feather="box"></i><span>Blacklist</span></a>
-      </li>
-      <li class="navbar_item">
-        <a routerLink="Bootcamps" class="navbar_link orange"><i data-feather="list"></i><span>Etkinlikler</span></a>
-      </li>
-      <li class="navbar_item">
-        <a routerLink="BootcampStates" class="navbar_link orange"><i data-feather="activity"></i><span>Etkinlik Durumları</span></a>
-      </li>
-      <li class="navbar_item">
-        <a routerLink="Applications" class="navbar_link yellow"><i data-feather="slack"></i><span>Başvurular</span></a>
-      </li>
-      <li class="navbar_item">
-        <a routerLink="ApplicationsSecond" class="navbar_link yellow"><i data-feather="slack"></i><span>Başvurular 2</span></a>
-      </li>
-      <li class="navbar_item">
-        <a routerLink="ApplicationStates" class="navbar_link yellow"><i data-feather="activity"></i><span>Başvuru Durumları</span></a>
-      </li>
-      <li class="navbar_item">
-        <a routerLink="Applicants" class="navbar_link yellow"><i data-feather="eye"></i><span>Öğrenciler</span></a>
-      </li>      
-      <li class="navbar_item">
-        <a routerLink="ApplicantsFirst" class="navbar_link yellow"><i data-feather="eye"></i><span>Öğrenciler 2</span></a>
-      </li>
-      <li class="navbar_item">
-        <a routerLink="Instructors" class="navbar_link red"><i data-feather="star"></i><span>Eğitmenler</span></a>
-      </li>
-      <li class="navbar_item">
-        <a routerLink="Employees" class="navbar_link red"><i data-feather="life-buoy"></i><span>Çalışanlar</span></a>
-      </li>
-      <li class="navbar_item">
-        <a routerLink="Settings" class="navbar_link pink"><i data-feather="bell"></i><span>Bildirimler</span></a>
-      </li>
-      <li class="navbar_item">
-        <a routerLink="Account" class="navbar_link blue"><i data-feather="user"></i><span>Hesap</span></a>
-      </li>
-    </ul>
-  </nav>
-</body>
+<nav class="navbar">
+  <ul class="navbar_menu">
+    <li class="navbar_item back">
+      <a routerLink="../" class="navbar_link red"><i data-feather="corner-up-left"></i><span>Anasayfa</span></a>
+    </li>
+  </ul>
+  <div class="seperator"></div>
+  <ul class="navbar_menu">
+    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
+      <a routerLink="bootcamps" class="navbar_link orange"><i data-feather="book"></i><span>Etkinlikler</span></a>
+    </li>    
+    <li class="navbar_item" *ngIf="CheckRoles(['Instructors'])">
+      <a routerLink="bootcamps/instructor" class="navbar_link orange"><i data-feather="book"></i><span>Etkinlikler</span></a>
+    </li>
+
+    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
+      <a routerLink="bootcamp-states" class="navbar_link orange"><i data-feather="bar-chart"></i><span>Etkinlik Durumları</span></a>
+    </li>
+
+    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
+      <a routerLink="applications" class="navbar_link yellow"><i data-feather="list"></i><span>Başvurular</span></a>
+    </li>
+    <li class="navbar_item" *ngIf="CheckRoles(['Instructors'])">
+      <a routerLink="applications/instructor" class="navbar_link yellow"><i data-feather="list"></i><span>Başvurular</span></a>
+    </li>
+
+    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
+      <a routerLink="application-states" class="navbar_link yellow"><i data-feather="bar-chart"></i><span>Başvuru Durumları</span></a>
+    </li>
+    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
+      <a routerLink="blacklist" class="navbar_link purple"><i data-feather="clipboard"></i><span>Blacklist</span></a>
+    </li>
+    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
+      <a routerLink="applicants" class="navbar_link yellow"><i data-feather="users"></i><span>Öğrenciler</span></a>
+    </li>
+    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
+      <a routerLink="applicantsFirst" class="navbar_link yellow"><i data-feather="users"></i><span>Öğrenciler 2</span></a>
+    </li>
+    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
+      <a routerLink="instructors" class="navbar_link red"><i data-feather="pen-tool"></i><span>Eğitmenler</span></a>
+    </li>
+    <li class="navbar_item" *ngIf="CheckRoles(['Admin'])">
+      <a routerLink="employees" class="navbar_link red"><i data-feather="coffee"></i><span>Çalışanlar</span></a>
+    </li>
+    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees', 'Instructors'])">
+      <a routerLink="account" class="navbar_link blue"><i data-feather="user"></i><span>Hesap</span></a>
+    </li>
+  </ul>
+</nav>
