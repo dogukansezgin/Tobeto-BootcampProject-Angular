@@ -190,7 +190,7 @@ export class BootcampDetailComponent implements OnInit {
         console.log(response);
 
       }, error => {
-        this.messageService.add({ severity: 'warning', summary: 'Hata', detail: 'Bir hata oluştu.', life: 4000 });
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata oluştu.', life: 4000 });
 
       });
 

@@ -40,18 +40,20 @@ export const routes: Routes =
 
         // Account
         {
-            path: "Account", component: AccountPageComponent, canActivate: [AuthGuard],
+            path: "Account", component: AccountPageComponent, canActivate: [AuthGuard, RoleGuard], canActivateChild: [AuthGuard, RoleGuard],
+            data: { expectedRoles: ['Applicants.User'] },
             children: [
                 {
-                    path: 'Profile', component: ProfileComponent,
+                    path: 'Profile', component: ProfileComponent, canActivate: [AuthGuard, RoleGuard], canActivateChild: [AuthGuard, RoleGuard],
+                    data: { expectedRoles: ['Applicants.User'] },
                     children: [
-                        { path: "CoverLetter", component: CoverletterComponent, canActivate: [AuthGuard] },
-                        { path: "Personal", component: PersonalComponent, canActivate: [AuthGuard] },
+                        { path: "CoverLetter", component: CoverletterComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['Applicants.User'] } },
+                        { path: "Personal", component: PersonalComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['Applicants.User'] } },
                         { path: '', redirectTo: 'CoverLetter', pathMatch: "full" }
                     ]
                 },
                 {
-                    path: 'Applications', component: AppliedBootcampListComponent
+                    path: 'Applications', component: AppliedBootcampListComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['Applicants.User'] },
                 }
             ]
         },
