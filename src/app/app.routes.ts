@@ -23,12 +23,12 @@ import { AccountComponent } from './features/components/admin/account/account.co
 import { EmployeesComponent } from './features/components/admin/employees/employees.component';
 import { BootcampStatesComponent } from './features/components/admin/bootcamp-states/bootcamp-states.component';
 import { ApplicationStatesComponent } from './features/components/admin/application-states/application-states.component';
-import { ApplicantsFirstComponent } from './features/components/admin/applicants-first/applicants-first.component';
 import { BlacklistsComponent } from './features/components/admin/blacklists/blacklists.component';
 import { ApplicantsComponent } from './features/components/admin/applicants/applicants.component';
 import { EmployeeApplicationsComponent } from './features/components/admin/employee-applications/employee-applications.component';
 import { InstructorApplicationsComponent } from './features/components/admin/instructor-applications/instructor-applications.component';
 import { InstructorBootcampsComponent } from './features/components/admin/instructor-bootcamps/instructor-bootcamps.component';
+import { ApplicantsApplicationsComponent } from './features/components/admin/applicants-applications/applicants-applications.component';
 
 export const routes: Routes =
     [
@@ -97,10 +97,9 @@ export const routes: Routes =
                 { path: 'applicants', component: ApplicantsComponent, canActivate: [RoleGuard], data: { expectedRoles: ['Admin', 'Employees.User'] }, },
 
                 { path: 'employees', component: EmployeesComponent, canActivate: [RoleGuard], data: { expectedRoles: ['Admin'] }, },
-                { path: 'applicantsFirst', component: ApplicantsFirstComponent, canActivate: [RoleGuard], data: { expectedRoles: ['Admin'] }, }
+                { path: 'applicants-applications', component: ApplicantsApplicationsComponent, canActivate: [RoleGuard], data: { expectedRoles: ['Admin', 'Employees.User'] }, }
             ]
         },
-        // {path:'detail',component:DetailComponent},
 
         // undefined
         { path: '**', redirectTo: '' }

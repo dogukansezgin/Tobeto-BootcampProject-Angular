@@ -1,21 +1,22 @@
 <div class="header">
-    <div class="tophead">
+    <div class="tophead" *ngIf="isBootcampExists">
 
         <!-- <h1>{{this.bootcampName}}</h1> -->
-        <h1>{{ this.bootcampName }}</h1><br>
+        <h1>{{ this.bootcampFullName }}</h1><br>
         <p style="margin-bottom: 0.3rem;">En temelden başlayıp, çok fazla teknolojiyi kullanma konusunda alanında uzman
             eğitmenden ders alarak profesyonel olmak senin elinde!</p>
         <p>Bootcamp'ten başarıyla mezun ol iş fırsatlarını yakala.Kariyerine değer katmak için hemen başvur ve yazılım
             dünyasında fark yarat!</p>
 
         <p [ngClass]="isBootcampActive ? 'active' : 'inactive'">
-            <button (click)="applyToBootcamp()" *ngIf="isBootcampActive" class="btn btn-success btn-lg">Hemen Başvur</button>
+            <button (click)="applyToBootcamp()" *ngIf="isBootcampActive" class="btn btn-success btn-lg"
+                [disabled]="isApplicationButtonDisabled()">Hemen Başvur</button>
             <button *ngIf="!isBootcampActive" class="btn btn-secondary btn-lg" disabled>Başvurular Tamamlandı</button>
         </p>
 
     </div>
 </div>
-<div class="container">
+<div class="container" *ngIf="isBootcampExists">
     <div class="info-card">
         <div>
             <h3>ÖDÜL BİLGİSİ</h3>
@@ -27,15 +28,15 @@
         </div>
         <div>
             <h3>ETKİNLİK TARİHİ</h3>
-            <p>{{this.bootcampStartDate | shortDate}}</p>
+            <p>{{this.bootcampStartDate.toString().substring(0,10)}}</p>
         </div>
         <div>
             <h3>SON BAŞVURU</h3>
-            <p>{{this.bootcampEndDate | shortDate}}</p>
+            <p>{{this.bootcampEndDate.toString().substring(0,10)}}</p>
         </div>
     </div>
 </div>
-<div class="content">
+<div class="content" *ngIf="isBootcampExists">
     <div class="margin">
         <h2>Kimler Katılabilir?</h2>
         <ul>
@@ -46,18 +47,16 @@
         </ul>
     </div>
 </div>
-<div class="benefits">
+<div class="benefits" *ngIf="isBootcampExists">
     <h2>Seni Neler Bekliyor? <span role="img" aria-label="target">💫</span></h2>
     <div class="benefit-cards">
         <div class="benefit-card">
 
-            <img src="../../../../../assets/images/mezuniyet.png" alt="Eğitim Icon"
-                width="180px" height="120px">
+            <img src="../../../../../assets/images/mezuniyet.png" alt="Eğitim Icon" width="180px" height="120px">
             <p>Adım adım, en temelden programcılık öğrenip piyasanın en üst seviyelerine çıkacaksınız..</p>
         </div>
         <div class="benefit-card">
-            <img src="../../../../../assets/images/egitim.png"
-                alt="Mezuniyet Icon" width="180px" height="120px">
+            <img src="../../../../../assets/images/egitim.png" alt="Mezuniyet Icon" width="180px" height="120px">
             <p>Eğitimi tamamladıktan sonra başarıyla mezun olacaksın.</p>
         </div>
         <!-- <div class="benefit-card">
@@ -66,13 +65,21 @@
             <p>Eğitimi başarı ile tamamlarsan QA Mastery Bootcamp'e girmeye hak kazanacaksın</p>
         </div> -->
         <div class="benefit-card">
-            <img src="../../../../../assets/images/kariyer.png" alt="Kariyer Icon"
-                width="180px" height="120px">
+            <img src="../../../../../assets/images/kariyer.png" alt="Kariyer Icon" width="180px" height="120px">
             <p>Alacağın sertifika ile açık pozisyonlar için değerlendirilme fırsatın olacak.</p>
         </div>
     </div>
 
 </div>
+
+<!-- Not Found -->
+<div *ngIf="!isBootcampExists" class="d-flex justify-content-center align-items-center not-found-container">
+    <div class="p-5 bg-light border">
+        <h1 class="text-center text-muted">404</h1>
+        <h3 class="text-muted">Etkinlik Bulunamadı</h3>
+    </div>
+</div>
+
 <!-- <div class="content">
     <div class="margin">
         <ul>

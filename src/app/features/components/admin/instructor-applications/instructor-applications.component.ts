@@ -451,7 +451,7 @@ export class InstructorApplicationsComponent implements OnInit {
       case 'RED EDILDI':
         return 'danger';
       default:
-        return 'primary';
+        return 'info';
     }
   }
 

@@ -29,8 +29,8 @@ export class RegisterFormComponent implements OnInit {
   }
   createRegisterForm() {
     this.registerForm = this.formBuilder.group({
-      firstName: new FormControl('', [Validators.required,Validators.minLength(3),Validators.maxLength(30),Validators.pattern(/^[a-zA-ZÇĞİÖŞÜçğıöşü]+$/)]),
-      lastName: new FormControl('', [Validators.required,Validators.minLength(3),Validators.maxLength(30),Validators.pattern(/^[a-zA-ZÇĞİÖŞÜçğıöşü]+$/)]),
+      firstName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern(/^[a-zA-ZÇĞİÖŞÜçğıöşü]+$/)]),
+      lastName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern(/^[a-zA-ZÇĞİÖŞÜçğıöşü]+$/)]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])[a-zA-Z0-9#?!@$%^&*-ÇĞİÖŞÜçğıöşü]{8,}$/)]),
     });
@@ -53,6 +53,9 @@ export class RegisterFormComponent implements OnInit {
       console.log(registerModel);
       this.authService.registerApplicant(registerModel).subscribe(response => {
         this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Kaydınız oluşturuldu.', life: 2000 })
+        setTimeout(() => {
+          this.router.navigateByUrl("Auth/Login")
+        }, 2000);
       }, error => {
         console.error("Kayıt işlemi başarısız", error);
         this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Email adresi çoktan kayıtlı.', life: 2000 })

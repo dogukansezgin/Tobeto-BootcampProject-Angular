@@ -135,20 +135,6 @@
                 </div>
 
                 <div class="field">
-                    <small class="p-error" *ngIf="!bootcampCreateRequest.startDate">*</small>
-                    <label for="startDate">Başlangıç Tarihi</label>
-                    <small class="p-error" *ngIf="submitted && !bootcampCreateRequest.startDate">
-                        Başlangıç tarihi boş olamaz.
-                    </small>
-                    <p-calendar showClear="true" id="startDate" [(ngModel)]="bootcampCreateRequest.startDate" dateFormat="dd-mm-yy" [minDate]="minStartDate" showIcon="true" (onSelect)="onStartDateSelectCreate()" required></p-calendar>
-                </div>
-                <div class="field">
-                    <small class="p-error" *ngIf="!bootcampCreateRequest.endDate">*</small>
-                    <label for="endDate">Bitiş Tarihi</label>
-                    <small class="p-error" *ngIf="submitted && !bootcampCreateRequest.endDate">
-                        Bitiş tarihi boş olamaz.
-                    </small>
-                    <p-calendar showClear="true" id="endDate" [(ngModel)]="bootcampCreateRequest.endDate" dateFormat="dd-mm-yy" [minDate]="minEndDate" showIcon="true" required></p-calendar>
                     <label for="image">Bootcamp Resim</label>
                     <input (change)="onFileAddChange($event)" class="form-control form-control-sm" id="image" type="file">
                 </div>
@@ -221,7 +207,6 @@
                         </ng-template>
                     </p-dropdown>
                 </div>
-
 
                 <div class="field">
                     <small class="p-error" *ngIf="!bootcampUpdateRequest.startDate">*</small>

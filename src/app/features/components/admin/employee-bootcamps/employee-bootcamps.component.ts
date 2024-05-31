@@ -570,6 +570,7 @@ export class EmployeeBootcampsComponent implements OnInit {
       }
     });
   }
+  
   onFileAddChange(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -783,7 +784,7 @@ export class EmployeeBootcampsComponent implements OnInit {
       case 'İPTAL EDILDI':
         return 'danger';
       default:
-        return 'primary';
+        return 'info';
     }
   }
 

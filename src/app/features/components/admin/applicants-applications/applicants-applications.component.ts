@@ -14,10 +14,10 @@ import { ShortDatePipe } from '../../../../shared/pipes/short-date.pipe';
   selector: 'app-applicants-first',
   standalone: true,
   imports: [TableModule, HttpClientModule, ButtonModule, RippleModule, TagModule, CommonModule, ShortDatePipe],
-  templateUrl: './applicants-first.component.html',
-  styleUrl: './applicants-first.component.scss'
+  templateUrl: './applicants-applications.component.html',
+  styleUrl: './applicants-applications.component.scss'
 })
-export class ApplicantsFirstComponent implements OnInit {
+export class ApplicantsApplicationsComponent implements OnInit {
 
   applicantsWithBootcamps: GetListByJoinApplicantListItemDto[] = [];
   allApplicants: GetListApplicantListItemDto[] = [];
@@ -82,7 +82,7 @@ export class ApplicantsFirstComponent implements OnInit {
       case 'RED EDILDI':
         return 'danger';
       default:
-        return '';
+        return 'info';
     }
   }
 

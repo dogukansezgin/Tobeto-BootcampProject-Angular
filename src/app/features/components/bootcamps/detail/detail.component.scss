@@ -5,7 +5,7 @@
     }
 
     .header {
-        background-color: #2c5edcab;
+        background-color: #0f3bacab;
         color: #fff;
         padding: 40px 20px;
     }
@@ -111,8 +111,7 @@
 
     .benefit-cards {
         display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         margin: 20px 0;
     }
 
@@ -165,4 +164,9 @@
     .tophead {
         margin-left: 300px;
     }
+
+    .not-found-container {
+        height: calc(60vh);
+        user-select: none;
+      }
 }

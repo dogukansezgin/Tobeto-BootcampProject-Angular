@@ -487,7 +487,7 @@ export class ApplicationStatesComponent implements OnInit {
       case 'RED EDILDI':
         return 'danger';
       default:
-        return 'primary';
+        return 'info';
     }
   }
 
