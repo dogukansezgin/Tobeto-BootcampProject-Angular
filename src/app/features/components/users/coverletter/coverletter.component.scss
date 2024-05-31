@@ -1,9 +1,17 @@
+body {
+    font-family: "Source Sans Pro", sans-serif;
+}
+
 .btn {
     margin-top: 40px;
     margin-left: 555px;
-    background-color: #0ea5e9;
+    background-color: #3c72fae8;
     padding: 8px 22px;
     border: none;
+}
+
+.btn:hover {
+    background-color: #3366ebe8;
 }
 
 textarea {

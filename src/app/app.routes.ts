@@ -30,6 +30,8 @@ import { BootcampStatesComponent } from './features/components/admin/bootcamp-st
 import { ApplicationStatesComponent } from './features/components/admin/application-states/application-states.component';
 import { ApplicationsSecondComponent } from './features/components/admin/applications-second/applications-second.component';
 import { ApplicantsFirstComponent } from './features/components/admin/applicants-first/applicants-first.component';
+import { FormFileComponent } from './features/components/admin/form-file/form-file.component';
+import { DetailComponent } from './features/components/bootcamps/detail/detail.component';
 
 export const routes: Routes =
     [
@@ -55,10 +57,10 @@ export const routes: Routes =
                 },
             ]
         },
-        
+
         // Bootcamp
         { path: "bootcamp", component: BootcampAllPageComponent },
-        { path: 'bootcamp/:bootcampName', component: BootcampDetailPageComponent, data: { id: [''] }},
+        { path: 'bootcamp/:bootcampName', component: BootcampDetailPageComponent, data: { id: [''] } },
 
         // Account
         {
@@ -108,7 +110,7 @@ export const routes: Routes =
         {
             path: 'admin', component: AdminPageComponent, canActivate: [AuthGuard],
             children: [
-                {path:'',pathMatch:'full',redirectTo:'Dashboard'},
+                { path: '', pathMatch: 'full', redirectTo: 'Dashboard' },
                 { path: 'Dashboard', component: DashboardComponent },
                 { path: 'Bootcamps', component: BootcampsComponent },
                 { path: 'BootcampStates', component: BootcampStatesComponent },
@@ -118,12 +120,13 @@ export const routes: Routes =
                 { path: 'Applicants', component: ApplicantsComponent },
                 { path: 'Instructors', component: InstructorsComponent },
                 { path: 'Employees', component: EmployeesComponent },
-                { path: 'Applicants', component:ApplicantsComponent},
+                { path: 'Applicants', component: ApplicantsComponent },
                 { path: 'Settings', component: SettingsComponent },
                 { path: 'Account', component: AccountComponent },
-                { path: 'ApplicantsFirst', component:ApplicantsFirstComponent}
+                { path: 'ApplicantsFirst', component: ApplicantsFirstComponent }
             ]
         },
+        {path:'detail',component:DetailComponent},
 
         // undefined
         { path: '**', redirectTo: '' }

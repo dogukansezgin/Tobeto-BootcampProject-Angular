@@ -47,6 +47,7 @@ export const environment = {
       updateApplicantInfo: '/api/Applicants/UpdateFromAuth',
       createApplicants: '/api/Applicants/create',
       updateApplicants: '/api/Applicants/update',
+      updatePatchApplicant:'/api/Applicants/updatePatch',
       deleteApplicants: '/api/Applicants/delete',
       deleteRangeApplicants: '/api/Applicants/deleteRange',
       restoreApplicants: '/api/Applicants/restore',
@@ -98,6 +99,9 @@ export const environment = {
       deleteRangeEmployees: '/api/Employees/deleteRange',
       restoreEmployees: '/api/Employees/restore',
       restoreRangeEmployees: '/api/Employees/restoreRange'
+    },
+    bootcampImages:{
+      addBootcampImage:'/api/BootcampImages'
     }
 
     // Diğer endpointler buraya eklenebilir

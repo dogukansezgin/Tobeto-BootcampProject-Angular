@@ -18,6 +18,7 @@ import { BootcampRestoreRangeResponse } from "../../models/responses/bootcamps/b
 import { BootcampDeleteRangeRequest } from "../../models/requests/bootcamps/bootcamp-delete-range-request";
 import { BootcampRestoreRangeRequest } from "../../models/requests/bootcamps/bootcamp-restore-range-request";
 import { BootcampGetBasicInfoResponse } from "../../models/responses/bootcamps/bootcamp-get-basic-info-response";
+import { BootcampGetListImageResponse } from "../../models/responses/bootcamps/bootcamp-get-list-image-response";
 
 @Injectable()
 export abstract class BootcampBaseService {
@@ -28,8 +29,8 @@ export abstract class BootcampBaseService {
     abstract getById(bootcampId: string): Observable<BootcampGetListResponse>
     abstract getByName(bootcampName: string): Observable<BootcampGetListResponse>
 
-    abstract getListUnfinished(pageRequest: PageRequest): Observable<ListItemsDto<BootcampGetListResponse>>
-    abstract getListFinished(pageRequest: PageRequest): Observable<ListItemsDto<BootcampGetListResponse>>
+    abstract getListUnfinished(pageRequest: PageRequest): Observable<ListItemsDto<BootcampGetListImageResponse>>
+    abstract getListFinished(pageRequest: PageRequest): Observable<ListItemsDto<BootcampGetListImageResponse>>
     abstract searchAllBootcamps(): Observable<ListItemsDto<BootcampSearchItemResponse>>
 
     abstract createBootcamp(bootcampCreateRequest: BootcampCreateRequest): Observable<BootcampCreateResponse>

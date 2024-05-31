@@ -24,7 +24,7 @@ import { ApplicantGetListDeletedResponse } from "../../models/responses/applican
 import { ApplicantGetListResponse } from "../../models/responses/applicant/applicant-get-list-response";
 import { ApplicantGetBasicInfoResponse } from "../../models/responses/applicant/applicant-get-basic-info-response";
 import { GetListByJoinApplicantListItemDto } from "../../models/responses/applicants/get-list-by-join-applicant-list-item-dto";
-
+import { ApplicantInfoUpdateRequest } from "../../models/requests/applicants/applicant-info-update-request";
 
 @Injectable({
     providedIn: 'root'
@@ -150,6 +150,18 @@ export class ApplicantService extends ApplicantBaseService {
     override updateApplicant(applicantUpdateRequest: ApplicantUpdateRequest): Observable<ApplicantUpdateResponse> {
         return this.httpClient.put<ApplicantUpdateResponse>(this.apiUrl_UpdateApplicant, applicantUpdateRequest)
     }
+    override updateInfoApplicant(applicantPatchUpdateRequest: ApplicantInfoUpdateRequest): Observable<GetApplicantResponse> {
+        return this.httpClient.put<GetApplicantResponse>(this.apiUrl_UpdateInfo, applicantPatchUpdateRequest)
+            .pipe(map(response => {
+                this.localStorageService.removeToken();
+                this.localStorageService.setToken(response.accessToken.token);
+                return response;
+
+            }, catchError(responseError => {
+                throw responseError;
+            })
+            ));
+    }
     override deleteApplicant(applicantDeleteRequest: ApplicantDeleteRequest): Observable<ApplicantDeleteResponse> {
         return this.httpClient.post<ApplicantDeleteResponse>(this.apiUrl_DeleteApplicant, applicantDeleteRequest)
     }
@@ -185,5 +197,5 @@ export class ApplicantService extends ApplicantBaseService {
 
             );
     }
-    
+
 }

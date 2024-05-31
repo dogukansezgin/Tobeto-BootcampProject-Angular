@@ -21,6 +21,7 @@ import { BootcampRestoreRangeRequest } from "../../models/requests/bootcamps/boo
 import { BootcampDeleteRangeResponse } from "../../models/responses/bootcamps/bootcamp-delete-range-response";
 import { BootcampRestoreRangeResponse } from "../../models/responses/bootcamps/bootcamp-restore-range-response";
 import { BootcampGetBasicInfoResponse } from "../../models/responses/bootcamps/bootcamp-get-basic-info-response";
+import { BootcampGetListImageResponse } from "../../models/responses/bootcamps/bootcamp-get-list-image-response";
 
 @Injectable({
     providedIn: 'root'
@@ -121,15 +122,15 @@ export class BootcampService extends BootcampBaseService {
         return this.httpClient.get<BootcampGetListResponse>(this.apiUrl_GetByName + bootcampName);
     }
 
-    override getListUnfinished(pageRequest: PageRequest): Observable<ListItemsDto<BootcampGetListResponse>> {
+    override getListUnfinished(pageRequest: PageRequest): Observable<ListItemsDto<BootcampGetListImageResponse>> {
         const newRequest: { [key: string]: string | number } = {
             pageIndex: pageRequest.pageIndex,
             pageSize: pageRequest.pageSize
         }
-        return this.httpClient.get<ListItemsDto<BootcampGetListResponse>>(this.apiUrl_GetUnfinished, { params: newRequest })
+        return this.httpClient.get<ListItemsDto<BootcampGetListImageResponse>>(this.apiUrl_GetUnfinished, { params: newRequest })
             .pipe(
                 map((response) => {
-                    const newResponse: ListItemsDto<BootcampGetListResponse> = {
+                    const newResponse: ListItemsDto<BootcampGetListImageResponse> = {
                         items: response.items,
                         index: response.index,
                         size: response.size,
@@ -144,15 +145,15 @@ export class BootcampService extends BootcampBaseService {
             );
     }
 
-    override getListFinished(pageRequest: PageRequest): Observable<ListItemsDto<BootcampGetListResponse>> {
+    override getListFinished(pageRequest: PageRequest): Observable<ListItemsDto<BootcampGetListImageResponse>> {
         const newRequest: { [key: string]: string | number } = {
             pageIndex: pageRequest.pageIndex,
             pageSize: pageRequest.pageSize
         }
-        return this.httpClient.get<ListItemsDto<BootcampGetListResponse>>(this.apiUrl_GetFinished, { params: newRequest })
+        return this.httpClient.get<ListItemsDto<BootcampGetListImageResponse>>(this.apiUrl_GetFinished, { params: newRequest })
             .pipe(
                 map((response) => {
-                    const newResponse: ListItemsDto<BootcampGetListResponse> = {
+                    const newResponse: ListItemsDto<BootcampGetListImageResponse> = {
                         items: response.items,
                         index: response.index,
                         size: response.size,

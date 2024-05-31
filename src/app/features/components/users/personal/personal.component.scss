@@ -1,27 +1,33 @@
+body{
+    font-family: 'Comfortaa', cursive;
+}
 .container {
     display: flex;
+    margin-left: 30px;
 }
 
 .half {
     padding: 20px;
 }
 
-.input-text {
-    width: 235px;
+.p-inputtext {
+    width: 275px;
+}
+
+.form-group {
+    margin-bottom: 0;
 }
 
 .btn {
     margin-top: 50px;
     margin-left: 205px;
-    background-color: #0ea5e9;
+    background-color: #3c72fae8;
     padding: 8px 22px;
     border: none;
 }
 
-.form-floating>.form-control {
-    font-weight: 400;
-    border: 1px solid #D8D8D8;
-    width: 300px;
+.btn:hover {
+    background-color: #3366ebe8;
 }
 
 .alert {
@@ -34,4 +40,28 @@
     font-size: 14px;
     border-radius: 3px;
     height: 33px;
+}
+
+.error-messages {
+    margin-top: 0;
+    padding: 0;
+}
+
+.error-messages small {
+    font-size: 13px;
+    color: #fb3b2e !important;
+    text-align: left;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+:host{
+    ::ng-deep {
+        .p-inputtext:hover{
+            border-color: black;
+        }
+        .p-calendar{
+            width: 275px;
+        }
+    }
 }

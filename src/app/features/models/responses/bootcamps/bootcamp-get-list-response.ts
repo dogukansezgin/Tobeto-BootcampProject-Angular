@@ -11,7 +11,7 @@ export interface BootcampGetListResponse {
     instructorCompanyName: string,
 
     bootcampStateId: string,
-    bootcampStateName: string
+    bootcampStateName: string,
 
     createdDate: Date,
 }

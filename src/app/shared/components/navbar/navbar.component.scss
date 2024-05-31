@@ -1,5 +1,8 @@
 :host {
     width: 100%;
+    body{
+        font-family:"Source Sans Pro", sans-serif;
+    }
 }
 
 :host {
@@ -11,9 +14,10 @@
             border-radius: 0px;
             padding-left: 50px;
             padding-right: 50px;
-
+            font-family:"Source Sans Pro", sans-serif;
             height: 68px;
             position: sticky;
+            font-size: 18px;
         }
 
         ul {
@@ -28,7 +32,6 @@
         .p-ripple {
             text-decoration: none;
             font-weight: 500;
-            letter-spacing: 0.025rem;
         }
 
         .p-menuitem-icon {
@@ -48,11 +51,11 @@
         .p-menubar .p-menubar-root-list>.p-menuitem:not(.p-highlight):not(.p-disabled)>.p-menuitem-content:hover {
             .p-menuitem-icon {
                 opacity: 1;
-                color: #0ea5e9;
+                color: #4141ede2;
             }
 
             .p-menuitem-text {
-                color: #0ea5e9;
+                color: #4141ede2;
             }
         }
 
@@ -70,14 +73,18 @@
 
         .p-button {
             transition-duration: 0.2s;
-            background-color: #0ea5e9;
-            border: 1px solid #0ea5e9;
+            background-color: #3366ebe8;
+            border: 1px solid #3366ebe8;
             border-radius: 5px;
             height: 40px;
             width: 130px;
             margin-left: 0px;
 
         }
+        .p-button:hover{
+            background-color: #2c5edc9e;
+        }
+        
     }
 }
 
@@ -94,7 +101,7 @@
 
             .logo1 {
                 font-variant: petite-caps;
-                color: #006c9d;
+                color: #2354d2e8;
                 font-size: x-large;
                 font-weight: 800;
             }
@@ -113,6 +120,11 @@
             text-overflow: ellipsis;
             opacity: 1;
             width: 280px;
+            height: 40px;
+            font-family: "Source Sans Pro", sans-serif;
+        }
+        .search-input:hover{
+            border-color: black;
         }
 
         .search-result-dropdown {
@@ -180,7 +192,7 @@
             bottom: 0;
             border-width: 0;
             // color: #00C26D;
-            color: #0ea5e9;
+            color: #3366ebe8;
             justify-content: center;
             height: 54px;
             user-select: none;
@@ -239,11 +251,11 @@
 
                 .p-menuitem-icon {
                     opacity: 1;
-                    color: #0ea5e9;
+                    color: #3366ebe8;
                 }
 
                 .p-menuitem-text {
-                    color: #0ea5e9;
+                    color: #3366ebe8;
                 }
             }
 
@@ -261,7 +273,7 @@
             }
 
             .p-menubar .p-menubar-root-list .p-submenu-list .p-menuitem {
-                margin: 6px 0px;
+                margin: 0px 0px;
                 padding: 6px 16px;
                 height: 48px;
                 font-weight: 500;
@@ -279,7 +291,7 @@
                 background-color: transparent;
                 
                 .p-menuitem-text {
-                    color: #0ea5e9;
+                    color: #3366ebe8;
                 }
             }
 
@@ -309,6 +321,9 @@
                     overflow: hidden;
                     max-width: 166px;
                 }
+            }
+            .p-button:hover{
+                background-color: #93949f;
             }
 
         }

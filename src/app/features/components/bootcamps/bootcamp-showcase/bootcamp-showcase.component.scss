@@ -1,3 +1,6 @@
+body{
+  font-family: "Source Sans Pro", sans-serif
+}
 .bc-text-muted {
   color: rgb(135, 135, 135);
   margin-right: 10px;
@@ -6,8 +9,8 @@
 
 .bc-btn {
   transition-duration: 0.2s;
-  background-color: #0ea5e9;
-  border: 1px solid #0ea5e9;
+  background-color: #3c72fae8;
+  border: 1px solid #3c72fae8;
   border-radius: 5px;
   height: 40px;
   width: 130px;
@@ -31,20 +34,21 @@
       padding: 16px;
       font-size: 1.5625rem;
       letter-spacing: 0.25px;
-      font-family: Roboto, sans-serif;
+      font-family: "Source Sans Pro", sans-serif;
       text-align: center;
     }
   }
 
   .bc-container-item-card.card {
     width: 360px;
-    height: auto;
-    margin: 12px;
+    height: 445px;
+    height: 400px;
+    margin: 0px 0px;
     padding: 16px 16px 0px;
     border: 1px solid rgb(216, 216, 216);
     cursor: pointer;
-
     text-align: center;
+    position: relative;
   }
 
   .bc-container-item-card.card {
@@ -70,13 +74,32 @@
 
     .btn {
       margin: 20px 0px 36px;
-      background-color: #0ea5e9;
+      background-color: #3c72fae8;
       font-weight: 400;
       letter-spacing: 0.025rem;
       line-height: 1.7rem;
       border: none;
       padding: 8px 22px;
     }
+    .show-more-button {
+      position: sticky;
+      margin-top: 30px;
+      border-width: 0;
+      background-color:transparent;
+      color: #353535e8;
+      justify-content: center;
+      height: 54px;
+      user-select: none;
+      font-weight: 600;
+      font-size: large;
+      font-family: "Source Sans Pro", sans-serif;
+  }
+
+  .show-more-button:hover {
+      text-decoration: underline;
+      background-color: transparent;
+
+  }
   }
 }
 
@@ -146,6 +169,21 @@
       border-color: transparent;
       color: #000000;
     }
+    .p-card{
+      width: 270px;
+      height: 130px;
+      margin-left: 10px;
+      background: #fff;
+      border-radius: 10px;
+      font-family: "Source Sans Pro", sans-serif;
+      // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      margin: -50px 30px 20px;
+  }
+  .card-footer{
+      border-top: none !important;
+  }
 
   }
 }

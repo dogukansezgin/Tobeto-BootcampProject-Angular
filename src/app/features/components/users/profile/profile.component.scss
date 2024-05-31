@@ -1,3 +1,7 @@
+body, text {
+    font-family: "Source Sans Pro", sans-serif;
+}
+
 .p-calendar {
     border-radius: 4px;
 }
@@ -9,6 +13,21 @@
 }
 
 .p-menuitem-link {
+    font-family: "Source Sans Pro", sans-serif;
     text-decoration: none;
     color: #1D1D1D;
+}
+
+
+:host {
+    ::ng-deep {
+        .p-menuitem-link:hover {
+            border-color: #3366ebe8;
+        }
+        .p-menuitem-link{
+            font-family: "Source Sans Pro", sans-serif;
+        }
+
+    }
+
 }

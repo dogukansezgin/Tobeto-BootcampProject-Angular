@@ -1,38 +1,51 @@
 <form [formGroup]="updateForm">
     <div class="container">
-        <!-- <div style="display: block;
-        margin-bottom: 1rem;
-        background-color: #d4edda;
-        border-color: #c3e6cb;
-        color:#155724;
-        padding: 5px 5px 10px;
-        font-size: 14px;
-        border-radius: 3px;
-        height: 33px;"></div> -->
         <div class="half">
-            <div class="form-floating">
-                <input formControlName="firstName" type="text" class="form-control" id="firstName">
-                <label for="firstName">Ad</label>
+            <div class="form-group">
+                <input type="text" formControlName="firstName" id="firstName" pInputText placeholder="İsim" />
+                <div *ngIf="isFieldInvalid('firstName')" class="error-messages">
+                    <small *ngIf="updateForm.get('firstName')?.errors?.['required']">İsmini girmelisin.</small>
+                    <small *ngIf="updateForm.get('firstName')?.errors?.['minlength']">En az 3 karakter
+                        girmelisin.</small>
+                    <small *ngIf="updateForm.get('firstName')?.errors?.['maxlength']">En fazla 30 karakter
+                        girmelisin.</small>
+                    <!-- <small *ngIf="updateForm.get('firstName')?.errors?.['pattern']">Sadece harfler girmelisin.</small> -->
+                </div>
             </div>
             <div class="mt-3 mb-3">
-                <div class="form-floating">
-                    <input formControlName="dateOfBirth" type="date" class="form-control" id="dateOfBirth">
-                    <label for="dateOfBirth">Doğum Tarihi</label>
+                <div class="form-group">
+                    <input type="text" formControlName="nationalIdentity" id="nationalIdentity" pInputText
+                        placeholder="TC" />
+                    <div *ngIf="isFieldInvalid('nationalIdentity')" class="error-messages">
+                        <small *ngIf="updateForm.get('nationalIdentity')?.errors?.['pattern']">Sadece 11 karakter
+                            olmalı.</small>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="half">
-            <div class="form-floating">
-                <input formControlName="lastName" type="text" class="form-control" id="lastName" name="lastName"
-                    placeholder="Soyadınızı girin">
-                <label for="lastName">Soyad</label>
-            </div>
-            <div class="mt-3 mb-3">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="city" value="İstanbul">
-                    <label for="city">Yaşadığın Şehir</label>
+            <div class="form-group">
+                <input type="text" formControlName="lastName" id="lastName" pInputText placeholder="Soyisim" />
+                <div *ngIf="isFieldInvalid('lastName')" class="error-messages">
+                    <small *ngIf="updateForm.get('lastName')?.errors?.['required']">İsmini girmelisin.</small>
+                    <small *ngIf="updateForm.get('lastName')?.errors?.['minlength']">En az 3 karakter
+                        girmelisin.</small>
+                    <small *ngIf="updateForm.get('lastName')?.errors?.['maxlength']">En fazla 30 karakter
+                        girmelisin.</small>
+                    <!-- <small *ngIf="updateForm.get('lastName')?.errors?.['pattern']">Sadece harfler girmelisin.</small> -->
+
                 </div>
             </div>
+            <div class="mt-3 mb-3">
+                <div class="form-group">
+                    <p-calendar formControlName="dateOfBirth" placeholder="Doğum tarihi" />
+                    <!-- <div class="form-floating">
+                        <input formControlName="dateOfBirth" type="date" class="form-control" id="dateOfBirth">
+                        <label for="dateOfBirth">Doğum Tarihi</label>
+                    </div> -->
+                </div>
+            </div>
+
             <button (click)="updateApplicant()" type="button" class="btn btn-secondary">Kaydet</button>
         </div>
     </div>

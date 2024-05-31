@@ -206,8 +206,4 @@ export class BootcampDetailComponent implements OnInit {
 
     }
   }
-
-
-
-
 }

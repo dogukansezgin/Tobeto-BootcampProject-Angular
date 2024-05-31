@@ -8,17 +8,19 @@ import { BootcampService } from '../../../services/concretes/bootcamp.service';
 import { CommonModule } from '@angular/common';
 import { FormatService } from '../../../services/concretes/format.service';
 import { ListItemsDto } from '../../../../core/models/pagination/list-items-dto';
+import { BootcampGetListImageResponse } from '../../../models/responses/bootcamps/bootcamp-get-list-image-response';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-bootcamp-list-unfinished',
   standalone: true,
-  imports: [SharedModule, PaginatorModule, CommonModule],
+  imports: [SharedModule, PaginatorModule, CommonModule, CardModule],
   templateUrl: './bootcamp-list-unfinished.component.html',
   styleUrl: './bootcamp-list-unfinished.component.scss'
 })
 export class BootcampListUnfinishedComponent implements OnInit {
 
-  allUnfinishedBootcamps: ListItemsDto<BootcampGetListResponse> = {
+  allUnfinishedBootcamps: ListItemsDto<BootcampGetListImageResponse> = {
     index: 0,
     size: 0,
     count: 0,

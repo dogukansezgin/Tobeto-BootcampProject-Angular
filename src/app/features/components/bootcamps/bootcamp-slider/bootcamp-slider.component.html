@@ -1,0 +1,32 @@
+<div class="slider-container">
+  <div class="slider" [style.transform]="getSliderTransform()">
+    <!-- Slide 1 -->
+    <div class="slide" style="background-color: #ffebcda1;">
+      <div class="slide-content">
+        <h2>{{ slides[0].title }}</h2>
+        <p>{{ slides[0].description }}</p>
+      </div>
+      <div class="slide-image">
+        <img [src]="slides[0].image" style="width: 100%;" alt="Slide Image">
+      </div>
+    </div>
+    <!-- Slide 2 -->
+    <div class="slide" style="background-color: #9b9b9b75;">
+      <div class="slide-content">
+        <h2>{{ slides[1].title }}</h2>
+        <p>{{ slides[1].description }}</p>
+      </div>
+      <div class="slide-image">
+        <img [src]="slides[1].image" style="width: 100%;" alt="Slide Image">
+      </div>
+    </div>
+  </div>
+  <button class="prev" (click)="prevSlide()">&#10094;</button>
+  <button class="next" (click)="nextSlide()">&#10095;</button>
+</div>
+
+
+
+
+
+  
