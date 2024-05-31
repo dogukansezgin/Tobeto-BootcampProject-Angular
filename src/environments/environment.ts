@@ -22,6 +22,7 @@ export const environment = {
     bootcampStates: {
       getList: '/api/BootcampStates/get',
       getListDeleted: '/api/BootcampStates/getDeleted',
+      getByName: '/api/BootcampStates/getByName/',
       createBootcampState: '/api/BootcampStates/create',
       updateBootcampState: '/api/BootcampStates/update',
       deleteBootcampState: '/api/BootcampStates/delete',

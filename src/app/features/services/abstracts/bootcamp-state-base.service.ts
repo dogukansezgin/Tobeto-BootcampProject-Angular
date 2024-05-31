@@ -16,10 +16,12 @@ import { BootcampStateGetListDeletedResponse } from "../../models/responses/boot
 import { BootcampStateRestoreRangeResponse } from "../../models/responses/bootcamp-states/bootcamp-state-restore-range-response";
 import { BootcampStateRestoreResponse } from "../../models/responses/bootcamp-states/bootcamp-state-restore-response";
 import { BootcampStateUpdateResponse } from "../../models/responses/bootcamp-states/bootcamp-state-update-response";
+import { BootcampStateGetByNameResponse } from "../../models/responses/bootcamp-states/bootcamp-state-get-by-name.response";
 
 @Injectable()
 export abstract class BootcampStateBaseService {
 
+    abstract getByName(name: string) : Observable<BootcampStateGetByNameResponse>
     abstract getList(pageRequest: PageRequest): Observable<ListItemsDto<BootcampStateGetListResponse>>
     abstract getListDeleted(pageRequest: PageRequest): Observable<ListItemsDto<BootcampStateGetListDeletedResponse>>
     abstract createBootcampState(bootcampstateCreateRequest: BootcampStateCreateRequest): Observable<BootcampStateCreateResponse>

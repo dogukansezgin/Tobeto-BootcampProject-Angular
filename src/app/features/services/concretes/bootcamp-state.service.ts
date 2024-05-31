@@ -19,6 +19,7 @@ import { BootcampStateGetListDeletedResponse } from "../../models/responses/boot
 import { BootcampStateRestoreRangeResponse } from "../../models/responses/bootcamp-states/bootcamp-state-restore-range-response";
 import { BootcampStateRestoreResponse } from "../../models/responses/bootcamp-states/bootcamp-state-restore-response";
 import { BootcampStateUpdateResponse } from "../../models/responses/bootcamp-states/bootcamp-state-update-response";
+import { BootcampStateGetByNameResponse } from "../../models/responses/bootcamp-states/bootcamp-state-get-by-name.response";
 
 @Injectable({
     providedIn: 'root'
@@ -28,6 +29,7 @@ export class BootcampStateService extends BootcampStateBaseService {
 
     private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.bootcampStates.getList;
     private readonly apiUrl_GetListDeleted: string = environment.apiUrl + environment.endpoints.bootcampStates.getListDeleted;
+    private readonly apiUrl_GetByName: string = environment.apiUrl + environment.endpoints.bootcampStates.getByName;
     private readonly apiUrl_CreateBootcampState = environment.apiUrl + environment.endpoints.bootcampStates.createBootcampState;
     private readonly apiUrl_UpdateBootcampState = environment.apiUrl + environment.endpoints.bootcampStates.updateBootcampState;
     private readonly apiUrl_DeleteBootcampState = environment.apiUrl + environment.endpoints.bootcampStates.deleteBootcampState;
@@ -80,6 +82,10 @@ export class BootcampStateService extends BootcampStateBaseService {
                 })
 
             )
+    }
+
+    override getByName(name: string): Observable<BootcampStateGetByNameResponse> {
+        return this.httpClient.get<BootcampStateGetByNameResponse>(this.apiUrl_GetByName + name)
     }
 
     override createBootcampState(bootcampStateCreateRequest: BootcampStateCreateRequest): Observable<BootcampStateCreateResponse> {

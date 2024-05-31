@@ -101,22 +101,6 @@
                 </div>
 
                 <div class="field">
-                    <small class="p-error" *ngIf="!selectedBootcampState.id">*</small>
-                    <label for="bootcampState">Etkinlik Durumu</label>
-                    <small class="p-error" *ngIf="submitted && !selectedBootcampState.id">
-                        Etkinlik durumu seçin
-                    </small>
-                    <p-dropdown [(ngModel)]="selectedBootcampState" inputId="bootcampState" [options]="bootcampStates" placeholder="Bootcamp Durumu Seçin" required>
-                        <ng-template pTemplate="selectedItem">
-                            <p-tag [value]="selectedBootcampState.name" [severity]="getSeverity(selectedBootcampState.name.toUpperCase())" />
-                        </ng-template>
-                        <ng-template let-option pTemplate="item">
-                            <p-tag [value]="option.name" [severity]="getSeverity(option.name.toUpperCase())" />
-                        </ng-template>
-                    </p-dropdown>
-                </div>
-
-                <div class="field">
                     <small class="p-error" *ngIf="!bootcampCreateRequest.startDate">*</small>
                     <label for="startDate">Başlangıç Tarihi</label>
                     <small class="p-error" *ngIf="submitted && !bootcampCreateRequest.startDate">

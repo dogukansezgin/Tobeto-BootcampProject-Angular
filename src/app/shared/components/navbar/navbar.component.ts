@@ -159,7 +159,7 @@ export class NavbarComponent implements OnInit {
   }
 
   setRoleItems() {
-    if (this.authService.hasRole(['Admin'])) {
+    if (this.authService.hasRole(['Admin', 'Employees.User', 'Instructors.User'])) {
       this.authItems = [
         {
           label: 'Hesabım',

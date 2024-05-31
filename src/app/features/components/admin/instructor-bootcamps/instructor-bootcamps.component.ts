@@ -37,6 +37,7 @@ import { BootcampRestoreRangeRequest } from '../../../models/requests/bootcamps/
 import { TooltipModule } from 'primeng/tooltip';
 import { TokenService } from '../../../services/concretes/token.service';
 import { InstructorService } from '../../../services/concretes/instructor.service';
+import { BootcampStateGetByNameResponse } from '../../../models/responses/bootcamp-states/bootcamp-state-get-by-name.response';
 
 @Component({
   selector: 'app-instructor-bootcamps',
@@ -116,6 +117,7 @@ export class InstructorBootcampsComponent implements OnInit {
 
   //
   bootcampStates!: BootcampStateGetListResponse[];
+  initialBootcampState!: BootcampStateGetByNameResponse;
 
   selectedBootcampState: BootcampStateGetListResponse = {
     id: '',
@@ -164,6 +166,11 @@ export class InstructorBootcampsComponent implements OnInit {
 
     this.bootcampStateService.getList({ pageIndex: 0, pageSize: 99 }).subscribe(response => {
       this.bootcampStates = response.items;
+      console.log(this.bootcampStates)
+    });
+
+    this.bootcampStateService.getByName('Planlandı').subscribe(response => {
+      this.initialBootcampState = response;
       console.log(this.bootcampStates)
     });
 
@@ -559,13 +566,8 @@ export class InstructorBootcampsComponent implements OnInit {
     this.submitted = true;
     this.submitButton = true;
 
-    if (!this.selectedBootcampState.id) {
-      this.submitButton = false;
-      return
-    }
-
     this.bootcampCreateRequest.instructorId = this.instructor.id;
-    this.bootcampCreateRequest.bootcampStateId = this.selectedBootcampState.id;
+    this.bootcampCreateRequest.bootcampStateId = this.initialBootcampState.id;
 
     if (this.validationControl("create")) {
 
@@ -584,8 +586,8 @@ export class InstructorBootcampsComponent implements OnInit {
           instructorLastName: '',
           instructorCompanyName: this.instructor.companyName,
 
-          bootcampStateId: this.selectedBootcampState.id,
-          bootcampStateName: this.selectedBootcampState.name,
+          bootcampStateId: this.initialBootcampState.id,
+          bootcampStateName: this.initialBootcampState.name,
 
           createdDate: response.createdDate,
         };
