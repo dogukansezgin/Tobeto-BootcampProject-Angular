@@ -20,6 +20,7 @@ import { ApplicantGetListDeletedResponse } from "../../models/responses/applican
 import { ApplicantGetListResponse } from "../../models/responses/applicant/applicant-get-list-response";
 import { ApplicantGetBasicInfoResponse } from "../../models/responses/applicant/applicant-get-basic-info-response";
 import { GetListByJoinApplicantListItemDto } from "../../models/responses/applicants/get-list-by-join-applicant-list-item-dto";
+import { ApplicantInfoUpdateRequest } from "../../models/requests/applicants/applicant-info-update-request";
 
 
 @Injectable()
@@ -29,10 +30,10 @@ export abstract class ApplicantBaseService {
     abstract getApplicantsListDeleted(pageRequest: PageRequest): Observable<ListItemsDto<ApplicantGetListDeletedResponse>>
     abstract getApplicantsBasicInfoList(pageRequest: PageRequest): Observable<ListItemsDto<ApplicantGetBasicInfoResponse>>
     abstract getListByJoin(pageRequest: PageRequest): Observable<ListItemsDto<GetListByJoinApplicantListItemDto>>
-    abstract getApplicant(applicantId:string):Observable<GetApplicantResponse>
+    abstract getApplicant(applicantId: string): Observable<GetApplicantResponse>
     // abstract updateApplicant(request: ApplicantUpdateRequest) : Observable<GetApplicantResponse>
 
-    abstract updateAboutApplicant(request:ApplicantAboutUpdateRequest):Observable<GetApplicantResponse>
+    abstract updateAboutApplicant(request: ApplicantAboutUpdateRequest): Observable<GetApplicantResponse>
 
     abstract createApplicant(applicantCreateRequest: ApplicantCreateRequest): Observable<ApplicantCreateResponse>
     abstract updateApplicant(applicantUpdateRequest: ApplicantUpdateRequest): Observable<ApplicantUpdateResponse>
@@ -40,5 +41,6 @@ export abstract class ApplicantBaseService {
     abstract deleteRangeApplicant(applicantDeleteRangeRequest: ApplicantDeleteRangeRequest): Observable<ApplicantDeleteRangeResponse>
     abstract restoreApplicant(applicantRestoreRequest: ApplicantRestoreRequest): Observable<ApplicantRestoreResponse>
     abstract restoreRangeApplicant(applicantRestoreRangeRequest: ApplicantRestoreRangeRequest): Observable<ApplicantRestoreRangeResponse>
+    abstract updateInfoApplicant(applicantPatchUpdateRequest: ApplicantInfoUpdateRequest): Observable<GetApplicantResponse>
 
 }

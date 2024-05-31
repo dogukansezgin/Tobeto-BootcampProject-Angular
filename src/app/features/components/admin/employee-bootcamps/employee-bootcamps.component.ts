@@ -16,7 +16,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { RatingModule } from 'primeng/rating';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Router } from '@angular/router';
 import { BootcampGetListResponse } from '../../../models/responses/bootcamps/bootcamp-get-list-response';
@@ -36,6 +36,7 @@ import { BootcampRestoreRequest } from '../../../models/requests/bootcamps/bootc
 import { BootcampDeleteRangeRequest } from '../../../models/requests/bootcamps/bootcamp-delete-range-request';
 import { BootcampRestoreRangeRequest } from '../../../models/requests/bootcamps/bootcamp-restore-range-request';
 import { TooltipModule } from 'primeng/tooltip';
+import { BootcampImageService } from '../../../services/concretes/bootcamp-image.service';
 
 @Component({
   selector: 'app-employee-bootcamps',
@@ -47,6 +48,9 @@ import { TooltipModule } from 'primeng/tooltip';
 })
 export class EmployeeBootcampsComponent implements OnInit {
   // This component lists all bootcamps for employees.
+
+  file:File| null =null;
+  formData:FormData=new FormData();
 
   bootcampCreateDialog: boolean = false;
   bootcampUpdateDialog: boolean = false;
@@ -149,7 +153,8 @@ export class EmployeeBootcampsComponent implements OnInit {
     private router: Router,
     private formatService: FormatService,
     private bootcampStateService: BootcampStateService,
-    private instructorService: InstructorService
+    private instructorService: InstructorService,
+    private bootcampImageService: BootcampImageService
   ) { }
 
   ngOnInit() {
@@ -165,12 +170,12 @@ export class EmployeeBootcampsComponent implements OnInit {
 
     this.bootcampStateService.getList({ pageIndex: 0, pageSize: 99 }).subscribe(response => {
       this.bootcampStates = response.items;
-      console.log(this.bootcampStates)
+      // console.log(this.bootcampStates)
     });
 
     this.instructorService.getInstructorsBasicInfoList({ pageIndex: 0, pageSize: 99 }).subscribe(response => {
       this.instructors = response.items;
-      console.log(this.instructors)
+      // console.log(this.instructors)
     });
 
   }
@@ -565,6 +570,13 @@ export class EmployeeBootcampsComponent implements OnInit {
       }
     });
   }
+  onFileAddChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.file = file;
+      this.formData.append('file', file, file.name);
+    }
+  }
 
   createBootcamp() {
     this.submitted = true;
@@ -579,9 +591,16 @@ export class EmployeeBootcampsComponent implements OnInit {
     this.bootcampCreateRequest.bootcampStateId = this.selectedBootcampState.id;
 
     if (this.validationControl("create")) {
-
       this.bootcampService.createBootcamp(this.bootcampCreateRequest).subscribe(response => {
-        this.hideDialog();
+        this.formData.append('bootcampId',response.id);
+        this.bootcampImageService.addBootcampImage(this.formData).subscribe({
+          error:()=>{
+            console.log("Resim eklenemedi");
+          },
+          complete:()=>{
+            this.hideDialog();
+          }
+        })
 
         this.bootcamp = {
           id: response.id,

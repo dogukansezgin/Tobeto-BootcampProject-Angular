@@ -5,6 +5,7 @@ import { GetApplicantResponse } from '../../features/models/responses/applicant/
 import { ApplicantService } from '../../features/services/concretes/applicant.service';
 import { TokenService } from '../../features/services/concretes/token.service';
 import { filter } from 'rxjs';
+import { AuthService } from '../../features/services/concretes/auth.service';
 declare var feather: any;
 
 @Component({
@@ -28,13 +29,14 @@ export class AccountPageComponent implements OnInit {
   constructor(
     private applicantService: ApplicantService,
     private tokenService: TokenService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.setUrl();
     this.setCurrentItem();
-    
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -71,6 +73,10 @@ export class AccountPageComponent implements OnInit {
       this.isApplicationButtonActive = true;
     }
   }
+  logOut() {
+    this.authService.logOut();
+    this.router.navigate([''])
+  }
 
   setUrl() {
     const currentRouteSnapshot: ActivatedRouteSnapshot = this.router.routerState.snapshot.root;
@@ -86,6 +92,7 @@ export class AccountPageComponent implements OnInit {
   }
   setNullCurrentItem() {
     this.currentItem = "";
+    this.logOut();
   }
   getApplicantData(applicantId: string) {
     this.applicantService.getApplicant(applicantId).subscribe(response => {

@@ -9,12 +9,15 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { CommonModule } from '@angular/common';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 declare var feather: any;
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [InputIconModule, IconFieldModule, InputTextModule, ReactiveFormsModule, RouterModule, FormsModule, InputTextModule, ButtonModule, CheckboxModule, CommonModule],
+  imports: [ToastModule, InputIconModule, IconFieldModule, InputTextModule, ReactiveFormsModule, RouterModule, FormsModule, InputTextModule, ButtonModule, CheckboxModule, CommonModule],
+  providers: [MessageService],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss'
 })
@@ -22,12 +25,13 @@ export class LoginFormComponent implements OnInit {
 
   loginForm!: FormGroup;
   remember = "";
-  errorMessage!: string ;
+  errorMessage!: string;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private messageService: MessageService, private authService: AuthService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     feather.replace();
+
     this.createLoginForm();
 
   }
@@ -54,14 +58,13 @@ export class LoginFormComponent implements OnInit {
       this.authService.login(loginModel).subscribe(response => {
         // alert(response.accessToken.token)
         // alert(response.accessToken.expirationDate)
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
-        this.router.navigate([""])
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Giriş yapıldı.' })
+        setTimeout(()=>{
+          this.router.navigate([""])
+        },1000);
       }, error => {
-        this.errorMessage="E-posta adresin ve/veya şifren hatalı";
-        console.log(error);    
-      });
+        this.errorMessage = "E-posta adresin ve/veya şifren hatalı";
+      })
     }
     else {
       console.log('Form is invalid');

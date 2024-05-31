@@ -7,6 +7,9 @@ import { ButtonModule } from "primeng/button";
 import { FormsModule } from "@angular/forms";
 import { DeadLinePipe } from "./pipes/dead-line.pipe";
 import { FooterComponent } from "./components/footer/footer.component";
+import { IconFieldModule } from "primeng/iconfield";
+import { InputIconModule } from "primeng/inputicon";
+import { InputTextModule } from "primeng/inputtext";
 
 
 @NgModule({
@@ -26,7 +29,10 @@ import { FooterComponent } from "./components/footer/footer.component";
         CommonModule,
         MenubarModule,
         ButtonModule,
-        FormsModule
+        FormsModule,
+        IconFieldModule,
+        InputIconModule,
+        InputTextModule
     ]
 })
 export class SharedModule{}

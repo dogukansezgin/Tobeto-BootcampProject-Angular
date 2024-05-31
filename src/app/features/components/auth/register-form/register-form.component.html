@@ -1,38 +1,78 @@
-<form [formGroup]="registerForm">
-  <span class="p-float-label">
-    <h4>CodeCamp'a Kayıt Ol</h4>
-  </span>
-  <span class="p-float-label">
-    <input type="text" pInputText formControlName="firstName" id="name" />
-    <label for="name">Ad</label>
-  </span>
-  <span class="p-float-label">
-    <input type="text" pInputText formControlName="lastName" id="surname" />
-    <label for="surname">Soyad</label>
-  </span>
-  <span class="p-float-label">
-    <input type="email" pInputText formControlName="email" id="email" />
-    <label for="email">E-mail</label>
-  </span>
-  <span class="p-float-label">
-    <input type="password" pInputText formControlName="password" id="password" />
-    <label for="password">Şifre</label>
-  </span>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="service_agreement">
-    <label for="service_agreement" class="form-check-label">Hizmet sözleşmesini onaylıyorum.</label>
+<div class="login-box">
+  <div class="login-box-formbox">
+    <p-toast/>
+    <form [formGroup]="registerForm">
+    
+      <span class="p-float-label">
+        <h4>CodeCamp'a Kayıt Ol</h4>
+      </span>
+      <div class="input-container">
+        <div class="form-group">
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-user" />
+            <input aria-describedby="firstName-help" type="text" formControlName="firstName" id="firstName" pInputText placeholder="İsim" />
+          </p-iconField>
+          <div *ngIf="isFieldInvalid('firstName')" class="error-messages">
+            <small *ngIf="registerForm.get('firstName')?.errors?.['required']">İsmini girmelisin.</small>
+            <small *ngIf="registerForm.get('firstName')?.errors?.['minlength']">En az 3 karakter girmelisin.</small>
+            <small *ngIf="registerForm.get('firstName')?.errors?.['maxlength']">En fazla 30 karakter girmelisin.</small>
+            <small *ngIf="registerForm.get('firstName')?.errors?.['pattern']">Sadece harfler girmelisin.</small>
+          </div>
+        </div>
+    
+        <div class="form-group">
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-user" />
+            <input aria-describedby="lastName-help" type="text" formControlName="lastName" id="lastName" pInputText placeholder="Soyisim" />
+          </p-iconField>
+          <div *ngIf="isFieldInvalid('lastName')" class="error-messages">
+            <small *ngIf="registerForm.get('lastName')?.errors?.['required']">Soyismini girmelisin.</small>
+            <small *ngIf="registerForm.get('lastName')?.errors?.['minlength']">En az 3 karakter girmelisin.</small>
+            <small *ngIf="registerForm.get('lastName')?.errors?.['maxlength']">En fazlz 30 karakter girmelisin.</small>
+            <small *ngIf="registerForm.get('lastName')?.errors?.['pattern']">Sadece harfler girmelisin.</small>
+          </div>
+        </div>
+    
+        <div class="form-group">
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-envelope" />
+            <input aria-describedby="email-help" type="text" formControlName="email" id="email" pInputText placeholder="E-posta" />
+          </p-iconField>
+          <div *ngIf="isFieldInvalid('email')" class="error-messages">
+            <small *ngIf="registerForm.get('email')?.errors?.['required']">Eposta adresini girmelisin.</small>
+            <small *ngIf="registerForm.get('email')?.errors?.['email']">Geçerli bir eposta girmelisin</small>   
+          </div>
+        </div>
+    
+        <div class="form-group">
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-key" />
+            <input type="password" formControlName="password" id="password" pInputText placeholder="Şifre" />
+          </p-iconField>
+          <div *ngIf="isFieldInvalid('password')" class="error-messages">
+            <small *ngIf="registerForm.get('password')?.errors?.['required']">Şifreni girmelisin.</small>
+            <small style="width: 300px;" *ngIf="registerForm.get('password')?.errors?.['pattern'] ">En az 8 karakter uzunluğunda ve büyük harf, küçük harf, rakam ve özel karakter içermelidir.</small>
+          </div>
+        </div>
+    
+        <p-button (onClick)="registerApplicant()" label="Kayıt Ol" severity="success"></p-button>
+      </div>
+    
+      <div class="have-account">
+        <label>Zaten hesabın var mı? <a routerLink="../Login">Giriş Yap</a></label>
+      </div>
+    </form>
   </div>
-  <br>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" id="data_processing">
-    <label for="data_processing" class="form-check-label">Verilerimin Aydınlatma Metni kapsamında belirtilen şekilde<br>
-      işlenmesine ve yurtdışında tutulmasına onay veriyorum.</label>
+  <div class="login-box-quotebox">
+    <div class="quote-container">
+      <div class="quote">Code Camp.</div>
+      <div class="quote-small">
+        " İster yeni başlıyor olun, ister mevcut bilgilerinizi ilerletmek isteyin, Code Camp sizin için ideal bir ortam sunuyor. "
+      </div>
+    </div>
   </div>
-  <span class="p-float-label mt-4">
-    <p-button (onClick)="registerApplicant()" label="Kayıt Ol" severity="success"></p-button>
-  </span>
-</form>
-
-<div class="have-account">
-  <label>Zaten hesabın var mı? <a routerLink="../Login">Giriş Yap</a></label>
 </div>
+
+
+
+

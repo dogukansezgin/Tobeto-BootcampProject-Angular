@@ -9,7 +9,6 @@ import { BootcampService } from '../../../features/services/concretes/bootcamp.s
 import { BootcampSearchItemResponse } from '../../../features/models/responses/bootcamps/bootcamp-search-item-response';
 import { FormatService } from '../../../features/services/concretes/format.service';
 import { ListItemsDto } from '../../../core/models/pagination/list-items-dto';
-
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -62,7 +61,6 @@ export class NavbarComponent implements OnInit {
   getBootcamps() {
     this.bootcampService.searchAllBootcamps().subscribe(response => {
       this.bootcamps = response;
-      console.log(response)
     })
   }
 

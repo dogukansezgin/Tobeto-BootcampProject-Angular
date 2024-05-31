@@ -1,3 +1,6 @@
+body{
+    font-family: "Source Sans Pro", sans-serif;
+}
 .top {
     margin-top: 60px;
 }
@@ -10,8 +13,8 @@
 
 .bc-btn {
     transition-duration: 0.2s;
-    background-color: #0ea5e9;
-    border: 1px solid #0ea5e9;
+    background-color: #3c72fae8;
+    border: 1px solid #3c72fae8;
     border-radius: 5px;
     height: 40px;
     width: 130px;
@@ -38,19 +41,18 @@
             padding: 16px;
             font-size: 1.5625rem;
             letter-spacing: 0.25px;
-            font-family: Roboto, sans-serif;
+            font-family: "Source Sans Pro", sans-serif;
             text-align: center;
         }
     }
 
     .bc-container-item-card.card {
         width: 360px;
-        height: 445px;
+        height: 400px;
         margin: 0px 0px;
         padding: 16px 16px 0px;
         border: 1px solid rgb(216, 216, 216);
         cursor: pointer;
-
         text-align: center;
     }
 
@@ -67,8 +69,6 @@
 
     .bc-container-item-footer {
         grid-column: 1 / span 3;
-
-
     }
 }
 
@@ -138,6 +138,21 @@
             background: #f3f4f6;
             border-color: transparent;
             color: #000000;
+        }
+        .p-card{
+            font-family: "Source Sans Pro", sans-serif;
+            width: 270px;
+            height: 130px;
+            margin-left: 10px;
+            background: #fff;
+            border-radius: 10px;
+            // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            margin: -50px 30px 20px;
+        }
+        .card-footer{
+            border-top: none !important;
         }
 
     }

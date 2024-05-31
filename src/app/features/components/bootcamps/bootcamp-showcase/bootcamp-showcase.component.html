@@ -1,3 +1,4 @@
+<p-toast />
 <div class="bc-card-container">
   <div class="bc-container-item-header">
     <h2 class="head">Başvurunu Bekleyen Etkinlikler</h2>
@@ -6,13 +7,15 @@
   <div *ngFor="let bootcamp of bootcampList.items; let x = index" class="bc-container-item-card card item"
     [attr.id]="'card-' + (x + 1)" (click)="navigateToBootcampDetailPage(bootcamp)">
 
-    <img
-      src="https://process.fs.teachablecdn.com/ADNupMnWyR7kCWRvm76Laz/resize=width:705/https://www.filepicker.io/api/file/Zk7d1MdoSJ6cEShVbfd0"
-      class="card-img-top" alt="Course Image" style="object-fit: cover; height: 200px;">
-    <div class="card-body">
-      <h5 class="card-title" style="width: 100%;">{{ bootcamp.name }}</h5>
-      <p class="card-text"> Kurs açıklaması </p>
-    </div>
+    <img [src]="bootcamp.bootcampImagePath" class="card-img-top" alt="Course Image"
+      style="object-fit: cover; height: 200px;">
+    <p-card>
+      <p class="m-0" style="font-weight: 500;
+        line-height: 1.3;
+        font-size: 1.175rem; color: #10162f;">
+        {{ bootcamp.name }}
+      </p>
+    </p-card>
 
 
     <div class="card-footer bg-transparent">
@@ -26,10 +29,10 @@
         <button class="bc-btn">Başvur</button>
       </div>
     </div>
-
   </div>
 
   <div class="bc-container-item-footer">
-    <button type="button" class="btn btn-success" (click)="navigateToBootcampsPage()">Tüm Etkinlikleri Gör</button>
+    <button type="button" class="show-more-button" (click)="navigateToBootcampsPage()">Tüm Etkinlikleri Gör <i
+        data-feather="chevron-right"></i></button>
   </div>
 </div>

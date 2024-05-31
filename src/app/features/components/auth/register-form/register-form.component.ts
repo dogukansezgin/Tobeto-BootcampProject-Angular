@@ -1,52 +1,72 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/concretes/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
+import { CommonModule } from '@angular/common';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-register-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, FormsModule, InputTextModule, ButtonModule, CheckboxModule],
+  imports: [ReactiveFormsModule, RouterModule, FormsModule, ButtonModule, InputTextModule, InputIconModule, IconFieldModule, CommonModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './register-form.component.html',
   styleUrl: './register-form.component.scss'
 })
 export class RegisterFormComponent implements OnInit {
 
   registerForm!: FormGroup;
-  confirm1 = "";
-  confirm2 = "";
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.createRegisterForm();
   }
-
   createRegisterForm() {
-
     this.registerForm = this.formBuilder.group({
-      firstName: ["", Validators.required],
-      lastName: ["", Validators.required],
-      email: ["", Validators.required],
-      password: ["", Validators.required]
+      firstName: new FormControl('', [Validators.required,Validators.minLength(3),Validators.maxLength(30),Validators.pattern(/^[a-zA-Z]+$/)]),
+      lastName: new FormControl('', [Validators.required,Validators.minLength(3),Validators.maxLength(30),Validators.pattern(/^[a-zA-Z]+$/)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)]),
     });
   }
-
+  markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+      if ((control as any).controls) {
+        this.markFormGroupTouched(control as FormGroup);
+      }
+    });
+  }
+  showLifeLong() {
+    this.messageService.add({ severity: 'info', summary: 'Life', detail: 'I show for 20000ms', life: 20000 });
+  }
   registerApplicant() {
     if (this.registerForm.valid) {
+      console.log("Form is valid")
       let registerModel = Object.assign({}, this.registerForm.value);
 
       this.authService.registerApplicant(registerModel).subscribe(response => {
-        console.log("Kayıta girdi")
-        alert("Kayıt Başarılı");
-        this.router.navigate(['Account/Login']);
+        // alert("Kayıt Başarılı");
+        // this.router.navigate(['Account/Login']);
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Kaydınız oluşturuldu', life: 2000 })
         console.log(response)
       }, error => {
         console.error("Kayıt işlemi başarısız", error);
       });
     }
+    else {
+      console.log('Form is invalid');
+      this.markFormGroupTouched(this.registerForm);
+    }
+  }
+  isFieldInvalid(field: string): boolean {
+    const control = this.registerForm.get(field);
+    return control ? control.invalid && (control.dirty || control.touched) : false;
   }
 }

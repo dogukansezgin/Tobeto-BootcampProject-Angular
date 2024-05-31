@@ -100,6 +100,7 @@ export const routes: Routes =
                 { path: 'applicantsFirst', component: ApplicantsFirstComponent, canActivate: [RoleGuard], data: { expectedRoles: ['Admin'] }, }
             ]
         },
+        // {path:'detail',component:DetailComponent},
 
         // undefined
         { path: '**', redirectTo: '' }

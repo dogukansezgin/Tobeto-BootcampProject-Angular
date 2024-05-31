@@ -25,7 +25,8 @@ export class AuthService extends AuthBaseService {
     constructor(
         private httpClient: HttpClient, 
         private localStorageService: LocalStorageService,
-        private tokenService: TokenService
+        private tokenService: TokenService,
+        
     ) { super(); }
     
     override registerApplicant(applicantRegisterRequest: ApplicantForRegisterRequest): Observable<AccessTokenModel> {
@@ -38,10 +39,9 @@ export class AuthService extends AuthBaseService {
         return this.httpClient.post<AccessTokenDto<AccessTokenModel>>(this.apiUrl_Login, userForLoginRequest)
             .pipe(map(response =>{
                 this.localStorageService.setToken(response.accessToken.token);
-                alert("Giriş yapıldı.");
+                // alert("Giriş yapıldı.");
                 return response;
             }, catchError(responseError =>{
-                alert(responseError.error)
                 throw responseError;
             })
         ));
@@ -65,7 +65,6 @@ export class AuthService extends AuthBaseService {
     logOut(){
 
         this.localStorageService.removeToken();
-        alert("Çıkış yapıldı.")
         setTimeout(() => {
             window.location.reload();
         }, 500);

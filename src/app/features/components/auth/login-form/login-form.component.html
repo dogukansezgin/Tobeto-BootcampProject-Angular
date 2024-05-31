@@ -1,53 +1,55 @@
-<form [formGroup]="loginForm">
+<p-toast/>
+<div class="login-box">
+  <div class="login-box-formbox">
+    <form [formGroup]="loginForm">
 
-  <span class="p-float-label">
-    <h4>CodeCamp'a Giriş Yap</h4>
-  </span>
-  <div class="input-container">
-    <div class="form-group">
-      <p-iconField iconPosition="left">
-        <p-inputIcon styleClass="pi pi-envelope" />
-        <input aria-describedby="email-help" type="text" formControlName="email" id="email" pInputText placeholder="E-posta" />
-      </p-iconField>
-
-      <div *ngIf="isFieldInvalid('email')" class="error-messages">
-        <small *ngIf="loginForm.get('email')?.errors?.['required']">Eposta adresini girmelisin.</small>
-        <small *ngIf="loginForm.get('email')?.errors?.['email']" id="error">Geçerli bir eposta girmelisin</small>      
+      <span class="p-float-label">
+        <h4>CodeCamp'a Giriş Yap</h4>
+      </span>
+      <div class="input-container">
+        <div class="form-group">
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-envelope" />
+            <input aria-describedby="email-help" type="email" formControlName="email" id="email" pInputText placeholder="E-posta" />
+          </p-iconField>
+          <div *ngIf="isFieldInvalid('email')" class="error-messages">
+            <small *ngIf="loginForm.get('email')?.errors?.['required']">Eposta adresini girmelisin.</small>
+            <small *ngIf="loginForm.get('email')?.errors?.['email']" id="error">Geçerli bir eposta girmelisin</small>      
+          </div>
+        </div>
+    
+        <div class="form-group">
+          <p-iconField iconPosition="left">
+            <p-inputIcon styleClass="pi pi-key" />
+            <input type="password" formControlName="password" id="password" pInputText placeholder="Şifre" />
+          </p-iconField>
+          <div *ngIf="isFieldInvalid('password')" class="error-messages">
+            <small *ngIf="loginForm.get('password')?.errors?.['required']" id="error">Şifreni girmelisin.</small>
+          </div>
+        </div>
+        <div *ngIf="errorMessage" class="info">
+          <label> {{errorMessage}}</label>
+        </div>
+    
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="remember">
+          <label for="remember" class="form-check-label">Beni hatırla</label>
+        </div>
+    
+        <p-button (onClick)="login()" label="Giriş Yap" severity="info"></p-button>
+      </div>
+    
+      <div class="have-account">
+        <label>Hesabın yok mu? <a routerLink="../Register">Kayıt Ol</a></label>
+      </div>
+    </form>
+  </div>
+  <div class="login-box-quotebox">
+    <div class="quote-container">
+      <div class="quote">Code Camp.</div>
+      <div class="quote-small">
+        "Yazılım eğitimi alabilir, hem de o alanda işe başlayabilecek kadar fazla bilgi ve donanım kazanabilirsin"
       </div>
     </div>
-
-    <div class="form-group">
-      <p-iconField iconPosition="left">
-        <p-inputIcon styleClass="pi pi-key" />
-        <input type="password" formControlName="password" id="password" pInputText placeholder="Şifre" />
-      </p-iconField>
-      <div *ngIf="isFieldInvalid('password')" class="error-messages">
-        <small *ngIf="loginForm.get('password')?.errors?.['required']" id="error">Şifreni girmelisin.</small>
-      </div>
-    </div>
-    <div *ngIf="errorMessage" class="info">
-      <label> {{errorMessage}}</label>
-    </div>
-
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" id="remember">
-      <label for="remember" class="form-check-label">Beni hatırla</label>
-    </div>
-
-    <p-button (onClick)="login()" label="Giriş Yap" severity="success"></p-button>
   </div>
-
-  <div class="have-account">
-    <label>Hesabın yok mu? <a routerLink="../Register">Kayıt Ol</a></label>
-  </div>
-</form>
-
-
-<!-- <span class="p-float-label">
-    <input type="email" pInputText formControlName="email" id="email" />
-    <label for="email">E-mail</label>
-  </span> -->
-<!-- <span class="p-float-label">
-    <input type="password" pInputText formControlName="password" id="password" />
-    <label for="password">Şifre</label>
-  </span> -->
+</div>

@@ -5,8 +5,16 @@
                 <span class="logo1">Code</span>
                 <span class="logo2">Camp</span>
             </a>
-            <input type="text" [(ngModel)]="searchText" class="search-input form-control" id="searchText"
-                placeholder="Bootcamp Ara">
+            <!-- <p-iconField iconPosition="left">
+                <p-inputIcon styleClass="pi pi-search" />
+                <input type="text" [(ngModel)]="searchText"  class="search-input form-control" id="searchText">
+            </p-iconField> -->
+
+            <p-iconField iconPosition="left">
+                <p-inputIcon styleClass="pi pi-search"/>
+                <input [(ngModel)]="searchText" type="text" class="search-input"  id="searchText" pInputText placeholder="Bootcamp ara" />
+              </p-iconField>
+            
             <div *ngIf="searchText" class="search-result-dropdown">
                 <div class="search-result-list">
                     <ng-container *ngIf="(bootcamps.items | filterBootcampText: searchText).length > 0; else noResults">

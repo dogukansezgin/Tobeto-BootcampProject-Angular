@@ -9,11 +9,19 @@ import { Router } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
 import { FormatService } from '../../../services/concretes/format.service';
 import { ListItemsDto } from '../../../../core/models/pagination/list-items-dto';
+import { DataService } from '../../../services/concretes/data.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { BootcampSliderComponent } from '../bootcamp-slider/bootcamp-slider.component';
+import { CardModule } from 'primeng/card';
+import { BootcampGetListImageResponse } from '../../../models/responses/bootcamps/bootcamp-get-list-image-response';
+declare var feather: any;
 
 @Component({
   selector: 'app-bootcamp-showcase',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedModule, PaginatorModule],
+  imports: [CommonModule, FormsModule, SharedModule, PaginatorModule, ToastModule, BootcampSliderComponent,CardModule],
+  providers: [MessageService],
   templateUrl: './bootcamp-showcase.component.html',
   styleUrl: './bootcamp-showcase.component.scss'
 })
@@ -21,7 +29,7 @@ export class BootcampShowcaseComponent implements OnInit {
 
   filterText!: string;
 
-  bootcampList: ListItemsDto<BootcampGetListResponse> = {
+  bootcampList: ListItemsDto<BootcampGetListImageResponse> = {
     index: 0,
     size: 0,
     count: 0,
@@ -32,9 +40,11 @@ export class BootcampShowcaseComponent implements OnInit {
   };
   readonly PAGE_SIZE = 3;
 
-  constructor(private bootcampService: BootcampService, private router: Router, private formatService: FormatService) { }
+
+  constructor(private messageService: MessageService, private dataService: DataService, private bootcampService: BootcampService, private router: Router, private formatService: FormatService) { }
 
   ngOnInit(): void {
+    feather.replace();
     this.getBootcampShowcaseList({ pageIndex: 0, pageSize: this.PAGE_SIZE })
   }
 

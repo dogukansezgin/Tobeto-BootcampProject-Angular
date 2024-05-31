@@ -13,7 +13,7 @@ import { filter } from 'rxjs';
 })
 export class AppComponent implements OnInit {
 
-  private hiddenRoutes: string[] = ['/admin', '/Auth'];
+  private hiddenRoutes: string[] = ['/admin', '/Auth','/detail'];
 
   constructor(private router: Router) {}
 
