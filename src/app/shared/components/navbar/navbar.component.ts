@@ -147,9 +147,6 @@ export class NavbarComponent implements OnInit {
         {
           label: "Etkinlikler",
           routerLink: '/bootcamp',
-        },
-        {
-          label: "Şirketler"
         }
       ]
 

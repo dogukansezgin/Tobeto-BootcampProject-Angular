@@ -80,7 +80,7 @@ export const routes: Routes =
             path: 'admin', component: AdminPageComponent, canActivate: [AuthGuard, RoleGuard], canActivateChild: [AuthGuard, RoleGuard],
             data: { expectedRoles: ['Admin', 'Employees.User', 'Instructors.User'] },
             children: [
-                { path: 'dashboard', component: DashboardComponent },
+                { path: 'dashboard', component: DashboardComponent, canActivate: [RoleGuard], data: { expectedRoles: ['Admin', 'Employees.User'] }, },
                 { path: 'settings', component: SettingsComponent },
                 { path: 'account', component: AccountComponent },
                 { path: '', pathMatch: 'full', redirectTo: 'Dashboard' },

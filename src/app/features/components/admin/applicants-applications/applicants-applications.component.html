@@ -1,60 +1,51 @@
+<div class="content-container">
 
-<div class="card">
-    <p-table
-    [value]="applicantsWithBootcamps"
-    sortField="applicantUserName"
-    sortMode="single"
-    dataKey="applicantUserName"
-    rowGroupMode="subheader"
-    groupRowsBy="applicantUserName"
-    [tableStyle]="{'min-width': '70rem'}">
-    <ng-template pTemplate="header">
-        <tr>
-            <th style="width:10%">Bootcamp</th>
-            <th style="width:10%">Başvuru Durum</th>
-            <th style="width:10%">Başvuru Tarih</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="groupheader" let-applicant let-rowIndex="rowIndex" let-expanded="expanded">
-        <tr>
-            <td colspan="5">
-                <button 
-                type="button"
-                pButton
-                pRipple
-                [pRowToggler]="applicant"
-                class="p-button-text p-button-rounded p-button-plain mr-2" 
-                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
-                </button>
-                <img
-                [alt]="applicant.applicantUserName"
-                src="../../../../../assets/images/user.png"
-                width="32"/>
-                <span class="font-bold ml-2 ">{{applicant.applicantUserName}}</span>
-            </td>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="groupfooter" let-applicant>
-        <tr class="p-rowgroup-footer">
-            <td></td>
-            <td></td>
-            <td  style="text-align: left">Toplam : {{calculateBootcampTotal(applicant.applicantUserName)}}</td>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="rowexpansion" let-applicant>
-        <tr class="expanded-row">
-            <td>
-                {{applicant.bootcampName}}
-            </td>
-            <td>
-                <p-tag [value]="applicant.applicationStateName" [severity]="getSeverity(applicant.applicationStateName.toUpperCase())"/>
-            </td>
-            <td>
-                {{applicant.createdDate | shortDate}}
-            </td>
-        </tr>
-    </ng-template>
+    <div class="card">
+        <p-table [value]="applicantsWithBootcamps" sortField="applicantUserName" sortMode="single"
+            dataKey="applicantUserName" rowGroupMode="subheader" groupRowsBy="applicantUserName"
+            [tableStyle]="{'min-width': '70rem'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:10%">Öğrenciler</th>
+                    <th style="width:10%">Başvuru Durum</th>
+                    <th style="width:10%">Başvuru Tarih</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="groupheader" let-applicant let-rowIndex="rowIndex" let-expanded="expanded">
+                <tr>
+                    <td colspan="5">
+                        <button type="button" pButton pRipple [pRowToggler]="applicant"
+                            class="p-button-text p-button-rounded p-button-plain mr-2"
+                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
+                        </button>
+                        <img [alt]="applicant.applicantUserName" src="../../../../../assets/images/user.png"
+                            width="32" />
+                        <span class="font-bold ml-2 ">{{applicant.applicantUserName}}</span>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="groupfooter" let-applicant>
+                <tr class="p-rowgroup-footer">
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: left">Toplam : {{calculateBootcampTotal(applicant.applicantUserName)}}</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-applicant>
+                <tr class="expanded-row">
+                    <td>
+                        {{applicant.bootcampName}}
+                    </td>
+                    <td>
+                        <p-tag [value]="applicant.applicationStateName"
+                            [severity]="getSeverity(applicant.applicationStateName.toUpperCase())" />
+                    </td>
+                    <td>
+                        {{applicant.createdDate | shortDate}}
+                    </td>
+                </tr>
+            </ng-template>
 
-    </p-table>
-</div> 
-
+        </p-table>
+    </div>
+</div>

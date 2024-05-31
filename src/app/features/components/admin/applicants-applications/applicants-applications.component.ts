@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { ShortDatePipe } from '../../../../shared/pipes/short-date.pipe';
 
 @Component({
-  selector: 'app-applicants-first',
+  selector: 'app-applicants-applications',
   standalone: true,
   imports: [TableModule, HttpClientModule, ButtonModule, RippleModule, TagModule, CommonModule, ShortDatePipe],
   templateUrl: './applicants-applications.component.html',

@@ -30,7 +30,7 @@ export class BootcampListUnfinishedComponent implements OnInit {
     items: []
   };
   bootcampCount!: number;
-  readonly PAGE_SIZE = 6;
+  readonly PAGE_SIZE = 999;
 
   constructor(private bootcampService: BootcampService, private router: Router, private formatService: FormatService) { }
 
@@ -41,6 +41,7 @@ export class BootcampListUnfinishedComponent implements OnInit {
   getAllUnfinishedBootcamps(pageRequest: PageRequest) {
     this.bootcampService.getListUnfinished(pageRequest).subscribe((response) => {
       this.allUnfinishedBootcamps = response;
+      console.log(response)
     })
   }
 

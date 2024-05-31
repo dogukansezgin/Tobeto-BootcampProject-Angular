@@ -594,14 +594,6 @@ export class EmployeeBootcampsComponent implements OnInit {
     if (this.validationControl("create")) {
       this.bootcampService.createBootcamp(this.bootcampCreateRequest).subscribe(response => {
         this.formData.append('bootcampId',response.id);
-        this.bootcampImageService.addBootcampImage(this.formData).subscribe({
-          error:()=>{
-            console.log("Resim eklenemedi");
-          },
-          complete:()=>{
-            this.hideDialog();
-          }
-        })
 
         this.bootcamp = {
           id: response.id,
@@ -629,6 +621,16 @@ export class EmployeeBootcampsComponent implements OnInit {
         this.submitButton = false;
         console.log("- Bir hata meydana geldi.: ", error)
         this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Bir hata meydana geldi.', life: 4000 });
+      }, () => {
+        this.bootcampImageService.addBootcampImage(this.formData).subscribe({
+          error:()=>{
+            console.log("Resim eklenemedi");
+          },
+          complete:()=>{
+            this.hideDialog();
+          }
+        });
+
       }).add(() => {
         this.bootcamps.items = [...this.bootcamps.items];
         this.bootcampCreateRequest = {
@@ -665,6 +667,10 @@ export class EmployeeBootcampsComponent implements OnInit {
           userName: '',
           companyName: ''
         }
+        console.log(this.formData)
+        this.formData = new FormData();
+        console.log(this.formData)
+
 
       });
     }

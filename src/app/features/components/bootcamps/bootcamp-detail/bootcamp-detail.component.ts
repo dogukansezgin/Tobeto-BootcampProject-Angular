@@ -10,11 +10,14 @@ import { ApplicationStateService } from '../../../services/concretes/application
 import { TokenService } from '../../../services/concretes/token.service';
 import { AuthService } from '../../../services/concretes/auth.service';
 import { FormatService } from '../../../services/concretes/format.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-bootcamp-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './bootcamp-detail.component.html',
   styleUrl: './bootcamp-detail.component.scss'
 })
@@ -70,7 +73,8 @@ export class BootcampDetailComponent implements OnInit {
     private applicationStateService: ApplicationStateService,
     private tokenService: TokenService,
     private authService: AuthService,
-    private formatService: FormatService
+    private formatService: FormatService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -165,17 +169,15 @@ export class BootcampDetailComponent implements OnInit {
 
   applyToBootcamp() {
     if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['Auth/Login']);
-      alert("Başvuru yapmak için giriş yapmalısın.")
+      this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Başvuru yapmak için giriş yapmalısın.', life: 4000 });
       return;
 
     } else if (this.isApplicationAlreadyExist == true) {
-      //message service
-      alert("Halihazırda bir başvurun var.")
+      this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Halihazırda bir başvurun var.', life: 4000 });
       return;
 
     } else if (!this.authService.hasRole(["Applicants.User"])) {
-      alert("Başvuru yapmak için gerekli izne sahip değilsin.")
+      this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Başvurmak için öğrenci olmalısın.', life: 4000 });
       return;
 
     } else {
@@ -184,11 +186,11 @@ export class BootcampDetailComponent implements OnInit {
       console.log(this.applicationRequest)
 
       this.applicationService.createApplication(this.applicationRequest).subscribe(response => {
-        alert("Başvuru başarıyla yapıldı.");
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Başvuru başarıyla yapıldı.', life: 4000 });
         console.log(response);
 
       }, error => {
-        alert("Bir hata oluştu.");
+        this.messageService.add({ severity: 'warning', summary: 'Hata', detail: 'Bir hata oluştu.', life: 4000 });
 
       });
 

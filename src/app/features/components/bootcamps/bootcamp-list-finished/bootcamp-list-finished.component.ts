@@ -42,6 +42,8 @@ export class BootcampListFinishedComponent implements OnInit {
     this.bootcampService.getListFinished(pageRequest).subscribe((response) => {
       this.allFinishedBootcamps = response;
       this.bootcampCount = response.count;
+      console.log(response)
+
     })
   }
 

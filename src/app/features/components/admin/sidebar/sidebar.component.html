@@ -7,8 +7,12 @@
   <div class="seperator"></div>
   <ul class="navbar_menu">
     <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
+      <a routerLink="dashboard" class="navbar_link orange"><i data-feather="trello"></i><span>Dashboard</span></a>
+    </li>
+
+    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
       <a routerLink="bootcamps" class="navbar_link orange"><i data-feather="book"></i><span>Etkinlikler</span></a>
-    </li>    
+    </li>  
     <li class="navbar_item" *ngIf="CheckRoles(['Instructors'])">
       <a routerLink="bootcamps/instructor" class="navbar_link orange"><i data-feather="book"></i><span>Etkinlikler</span></a>
     </li>
@@ -34,16 +38,13 @@
       <a routerLink="applicants" class="navbar_link yellow"><i data-feather="users"></i><span>Öğrenciler</span></a>
     </li>
     <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
-      <a routerLink="applicantsFirst" class="navbar_link yellow"><i data-feather="users"></i><span>Öğrenciler 2</span></a>
-    </li>
-    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees'])">
       <a routerLink="instructors" class="navbar_link red"><i data-feather="pen-tool"></i><span>Eğitmenler</span></a>
     </li>
     <li class="navbar_item" *ngIf="CheckRoles(['Admin'])">
       <a routerLink="employees" class="navbar_link red"><i data-feather="coffee"></i><span>Çalışanlar</span></a>
     </li>
-    <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees', 'Instructors'])">
+    <!-- <li class="navbar_item" *ngIf="CheckRoles(['Admin', 'Employees', 'Instructors'])">
       <a routerLink="account" class="navbar_link blue"><i data-feather="user"></i><span>Hesap</span></a>
-    </li>
+    </li> -->
   </ul>
 </nav>
