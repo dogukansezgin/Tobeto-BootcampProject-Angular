@@ -1,94 +1,172 @@
+:host {
+    body {
+        margin: 0;
+        font-family: "Source Sans Pro", sans-serif
+    }
 
-body {
-    font-family: 'Raleway', sans-serif;
-    margin: 0;
-    padding: 0;
-}
+    .header {
+        background-color: #0f3bacab;
+        color: #fff;
+        padding: 40px 20px;
+    }
 
+    .header h1 {
+        margin: 0;
+        font-size: 2.5em;
+    }
 
-.header {
-    position: relative;
-    text-align: center;
-}
-.course-image-wrapper {
-    overflow: hidden;
-    height: 650px;
-    position: relative;
-}
-.course-image {
-    width: 100%;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-.header-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0); 
-}
-.header-text {
-    margin-bottom: 10px;
-}
-.course-name {
-    color: white;
-    margin-bottom: 5px;
-}
-.course-details {
-    color: #FFD700; 
-    font-weight: bold;
-    font-size: medium;
-}
+    .content {
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
 
+    .content h2 {
 
-.main-content {
-    padding-top: 20px;
-}
-.content-box {
-    padding: 20px;
-    margin-top: 20px;
-    text-align: center;
-}
-.content-box h2 {
-    margin-bottom: 10px;
-}
-.content-box p {
-    font-size: 16px;
-}
+        color: #333;
 
-.application-state {
-    color: rgb(0, 200, 255);
-    font-weight: bold;
-    position: absolute;
-    right: 50%;
-    transform: translateX(50%);
-}
+    }
 
-.bootcamp-state {
-    font-weight: lighter;
-    font-size: large;
-    position: absolute;
-    right: 50%;
-    top: 0%;
-    transform: translateX(50%) translateY(-50%);
-}
+    .content ul {
+        list-style-type: none;
+        padding: 0;
+    }
 
-.bootcamp-state.active {
-    color: rgb(166, 255, 0)
-}
+    .content ul li {
+        margin: 10px 0;
+        padding-left: 20px;
+        position: relative;
+        font-weight: 500;
+    }
 
-.bootcamp-state.inactive {
-    color: rgb(255, 72, 66);
-}
+    .content ul li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #1D1D1D;
+        font-weight: 500;
+    }
 
+    .info-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        margin: -50px 20px 20px;
+        padding: 20px;
+    }
 
-.footer {
-    text-align: center;
-    margin-top: 50px;
+    .info-card div {
+        text-align: center;
+    }
+
+    .info-card h3 {
+        margin: 0;
+        font-size: 1em;
+        color: #888;
+    }
+
+    .info-card p {
+        margin: 5px 0 0;
+        font-size: 1em;
+        color: rgb(29, 29, 29);
+        font-weight: 600;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 1em;
+        padding: 10px 20px;
+        text-decoration: none;
+        margin-bottom: 30px;
+    }
+
+    .btn-secondary {
+        background-color: #5a5a5a;
+    }
+
+    .btn-success {
+        background-color: #1851e0ee;
+    }
+
+    .btn-success:hover {
+        background-color: #0841d3fd;
+    }
+
+    .benefits {
+        background-color: #fff;
+        padding: 20px;
+        text-align: center;
+        margin-left: 300px;
+        margin-right: 300px;
+    }
+
+    .benefits h2 {
+        color: #333;
+    }
+
+    .benefit-cards {
+        display: flex;
+        flex-wrap: nowrap;
+        margin: 20px 0;
+    }
+
+    .benefit-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 10px;
+        padding: 20px;
+        text-align: center;
+        width: calc(35% - 40px);
+    }
+
+    .benefit-card img {
+        max-width: 500px;
+        margin-bottom: 10px;
+    }
+
+    .benefit-card p {
+        margin: 0;
+        color: #333;
+        font-size: 1em;
+    }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        justify-content: center;
+        align-items: center;
+        height: 100vh
+    }
+
+    .margin {
+        margin-left: 300px !important;
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
+
+    .MuiTypography-root {
+        margin-left: 300px;
+
+    }
+
+    .container {
+        max-width: 60%;
+    }
+
+    .tophead {
+        margin-left: 300px;
+    }
+
+    .not-found-container {
+        height: calc(60vh);
+        user-select: none;
+      }
 }

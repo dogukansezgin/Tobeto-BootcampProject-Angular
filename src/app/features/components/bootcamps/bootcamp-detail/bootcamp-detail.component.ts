@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BootcampService } from '../../../services/concretes/bootcamp.service';
-import { BootcampGetListResponse } from '../../../models/responses/bootcamps/bootcamp-get-list-response';
-import { ApplicationService } from '../../../services/concretes/application.service';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { BootcampGetListResponse } from '../../../models/responses/bootcamps/bootcamp-get-list-response';
+import { ApplicationCreateRequest } from '../../../models/requests/applications/application-create-request';
 import { CheckApplicationResponse } from '../../../models/responses/applications/check-application-response';
+import { BootcampService } from '../../../services/concretes/bootcamp.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApplicationService } from '../../../services/concretes/application.service';
+import { ApplicationStateService } from '../../../services/concretes/application-state.service';
 import { TokenService } from '../../../services/concretes/token.service';
 import { AuthService } from '../../../services/concretes/auth.service';
-import { ApplicationStateService } from '../../../services/concretes/application-state.service';
 import { FormatService } from '../../../services/concretes/format.service';
-import { ApplicationCreateRequest } from '../../../models/requests/applications/application-create-request';
 
 @Component({
   selector: 'app-bootcamp-detail',
@@ -41,7 +41,8 @@ export class BootcampDetailComponent implements OnInit {
   };
   isBootcampExists: boolean = false;
   bootcampFullName!: string;
-  bootcampName!: string;
+  bootcampStartDate: Date= new Date();
+  bootcampEndDate: Date = new Date();
   bootcampAfterBracket!: string;
 
   userId!: string;
@@ -61,7 +62,6 @@ export class BootcampDetailComponent implements OnInit {
   isBootcampActive: boolean = false;
   bootcampActiveText: string = "Başvurular Aktif";
   bootcampInactiveText: string = "Başvurular Kapandı";
-
   constructor(
     private bootcampService: BootcampService,
     private activatedRoute: ActivatedRoute,
@@ -74,7 +74,6 @@ export class BootcampDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.activatedRoute.url.subscribe(params => {
       var parameters = params;
 
@@ -90,17 +89,17 @@ export class BootcampDetailComponent implements OnInit {
     });
 
     this.userId = this.tokenService.getCurrentUserId();
-
   }
-
+  
   getBootcampByName(bootcampName: string) {
     this.bootcampService.getByName(this.routeBootcampName).subscribe(response => {
       this.bootcamp = response;
       this.bootcampId = response.id;
       this.bootcampFullName = this.bootcamp.name;
+      this.bootcampStartDate = this.bootcamp.startDate;
+      this.bootcampEndDate = this.bootcamp.endDate;
 
       this.isBootcampActive = this.checkBootcampActive();
-      this.divideBootcampName();
 
       this.isBootcampExists = true;
 
@@ -112,7 +111,7 @@ export class BootcampDetailComponent implements OnInit {
         if (this.userId != "null" && this.isBootcampExists) {
           this.checkApplication(this.userId, this.bootcampId);
 
-          this.applicationStateService.getByName("Beklemede").subscribe(response => {
+          this.applicationStateService.getByName("Değerlendirme").subscribe(response => {
             this.isInitialStateIdValid = true;
 
 
@@ -144,17 +143,6 @@ export class BootcampDetailComponent implements OnInit {
     }
   }
 
-  divideBootcampName() {
-    let bracketIndex = this.bootcampFullName.indexOf('(');
-    if (bracketIndex !== -1) {
-      this.bootcampName = this.bootcampFullName.substring(0, bracketIndex).trim();
-      this.bootcampAfterBracket = this.bootcampFullName.substring(bracketIndex + 1, this.bootcampFullName.length - 1).trim();
-
-    } else {
-      this.bootcampName = this.bootcampFullName.trim();
-    }
-  }
-
   checkApplication(applicantId: string, bootcampId: string): void {
     this.applicationService.checkApplication(applicantId, bootcampId).subscribe(response => {
       this.applicationInfo = response;
@@ -174,15 +162,15 @@ export class BootcampDetailComponent implements OnInit {
       return false;
     }
   }
-  
 
   applyToBootcamp() {
     if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['Account/Login']);
+      this.router.navigate(['Auth/Login']);
       alert("Başvuru yapmak için giriş yapmalısın.")
       return;
 
     } else if (this.isApplicationAlreadyExist == true) {
+      //message service
       alert("Halihazırda bir başvurun var.")
       return;
 
@@ -206,4 +194,5 @@ export class BootcampDetailComponent implements OnInit {
 
     }
   }
+
 }
