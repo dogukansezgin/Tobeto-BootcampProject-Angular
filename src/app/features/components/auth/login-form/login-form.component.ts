@@ -39,7 +39,7 @@ export class LoginFormComponent implements OnInit {
   createLoginForm() {
     this.loginForm = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required])
+      password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])[a-zA-Z0-9#?!@$%^&*-ÇĞİÖŞÜçğıöşü]{8,}$/)])
     });
   }
 
@@ -56,8 +56,6 @@ export class LoginFormComponent implements OnInit {
     if (this.loginForm.valid) {
       let loginModel: UserForLoginRequest = Object.assign({}, this.loginForm.value);
       this.authService.login(loginModel).subscribe(response => {
-        // alert(response.accessToken.token)
-        // alert(response.accessToken.expirationDate)
         this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Giriş yapıldı.' })
         setTimeout(()=>{
           this.router.navigate([""])

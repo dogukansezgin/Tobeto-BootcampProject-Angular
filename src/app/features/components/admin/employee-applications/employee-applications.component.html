@@ -97,11 +97,11 @@
                     </small>
                     <p-dropdown [(ngModel)]="selectedApplicant" inputId="applicant" [options]="applicants" placeholder="Öğrenci Seçin" required>
                         <ng-template pTemplate="selectedItem">
-                            <p-tag [value]="selectedApplicant.userName" severity="" class="mr-2" />
+                             <p-tag [value]="selectedApplicant.userName" class="mr-2" /> 
                             <p-tag [value]="selectedApplicant.email" severity="warning" />
                         </ng-template>
                         <ng-template let-option pTemplate="item">
-                            <p-tag [value]="option.userName" severity="" class="mr-2"/>
+                            <p-tag [value]="option.userName"  class="mr-2"/>
                             <p-tag [value]="option.email" severity="warning" />
                         </ng-template>
                     </p-dropdown>
@@ -115,7 +115,7 @@
                     </small>
                     <p-dropdown [(ngModel)]="selectedBootcamp" inputId="bootcamp" [options]="bootcamps" placeholder="Etkinlik Seçin" required>
                         <ng-template pTemplate="selectedItem">
-                            <p-tag [value]="selectedBootcamp.name" severity="" class="mr-2" />
+                            <p-tag [value]="selectedBootcamp.name"  class="mr-2" />
                         </ng-template>
                         <ng-template let-option pTemplate="item">
                             <p-tag [value]="option.name" severity="info" class="mr-2"/>
@@ -157,11 +157,11 @@
                     </small>
                     <p-dropdown [(ngModel)]="selectedApplicant" inputId="applicant" [options]="applicants" placeholder="Öğrenci Seçin" required>
                         <ng-template pTemplate="selectedItem">
-                            <p-tag [value]="selectedApplicant.userName" severity="" class="mr-2" />
+                            <p-tag [value]="selectedApplicant.userName"  class="mr-2" />
                             <p-tag [value]="selectedApplicant.email" severity="warning" />
                         </ng-template>
                         <ng-template let-option pTemplate="item">
-                            <p-tag [value]="option.userName" severity="" class="mr-2"/>
+                            <p-tag [value]="option.userName" class="mr-2"/>
                             <p-tag [value]="option.email" severity="warning" />
                         </ng-template>
                     </p-dropdown>
@@ -175,7 +175,7 @@
                     </small>
                     <p-dropdown [(ngModel)]="selectedBootcamp" inputId="bootcamp" [options]="bootcamps" placeholder="Etkinlik Seçin" required>
                         <ng-template pTemplate="selectedItem">
-                            <p-tag [value]="selectedBootcamp.name" severity="" class="mr-2" />
+                            <p-tag [value]="selectedBootcamp.name" class="mr-2" />
                         </ng-template>
                         <ng-template let-option pTemplate="item">
                             <p-tag [value]="option.name" severity="info" class="mr-2"/>

@@ -149,6 +149,24 @@
                         Bitiş tarihi boş olamaz.
                     </small>
                     <p-calendar showClear="true" id="endDate" [(ngModel)]="bootcampCreateRequest.endDate" dateFormat="dd-mm-yy" [minDate]="minEndDate" showIcon="true" required></p-calendar>
+                    <label for="image">Bootcamp Resim</label>
+                    <input (change)="onFileAddChange($event)" class="form-control form-control-sm" id="image" type="file">
+                </div>
+
+                <div class="date-fields">
+                    <div class="field">
+                        <label for="startDate">Başlangıç Tarihi</label>
+                        <p-calendar id="startDate" [(ngModel)]="bootcampCreateRequest.startDate" dateFormat="dd-mm-yy" [minDate]="minStartDate" showIcon="true" (onSelect)="onStartDateSelectCreate()" required></p-calendar>
+                        <small class="p-error" *ngIf="!bootcampCreateRequest.startDate">*  Zorunlu alan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="endDate">Bitiş Tarihi</label>
+                        <p-calendar id="endDate" [(ngModel)]="bootcampCreateRequest.endDate" dateFormat="dd-mm-yy" [minDate]="minEndDate" showIcon="true" required></p-calendar>
+                        <small class="p-error" *ngIf="!bootcampCreateRequest.endDate">*  Zorunlu alan.</small>
+                        <small class="p-error" *ngIf="submitted && (!bootcampCreateRequest.startDate || !bootcampCreateRequest.endDate)">
+                            <br>Tarih alanları boş olamaz.
+                        </small>
+                    </div>
                 </div>
             </ng-template>
         

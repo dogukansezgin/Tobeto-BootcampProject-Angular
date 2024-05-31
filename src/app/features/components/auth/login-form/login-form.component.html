@@ -25,6 +25,7 @@
           </p-iconField>
           <div *ngIf="isFieldInvalid('password')" class="error-messages">
             <small *ngIf="loginForm.get('password')?.errors?.['required']" id="error">Şifreni girmelisin.</small>
+            <small *ngIf="loginForm.get('password')?.errors?.['pattern'] ">En az 8 karakter uzunluğunda ve büyük harf, küçük harf, rakam ve özel karakter içermelidir.</small>
           </div>
         </div>
         <div *ngIf="errorMessage" class="info">

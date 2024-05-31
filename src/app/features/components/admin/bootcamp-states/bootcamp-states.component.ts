@@ -489,7 +489,7 @@ export class BootcampStatesComponent implements OnInit {
       case 'İPTAL EDILDI':
         return 'danger';
       default:
-        return 'primary';
+        return 'contrast';
     }
   }
 

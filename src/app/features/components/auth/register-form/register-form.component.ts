@@ -29,10 +29,10 @@ export class RegisterFormComponent implements OnInit {
   }
   createRegisterForm() {
     this.registerForm = this.formBuilder.group({
-      firstName: new FormControl('', [Validators.required,Validators.minLength(3),Validators.maxLength(30),Validators.pattern(/^[a-zA-Z]+$/)]),
-      lastName: new FormControl('', [Validators.required,Validators.minLength(3),Validators.maxLength(30),Validators.pattern(/^[a-zA-Z]+$/)]),
+      firstName: new FormControl('', [Validators.required,Validators.minLength(3),Validators.maxLength(30),Validators.pattern(/^[a-zA-ZÇĞİÖŞÜçğıöşü]+$/)]),
+      lastName: new FormControl('', [Validators.required,Validators.minLength(3),Validators.maxLength(30),Validators.pattern(/^[a-zA-ZÇĞİÖŞÜçğıöşü]+$/)]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)]),
+      password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])[a-zA-Z0-9#?!@$%^&*-ÇĞİÖŞÜçğıöşü]{8,}$/)]),
     });
   }
   markFormGroupTouched(formGroup: FormGroup) {
@@ -50,14 +50,12 @@ export class RegisterFormComponent implements OnInit {
     if (this.registerForm.valid) {
       console.log("Form is valid")
       let registerModel = Object.assign({}, this.registerForm.value);
-
+      console.log(registerModel);
       this.authService.registerApplicant(registerModel).subscribe(response => {
-        // alert("Kayıt Başarılı");
-        // this.router.navigate(['Account/Login']);
-        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Kaydınız oluşturuldu', life: 2000 })
-        console.log(response)
+        this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Kaydınız oluşturuldu.', life: 2000 })
       }, error => {
         console.error("Kayıt işlemi başarısız", error);
+        this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Email adresi çoktan kayıtlı.', life: 2000 })
       });
     }
     else {
