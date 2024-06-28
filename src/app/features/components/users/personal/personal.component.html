@@ -1,3 +1,5 @@
+<p-toast/>
+
 <form [formGroup]="updateForm">
     <div class="container">
         <div class="half">
@@ -27,8 +29,8 @@
             <div class="form-group">
                 <input type="text" formControlName="lastName" id="lastName" pInputText placeholder="Soyisim" />
                 <div *ngIf="isFieldInvalid('lastName')" class="error-messages">
-                    <small *ngIf="updateForm.get('lastName')?.errors?.['required']">İsmini girmelisin.</small>
-                    <small *ngIf="updateForm.get('lastName')?.errors?.['minlength']">En az 3 karakter
+                    <small *ngIf="updateForm.get('lastName')?.errors?.['required']">Soyismini girmelisin.</small>
+                    <small *ngIf="updateForm.get('lastName')?.errors?.['minlength']">En az 2 karakter
                         girmelisin.</small>
                     <small *ngIf="updateForm.get('lastName')?.errors?.['maxlength']">En fazla 30 karakter
                         girmelisin.</small>

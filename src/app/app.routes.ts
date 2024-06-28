@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { BootcampDetailPageComponent } from './pages/bootcamp-detail-page/bootcamp-detail-page.component';
-import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { PreventLoginAccessGuard } from './core/guards/prevent-login-access.guard';
 import { RoleGuard } from './core/guards/role.guard';
@@ -40,42 +39,42 @@ export const routes: Routes =
 
         // Account
         {
-            path: "Account", component: AccountPageComponent, canActivate: [AuthGuard, RoleGuard], canActivateChild: [AuthGuard, RoleGuard],
+            path: "account", component: AccountPageComponent, canActivate: [AuthGuard, RoleGuard], canActivateChild: [AuthGuard, RoleGuard],
             data: { expectedRoles: ['Applicants.User'] },
             children: [
                 {
-                    path: 'Profile', component: ProfileComponent, canActivate: [AuthGuard, RoleGuard], canActivateChild: [AuthGuard, RoleGuard],
+                    path: 'profile', component: ProfileComponent, canActivate: [AuthGuard, RoleGuard], canActivateChild: [AuthGuard, RoleGuard],
                     data: { expectedRoles: ['Applicants.User'] },
                     children: [
-                        { path: "CoverLetter", component: CoverletterComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['Applicants.User'] } },
-                        { path: "Personal", component: PersonalComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['Applicants.User'] } },
-                        { path: '', redirectTo: 'CoverLetter', pathMatch: "full" }
+                        { path: "coverletter", component: CoverletterComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['Applicants.User'] } },
+                        { path: "personal", component: PersonalComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['Applicants.User'] } },
+                        { path: '', redirectTo: 'coverletter', pathMatch: "full" }
                     ]
                 },
                 {
-                    path: 'Applications', component: AppliedBootcampListComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['Applicants.User'] },
+                    path: 'applications', component: AppliedBootcampListComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['Applicants.User'] },
                 }
             ]
         },
 
         // Authorization
         {
-            path: "Auth", component: AuthPageComponent,
+            path: "auth", component: AuthPageComponent,
             canActivate: [PreventLoginAccessGuard],
             children: [
                 {
-                    path: 'Login', component: LoginFormComponent
+                    path: 'login', component: LoginFormComponent
                 },
                 {
-                    path: 'Register', component: RegisterFormComponent
+                    path: 'register', component: RegisterFormComponent
                 },
                 {
-                    path: '', redirectTo: 'Login', pathMatch: "full"
+                    path: '', redirectTo: 'login', pathMatch: "full"
                 }
             ]
         },
-        { path: 'login', redirectTo: 'Auth/Login' },
-        { path: 'register', redirectTo: 'Auth/Register' },
+        { path: 'login', redirectTo: 'auth/login' },
+        { path: 'register', redirectTo: 'auth/register' },
 
         // Admin
         {
@@ -85,7 +84,7 @@ export const routes: Routes =
                 { path: 'dashboard', component: DashboardComponent, canActivate: [RoleGuard], data: { expectedRoles: ['Admin', 'Employees.User'] }, },
                 { path: 'settings', component: SettingsComponent },
                 { path: 'account', component: AccountComponent },
-                { path: '', pathMatch: 'full', redirectTo: 'Dashboard' },
+                { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
 
                 { path: 'applications/instructor', component: InstructorApplicationsComponent, canActivate: [RoleGuard], data: { expectedRoles: ['Admin', 'Instructors.User'] }, },
                 { path: 'bootcamps/instructor', component: InstructorBootcampsComponent, canActivate: [RoleGuard], data: { expectedRoles: ['Admin', 'Instructors.User'] }, },

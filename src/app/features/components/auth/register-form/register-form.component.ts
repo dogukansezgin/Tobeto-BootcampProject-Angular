@@ -30,7 +30,7 @@ export class RegisterFormComponent implements OnInit {
   createRegisterForm() {
     this.registerForm = this.formBuilder.group({
       firstName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern(/^[a-zA-ZÇĞİÖŞÜçğıöşü]+$/)]),
-      lastName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern(/^[a-zA-ZÇĞİÖŞÜçğıöşü]+$/)]),
+      lastName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(30), Validators.pattern(/^[a-zA-ZÇĞİÖŞÜçğıöşü]+$/)]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])[a-zA-Z0-9#?!@$%^&*-ÇĞİÖŞÜçğıöşü]{8,}$/)]),
     });
@@ -54,7 +54,7 @@ export class RegisterFormComponent implements OnInit {
       this.authService.registerApplicant(registerModel).subscribe(response => {
         this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Kaydınız oluşturuldu.', life: 2000 })
         setTimeout(() => {
-          this.router.navigateByUrl("Auth/Login")
+          this.router.navigateByUrl("auth/login")
         }, 2000);
       }, error => {
         console.error("Kayıt işlemi başarısız", error);

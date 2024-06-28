@@ -1,5 +1,5 @@
 <p-toast/>
 <div style="width: 710px; height: 100px; padding: 15px 30px 30px;">
-    <textarea [(ngModel)]="about" class="form-control" placeholder="Kısaca kendinden bahset.."></textarea>
+    <textarea [(ngModel)]="about" class="form-control" maxlength="300" placeholder="Kısaca kendinden bahset.."></textarea>
     <button (click)="updateApplicantData()" type="button" class="btn btn-secondary">Kaydet</button>
 </div>

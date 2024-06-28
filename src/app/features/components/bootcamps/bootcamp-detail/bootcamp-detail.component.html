@@ -9,11 +9,14 @@
         <p>Bootcamp'ten başarıyla mezun ol iş fırsatlarını yakala.Kariyerine değer katmak için hemen başvur ve yazılım
             dünyasında fark yarat!</p>
 
-        <p [ngClass]="isBootcampActive ? 'active' : 'inactive'">
+        <button (click)="applyToBootcamp()" *ngIf="isBootcampActive" class="btn btn-success btn-lg">Hemen Başvur</button>
+
+        <button *ngIf="!isBootcampActive" class="btn btn-secondary btn-lg" disabled>Başvurular Tamamlandı</button>
+
+        <!-- <p *ngIf="isBootcampActive ? 'active' : 'inactive'">
             <button (click)="applyToBootcamp()" *ngIf="isBootcampActive" class="btn btn-success btn-lg"
                 [disabled]="isApplicationButtonDisabled()">Hemen Başvur</button>
-            <button *ngIf="!isBootcampActive" class="btn btn-secondary btn-lg" disabled>Başvurular Tamamlandı</button>
-        </p>
+        </p> -->
 
     </div>
 </div>

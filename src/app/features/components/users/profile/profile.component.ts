@@ -22,13 +22,13 @@ export class ProfileComponent implements OnInit {
       {
         label: 'Ön Yazı',
         command: () => {
-          this.router.navigate(['Account/Profile/CoverLetter']);
+          this.router.navigate(['account/profile/coverletter']);
         }
       },
       {
         label: 'Kişisel Bilgiler',
         command: () => {
-          this.router.navigate(['Account/Profile/Personal']);
+          this.router.navigate(['account/profile/personal']);
         }
       }
     ];

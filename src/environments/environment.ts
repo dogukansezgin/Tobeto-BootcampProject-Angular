@@ -33,6 +33,8 @@ export const environment = {
     blacklists: {
       getList: '/api/Blacklists/get',
       getListDeleted: '/api/Blacklists/getDeleted',
+      getById: '/api/Blacklists/',
+      getByApplicantId: '/api/Blacklists/applicantId/',
       createBlacklist: '/api/Blacklists/create',
       updateBlacklist: '/api/Blacklists/update',
       deleteBlacklist: '/api/Blacklists/delete',

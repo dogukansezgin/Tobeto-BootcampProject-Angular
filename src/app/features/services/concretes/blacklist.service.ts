@@ -19,15 +19,17 @@ import { BlacklistRestoreRangeResponse } from "../../models/responses/blacklists
 import { BlacklistRestoreResponse } from "../../models/responses/blacklists/blacklist-restore-response";
 import { BlacklistUpdateResponse } from "../../models/responses/blacklists/blacklist-update-response";
 import { BlacklistBaseService } from "../abstracts/blacklist-base.service";
+import { BlacklistGetByIdResponse } from "../../models/responses/blacklists/blacklist-get-by-id-response";
 
 @Injectable({
     providedIn: 'root'
 })
 export class BlacklistService extends BlacklistBaseService {
-    
 
     private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.blacklists.getList;
     private readonly apiUrl_GetListDeleted: string = environment.apiUrl + environment.endpoints.blacklists.getListDeleted;
+    private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.blacklists.getById;
+    private readonly apiUrl_GetByApplicantId: string = environment.apiUrl + environment.endpoints.blacklists.getByApplicantId;
     private readonly apiUrl_CreateBlacklist = environment.apiUrl + environment.endpoints.blacklists.createBlacklist;
     private readonly apiUrl_UpdateBlacklist = environment.apiUrl + environment.endpoints.blacklists.updateBlacklist;
     private readonly apiUrl_DeleteBlacklist = environment.apiUrl + environment.endpoints.blacklists.deleteBlacklist;
@@ -80,6 +82,12 @@ export class BlacklistService extends BlacklistBaseService {
                 })
 
             )
+    }
+    override getById(id: string): Observable<BlacklistGetByIdResponse> {
+        return this.httpClient.get<BlacklistGetByIdResponse>(this.apiUrl_GetById + id)
+    }
+    override getByApplicantId(applicantId: string): Observable<BlacklistGetByIdResponse> {
+        return this.httpClient.get<BlacklistGetByIdResponse>(this.apiUrl_GetByApplicantId + applicantId)
     }
 
     override createBlacklist(blacklistCreateRequest: BlacklistCreateRequest): Observable<BlacklistCreateResponse> {

@@ -27,8 +27,8 @@
           </p-iconField>
           <div *ngIf="isFieldInvalid('lastName')" class="error-messages">
             <small *ngIf="registerForm.get('lastName')?.errors?.['required']">Soyismini girmelisin.</small>
-            <small *ngIf="registerForm.get('lastName')?.errors?.['minlength']">En az 3 karakter girmelisin.</small>
-            <small *ngIf="registerForm.get('lastName')?.errors?.['maxlength']">En fazlz 30 karakter girmelisin.</small>
+            <small *ngIf="registerForm.get('lastName')?.errors?.['minlength']">En az 2 karakter girmelisin.</small>
+            <small *ngIf="registerForm.get('lastName')?.errors?.['maxlength']">En fazla 30 karakter girmelisin.</small>
             <small *ngIf="registerForm.get('lastName')?.errors?.['pattern']">Sadece harfler girmelisin.</small>
           </div>
         </div>
@@ -59,7 +59,7 @@
       </div>
     
       <div class="have-account">
-        <label>Zaten hesabın var mı? <a routerLink="../Login">Giriş Yap</a></label>
+        <label>Zaten hesabın var mı? <a routerLink="../login">Giriş Yap</a></label>
       </div>
     </form>
   </div>

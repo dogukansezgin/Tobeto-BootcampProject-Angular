@@ -12,6 +12,7 @@ import { AuthService } from '../../../services/concretes/auth.service';
 import { FormatService } from '../../../services/concretes/format.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { BlacklistService } from '../../../services/concretes/blacklist.service';
 
 @Component({
   selector: 'app-bootcamp-detail',
@@ -65,6 +66,9 @@ export class BootcampDetailComponent implements OnInit {
   isBootcampActive: boolean = false;
   bootcampActiveText: string = "Başvurular Aktif";
   bootcampInactiveText: string = "Başvurular Kapandı";
+
+  isBlacklisted: boolean = false;
+
   constructor(
     private bootcampService: BootcampService,
     private activatedRoute: ActivatedRoute,
@@ -74,7 +78,8 @@ export class BootcampDetailComponent implements OnInit {
     private tokenService: TokenService,
     private authService: AuthService,
     private formatService: FormatService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private blacklistService: BlacklistService
   ) { }
 
   ngOnInit(): void {
@@ -93,6 +98,11 @@ export class BootcampDetailComponent implements OnInit {
     });
 
     this.userId = this.tokenService.getCurrentUserId();
+
+console.log(this.isBlacklisted)
+console.log(this.userId)
+    this.checkBlacklist(this.userId);
+console.log(this.isBlacklisted)
   }
   
   getBootcampByName(bootcampName: string) {
@@ -158,14 +168,26 @@ export class BootcampDetailComponent implements OnInit {
     });
   }
 
-  isApplicationButtonDisabled(): boolean {
-    if (this.isApplicationAlreadyExist || !this.isBootcampActive ||
-      !this.isBootcampExists || !this.isInitialStateIdValid) {
-      return true;
-    } else {
-      return false;
-    }
+  checkBlacklist(applicantId: string): void {
+    this.blacklistService.getByApplicantId(applicantId).subscribe(response => {
+      console.log(response)
+      
+      this.isBlacklisted = true;
+    }, error => {
+      this.isBlacklisted = false;
+
+    })
+    
   }
+
+  // isApplicationButtonDisabled(): boolean {
+  //   if (this.isApplicationAlreadyExist || !this.isBootcampActive ||
+  //     !this.isBootcampExists || !this.isInitialStateIdValid) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   applyToBootcamp() {
     if (!this.authService.isAuthenticated()) {
@@ -178,6 +200,10 @@ export class BootcampDetailComponent implements OnInit {
 
     } else if (!this.authService.hasRole(["Applicants.User"])) {
       this.messageService.add({ severity: 'warn', summary: 'Uyarı', detail: 'Başvurmak için öğrenci olmalısın.', life: 4000 });
+      return;
+
+    } else if (this.isBlacklisted) {
+      this.messageService.add({ severity: 'error', summary: 'Hata', detail: 'Destek hattı ile iletişime geçin.', life: 4000 });
       return;
 
     } else {

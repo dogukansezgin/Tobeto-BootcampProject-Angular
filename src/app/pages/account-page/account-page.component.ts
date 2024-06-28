@@ -56,9 +56,9 @@ export class AccountPageComponent implements OnInit {
 
 
     if (item === 'Profile') {
-      this.router.navigate(['Account/Profile']);
+      this.router.navigate(['account/profile']);
     } else if (item === 'Applications') {
-      this.router.navigate(['Account/Applications']);
+      this.router.navigate(['account/applications']);
     } else if (item === 'Şifre Güncelle') {
       // Şifre güncelleme sayfasına yönlendirme
     }

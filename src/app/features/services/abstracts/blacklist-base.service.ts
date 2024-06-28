@@ -16,10 +16,13 @@ import { BlacklistGetListResponse } from "../../models/responses/blacklists/blac
 import { BlacklistRestoreRangeResponse } from "../../models/responses/blacklists/blacklist-restore-range-response";
 import { BlacklistRestoreResponse } from "../../models/responses/blacklists/blacklist-restore-response";
 import { BlacklistUpdateResponse } from "../../models/responses/blacklists/blacklist-update-response";
+import { BlacklistGetByIdResponse } from "../../models/responses/blacklists/blacklist-get-by-id-response";
 
 @Injectable()
 export abstract class BlacklistBaseService {
 
+    abstract getById(id: string): Observable<BlacklistGetByIdResponse>
+    abstract getByApplicantId(applicantId: string): Observable<BlacklistGetByIdResponse>
     abstract getList(pageRequest: PageRequest): Observable<ListItemsDto<BlacklistGetListResponse>>
     abstract getListDeleted(pageRequest: PageRequest): Observable<ListItemsDto<BlacklistGetListDeletedResponse>>
     abstract createBlacklist(blacklistCreateRequest: BlacklistCreateRequest): Observable<BlacklistCreateResponse>

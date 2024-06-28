@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AuthBaseService } from "../abstracts/auth-base.service";
-import { Observable, catchError, map } from "rxjs";
+import { BehaviorSubject, Observable, catchError, map } from "rxjs";
 import { AccessTokenModel } from "../../models/responses/users/access-token-model";
 import { environment } from "../../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
@@ -22,6 +22,9 @@ export class AuthService extends AuthBaseService {
     private readonly apiUrl_RegisterApplicant: string = environment.apiUrl + environment.endpoints.auth.register.applicant;
     private readonly apiUrl_Login: string = environment.apiUrl + environment.endpoints.auth.login.userLogin;
     
+    private _loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    loggedIn$: Observable<boolean> = this._loggedIn.asObservable();
+    
     constructor(
         private httpClient: HttpClient, 
         private localStorageService: LocalStorageService,
@@ -40,6 +43,7 @@ export class AuthService extends AuthBaseService {
             .pipe(map(response =>{
                 this.localStorageService.setToken(response.accessToken.token);
                 // alert("Giriş yapıldı.");
+                this._loggedIn.next(true);
                 return response;
             }, catchError(responseError =>{
                 throw responseError;
@@ -65,6 +69,7 @@ export class AuthService extends AuthBaseService {
     logOut(){
 
         this.localStorageService.removeToken();
+        this._loggedIn.next(false);
         setTimeout(() => {
             window.location.reload();
         }, 500);
