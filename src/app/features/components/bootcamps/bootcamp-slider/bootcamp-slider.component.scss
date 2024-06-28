@@ -84,6 +84,78 @@ button.prev {
 button.next {
   right: 0;
 }
+.partners-banner-module--wrapper--T3VMa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  container-type: inline-size
+}
+
+.partners-banner-module--content--5NknS {
+  padding: 2.4rem;
+  width: 100%
+}
+
+@media(min-width: 43.81rem) and (max-width:61.25rem) {
+  .partners-banner-module--content--5NknS {
+      padding:3.2rem 2.4rem
+  }
+}
+
+@media(max-width: 43.75rem) {
+  .partners-banner-module--content--5NknS {
+      padding:4.8rem 2.4rem
+  }
+}
+
+@container(inline-size < 61.31rem) {
+  .partners-banner-module--content--5NknS {
+      padding: 3.2rem2.4rem;
+  }
+}
+
+@media(inline-size < 61.31rem) and (max-width: 23.44rem) {
+  .partners-banner-module--content--5NknS {
+      padding:3.2rem 0
+  }
+}
+
+.partners-banner-module--heading--RPlRN {
+  color: #6a6f73;
+  font-weight: 400;
+  margin-bottom: 2.4rem;
+  font-size: 1.3rem;
+  max-width: 100%;
+  text-align: center;
+}
+
+@media(max-width: 43.75rem) {
+  .partners-banner-module--heading--RPlRN {
+      font-size:1.6rem
+  }
+}
+
+@container(inline-size < 43.81rem) {
+  .partners-banner-module--heading--RPlRN {
+      font-size: 1.6rem;
+  }
+}
+
+.partner-logos-module--item--M8vYZ {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+.partner-logos-module--list--l2SC7 {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+  align-self: normal
+}
+
+
 
 // :host{
 //   :ng{

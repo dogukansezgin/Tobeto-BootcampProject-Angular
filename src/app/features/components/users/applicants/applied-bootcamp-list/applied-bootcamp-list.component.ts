@@ -47,6 +47,7 @@ export class AppliedBootcampListComponent implements OnInit {
   getAppliedBootcampList(applicantId: string, pageRequest: PageRequest) {
     this.applicationService.appliedBootcamps(applicantId, pageRequest).subscribe(response => {
       this.appliedBootcampsList = response;
+      console.log(this.appliedBootcampsList);
 
     })
   }
