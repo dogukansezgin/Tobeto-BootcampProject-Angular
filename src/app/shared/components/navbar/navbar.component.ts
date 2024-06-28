@@ -80,10 +80,10 @@ export class NavbarComponent implements OnInit {
       this.logOut();
     }
     else if (item.label == 'Profilim') {
-      this.router.navigate(['account/profile/'])
+      this.router.navigate(['Account/Profile/'])
     }
     else if (item.label == 'Başvurularım') {
-      this.router.navigate(['account/applications/'])
+      this.router.navigate(['Account/Applications/'])
     }
     else if (item.label == 'Yönetim Paneli') {
       this.router.navigate(['admin'])

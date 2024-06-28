@@ -54,7 +54,7 @@ export class RegisterFormComponent implements OnInit {
       this.authService.registerApplicant(registerModel).subscribe(response => {
         this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Kaydınız oluşturuldu.', life: 2000 })
         setTimeout(() => {
-          this.router.navigateByUrl("auth/login")
+          this.router.navigateByUrl("Auth/Login")
         }, 2000);
       }, error => {
         console.error("Kayıt işlemi başarısız", error);
