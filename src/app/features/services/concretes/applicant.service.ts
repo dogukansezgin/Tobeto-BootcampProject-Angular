@@ -25,16 +25,20 @@ import { ApplicantGetListResponse } from "../../models/responses/applicant/appli
 import { ApplicantGetBasicInfoResponse } from "../../models/responses/applicant/applicant-get-basic-info-response";
 import { GetListByJoinApplicantListItemDto } from "../../models/responses/applicants/get-list-by-join-applicant-list-item-dto";
 import { ApplicantInfoUpdateRequest } from "../../models/requests/applicants/applicant-info-update-request";
+import { ApplicantPasswordUpdateResponse } from "../../models/responses/applicant/applicant-password-update-response";
+import { ApplicantPasswordUpdateRequest } from "../../models/requests/applicants/applicant-password-update-request";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ApplicantService extends ApplicantBaseService {
 
+
     private readonly apiUrl_GetList: string = environment.apiUrl + environment.endpoints.applicants.getList;
     private readonly apiUrl_GetListDeleted: string = environment.apiUrl + environment.endpoints.applicants.getListDeleted;
     private readonly apiUrl_GetBasicInfoList: string = environment.apiUrl + environment.endpoints.applicants.getBasicInfo;
     private readonly apiUrl_GetById: string = environment.apiUrl + environment.endpoints.applicants.getApplicantById;
+    private readonly apiUrl_UpdatePassword: string = environment.apiUrl + environment.endpoints.applicants.updateApplicantPassword;
     private readonly apiUrl_UpdateInfo: string = environment.apiUrl + environment.endpoints.applicants.updateApplicantInfo;
     private readonly apiUrl_CreateApplicant = environment.apiUrl + environment.endpoints.applicants.createApplicants;
     private readonly apiUrl_UpdateApplicant = environment.apiUrl + environment.endpoints.applicants.updateApplicants;
@@ -115,6 +119,18 @@ export class ApplicantService extends ApplicantBaseService {
 
     override getApplicant(applicantId: string): Observable<GetApplicantResponse> {
         return this.httpClient.get<GetApplicantResponse>(this.apiUrl_GetById + applicantId)
+    }
+    override updateApplicantPassword(request: ApplicantPasswordUpdateRequest): Observable<ApplicantPasswordUpdateResponse> {
+        return this.httpClient.put<ApplicantPasswordUpdateResponse>(this.apiUrl_UpdatePassword, request)
+            .pipe(map(response => {
+                this.localStorageService.removeToken();
+                this.localStorageService.setToken(response.accessToken.token);
+                return response;
+
+            }, catchError(responseError => {
+                throw responseError;
+            })
+            ));
     }
 
     // override updateApplicant(request: ApplicantUpdateRequest): Observable<GetApplicantResponse> {

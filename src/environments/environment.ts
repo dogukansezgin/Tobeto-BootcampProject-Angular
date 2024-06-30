@@ -58,6 +58,7 @@ export const environment = {
       getListDeleted: '/api/Applicants/getDeleted',
       getBasicInfo: '/api/Applicants/getBasicInfo',
       getApplicantById: '/api/Applicants/',
+      updateApplicantPassword: '/api/Applicants/UpdatePasswordFromAuth',
       updateApplicantInfo: '/api/Applicants/UpdateFromAuth',
       createApplicants: '/api/Applicants/create',
       updateApplicants: '/api/Applicants/update',

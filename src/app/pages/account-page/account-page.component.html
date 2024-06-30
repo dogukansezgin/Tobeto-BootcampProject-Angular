@@ -15,10 +15,10 @@
                         class="list-item list-group-item-action list-group-item">
                         Başvurularım
                     </li>
-                    <!-- <li (click)="menuItemClicked('')"
+                    <li (click)="menuItemClicked('UpdatePassword')" [ngClass]="isUpdatePasswordButtonActive ? 'active' : 'inactive'"
                         class="list-item list-group-item-action list-group-item">
                         Şifre Güncelle
-                    </li> -->
+                    </li>
                     <hr>
                     <li (click)="setNullCurrentItem()" class="list-group-item-action log-out"><i
                             data-feather="log-out"></i>Çıkış</li>

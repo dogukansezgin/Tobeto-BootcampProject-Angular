@@ -21,6 +21,8 @@ import { ApplicantGetListResponse } from "../../models/responses/applicant/appli
 import { ApplicantGetBasicInfoResponse } from "../../models/responses/applicant/applicant-get-basic-info-response";
 import { GetListByJoinApplicantListItemDto } from "../../models/responses/applicants/get-list-by-join-applicant-list-item-dto";
 import { ApplicantInfoUpdateRequest } from "../../models/requests/applicants/applicant-info-update-request";
+import { ApplicantPasswordUpdateResponse } from "../../models/responses/applicant/applicant-password-update-response";
+import { ApplicantPasswordUpdateRequest } from "../../models/requests/applicants/applicant-password-update-request";
 
 
 @Injectable()
@@ -34,7 +36,7 @@ export abstract class ApplicantBaseService {
     // abstract updateApplicant(request: ApplicantUpdateRequest) : Observable<GetApplicantResponse>
 
     abstract updateAboutApplicant(request: ApplicantAboutUpdateRequest): Observable<GetApplicantResponse>
-
+    abstract updateApplicantPassword(request:ApplicantPasswordUpdateRequest):Observable<ApplicantPasswordUpdateResponse>
     abstract createApplicant(applicantCreateRequest: ApplicantCreateRequest): Observable<ApplicantCreateResponse>
     abstract updateApplicant(applicantUpdateRequest: ApplicantUpdateRequest): Observable<ApplicantUpdateResponse>
     abstract deleteApplicant(applicantDeleteRequest: ApplicantDeleteRequest): Observable<ApplicantDeleteResponse>

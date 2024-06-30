@@ -28,6 +28,7 @@ import { EmployeeApplicationsComponent } from './features/components/admin/emplo
 import { InstructorApplicationsComponent } from './features/components/admin/instructor-applications/instructor-applications.component';
 import { InstructorBootcampsComponent } from './features/components/admin/instructor-bootcamps/instructor-bootcamps.component';
 import { ApplicantsApplicationsComponent } from './features/components/admin/applicants-applications/applicants-applications.component';
+import { UpdatePasswordComponent } from './features/components/users/update-password/update-password.component';
 
 export const routes: Routes =
     [
@@ -53,6 +54,9 @@ export const routes: Routes =
                 },
                 {
                     path: 'Applications', component: AppliedBootcampListComponent, canActivate: [AuthGuard, RoleGuard], data: { expectedRoles: ['Applicants.User'] },
+                },
+                { 
+                    path:'UpdatePassword', component:UpdatePasswordComponent,canActivate:[AuthGuard,RoleGuard],data: { expectedRoles: ['Applicants.User'] }
                 }
             ]
         },

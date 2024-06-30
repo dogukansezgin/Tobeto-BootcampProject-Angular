@@ -25,6 +25,7 @@ export class AccountPageComponent implements OnInit {
 
   isProfileButtonActive!: boolean;
   isApplicationButtonActive!: boolean;
+  isUpdatePasswordButtonActive!:boolean;
 
   constructor(
     private applicantService: ApplicantService,
@@ -59,18 +60,25 @@ export class AccountPageComponent implements OnInit {
       this.router.navigate(['Account/Profile']);
     } else if (item === 'Applications') {
       this.router.navigate(['Account/Applications']);
-    } else if (item === 'Şifre Güncelle') {
-      // Şifre güncelleme sayfasına yönlendirme
+    } else if (item === 'UpdatePassword') {
+      this.router.navigate(['Account/UpdatePassword']);
     }
   }
 
   setCurrentItem() {
     if (this.url.includes('Profile')) {
       this.isApplicationButtonActive = false;
+      this.isUpdatePasswordButtonActive=false;
       this.isProfileButtonActive = true;
     } else if (this.url.includes('Applications')) {
       this.isProfileButtonActive = false;
+      this.isUpdatePasswordButtonActive=false;
       this.isApplicationButtonActive = true;
+    }
+    else if (this.url.includes('UpdatePassword')){
+      this.isProfileButtonActive = false;
+      this.isApplicationButtonActive = false;
+      this.isUpdatePasswordButtonActive=true;
     }
   }
   logOut() {
